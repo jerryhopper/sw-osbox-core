@@ -89,6 +89,8 @@ BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
 
 #echo $MASTER;
 
+echo $BOXES
+
 #echo  $IPv4bare
 #exit;
 
