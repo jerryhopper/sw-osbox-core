@@ -76,9 +76,9 @@ if ! is_command avahi-browse ;then
    apt-get -f install avahi-utils
 fi
 
-if ! is_command nmap ;then
-   apt-get -f install nmap
-fi
+#if ! is_command nmap ;then
+#   #apt-get -f install nmap
+#fi
 
 if ! is_command git ;then
    apt-get -f install git
