@@ -1,0 +1,7 @@
+{
+    "require": {
+        "slim/slim": "^3.9",
+        "pachico/slim-swoole": "^0.3.0",
+        "yurunsoft/guzzle-swoole": "^2.1"
+    }
+}
