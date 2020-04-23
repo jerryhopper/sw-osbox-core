@@ -7,15 +7,6 @@ source /usr/local/osbox/lib/bashfunc/is_command
 
 
 
-
-
-
-# must use aarch64
-if [ "$(uname -m)" != "aarch64" ]; then
-  echo "invalid platform"
-  exit;
-fi
-
 if ! is_command avahi-browse ;then
    apt-get -f install avahi-utils
 fi
@@ -28,13 +19,30 @@ if ! is_command git ;then
    apt-get -f install git
 fi
 
-OSBOXMASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
 
-if [ "$OSBOXMASTER" == "" ] ; then
- echo "yes, nothing"
+MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
+BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
+
+#echo $MASTER;
+
+#echo  $IPv4bare
+#exit;
+
+if [ "$MASTER" == "" ] ;then
+    echo "NO MASTER ON NETWORK"
+
 else
- echo "no - result!"
+    echo "MASTER"
+    IP=$(echo $MASTER|awk -F ';' '{ print $8 }')
+    PORT=$(echo $MASTER|awk -F ';' '{ print $9 }')
+    HOST=$(echo $MASTER|awk -F ';' '{ print $7 }')
+
+    if [ $IPv4bare==$IP ]; then
+      echo "i am master!"
+    fi
+
 fi
+
 
 OSBOXMASTERHOST=$OSBOXMASTER|awk -F';' '{ print $7}'
 OSBOXMASTERIP=$OSBOXMASTER|awk -F';' '{ print $8}'
