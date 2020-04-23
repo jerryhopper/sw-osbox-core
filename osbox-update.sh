@@ -7,11 +7,7 @@ source /usr/local/osbox/lib/bashfunc/is_command
 
 
 
-# must use aarch64
-if [ "$(uname -m)" != "aarch64" ]; then
-  echo "invalid platform"
-  exit;
-fi
+
 
 IPv4bare=""
 IPv4gw=""
