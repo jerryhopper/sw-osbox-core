@@ -24,6 +24,7 @@ MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
 BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
 
 #echo $MASTER;
+echo $BOXES
 
 #echo  $IPv4bare
 #exit;
