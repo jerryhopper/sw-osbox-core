@@ -213,6 +213,10 @@ done
 
 cd ..
 
+/usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini /usr/local/osbox/bin/composer.phar --working-dir=/usr/local/osbox/project/sw-osbox-core update
+
+
+
 # avahi = 152 in dietpi software.
 if [ -d /etc/avahi/services ]; then
    echo "copy avahi services"
