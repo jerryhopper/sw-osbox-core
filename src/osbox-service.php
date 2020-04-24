@@ -402,7 +402,7 @@ $srv->on("start", function (\swoole_http_server $server) {
 $srv->on("shutdown", function (\swoole_http_server $server) {
     error_log( sprintf('osbox http server is shutdown at https://%s:%s', $server->host, $server->port) );
     echo sprintf('osbox http server is shutdown at https://%s:%s', $server->host, $server->port), PHP_EOL;
-    //unlink('/var/run/osbox.pid');
+    unlink('/var/run/osbox.pid');
 });
 /**
  * We register the on "request event, which will use the BridgeManager to transform request, process it
