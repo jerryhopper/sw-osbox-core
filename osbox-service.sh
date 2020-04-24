@@ -8,7 +8,8 @@ source /usr/local/osbox/lib/bashfunc/is_command
 
 
 if ! is_command avahi-browse ;then
-   apt-get -y install avahi-utils
+  echo "Somehow avahi-browse is missing. installing...."
+  apt-get -y install avahi-utils
 fi
 
 if ! is_command nmap ;then
@@ -16,7 +17,8 @@ if ! is_command nmap ;then
 fi
 
 if ! is_command git ;then
-   apt-get -y install git
+  echo "Somehow GIT is missing. installing...."
+  apt-get -y install git
 fi
 
 
