@@ -380,7 +380,7 @@ $srv->set([
     'ssl_cert_file' => $ssl_dir . '/ssl.cert',
     'ssl_key_file' => $ssl_dir . '/ssl.key',
     'pid_file' => '/var/run/osbox.pid',
-    'daemonize' => true,
+    'daemonize' => false,
     'worker_num'=> 2,
     //'user' => 'osbox',
     //'group' => 'osbox',
