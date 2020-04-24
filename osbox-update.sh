@@ -207,7 +207,7 @@ cd ./project
 for d in */ ; do
     cd "$d"
     echo  "Update $d"
-    #git pull origin master
+    git pull origin master
     cd ..
 done
 

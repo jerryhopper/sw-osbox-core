@@ -8,15 +8,15 @@ source /usr/local/osbox/lib/bashfunc/is_command
 
 
 if ! is_command avahi-browse ;then
-   apt-get -f install avahi-utils
+   apt-get -y install avahi-utils
 fi
 
 if ! is_command nmap ;then
-   apt-get -f install nmap
+   apt-get -y install nmap
 fi
 
 if ! is_command git ;then
-   apt-get -f install git
+   apt-get -y install git
 fi
 
 
