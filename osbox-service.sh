@@ -61,7 +61,7 @@ if [ $HTTPPID ]; then
   HTTPPROG=$( ps -p $HTTPPID |grep $HTTPPID |awk '{ print $4 }' )
   echo "HTTP  in use by $HTTPPROG"
 else
-  echo "n"
+  echo "Port 80 is not in use."
 fi
 
 # Check port 443
@@ -70,7 +70,7 @@ if [ $HTTPSPID ]; then
   HTTPSPROG=$( ps -p $HTTPSPID |grep $HTTPSPID |awk '{ print $4 }' )
   echo "HTTPS in use by $HTTPSPROG"
 else
-  echo "n"
+  echo "Port 443 is not in use."
 fi
 
 
