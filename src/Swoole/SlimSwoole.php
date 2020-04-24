@@ -1,5 +1,10 @@
 <?php
 
+use Swoole\Coroutine\Server;
+use Swoole\Coroutine\Server\Connection;
+
+use Pachico\SlimSwoole\BridgeManager;
+
 
 
 $certpath = "/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert";
