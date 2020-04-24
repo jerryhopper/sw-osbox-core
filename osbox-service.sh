@@ -91,6 +91,5 @@ echo $PROG
 
 cd /usr/local/osbox
 
-PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d
-/usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/osbox-core/src/osbox-service.php
+PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/osbox-service.php
 
