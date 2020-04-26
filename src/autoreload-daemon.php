@@ -9,5 +9,5 @@ fclose($handle);
 
 
 $kit = new Swoole\ToolKit\AutoReload((int)trim($contents));
-$kit->watch(__DIR__.'');
+$kit->watch('/usr/local/osbox/project');
 $kit->run();
