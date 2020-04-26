@@ -1,7 +1,7 @@
 <?php
 
 
-
+echo "Hallo";
 
 class actionType {
     var type = "oneshot";  // oneoff/recurring
@@ -9,16 +9,16 @@ class actionType {
 }
 
 
-interface actionInterface
+interface taskInterface
 {
     public function startAction();
     public function stopAction();
 }
 
 
-class userGroupTask implements actionInterface {
+class basicTask implements taskInterface {
 
-    function __construct($user,$group)
+    function __construct()
     {
 
     }
@@ -65,9 +65,11 @@ class groupListTask {
 
 
 
-$x = new userGroupAction($user,$group);
 
 
+$basicTask = new basicTask();
+
+var_dump($basicTask);
 die();
 
 
