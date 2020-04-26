@@ -9,4 +9,4 @@ source /usr/local/osbox/lib/bashfunc/is_command
 PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d
 
 # start the scheduler proces.
-/usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/osbox-core/src/osbox-scheduler.php
+/usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/osbox-scheduler.php
