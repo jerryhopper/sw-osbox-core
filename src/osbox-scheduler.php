@@ -1,12 +1,11 @@
 <?php
 
 
-sleep(3600);
-die();
+
 
 class actionType {
-    "oneshot";
-    "";
+    var type = "oneshot";  // oneoff/recurring
+
 }
 
 
