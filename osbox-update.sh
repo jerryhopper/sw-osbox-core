@@ -102,8 +102,9 @@ done
 
 #
 
-
+echo "Restarting osbox service"
 systemctl restart osbox
+echo "Restarting osbox-scheduler service"
 systemctl restart osbox-scheduler
 
 
