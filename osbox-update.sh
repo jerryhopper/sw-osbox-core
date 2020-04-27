@@ -4,6 +4,23 @@ source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
 
+cd /usr/local/osbox/project
+for d in */ ; do
+    cd $d
+    echo "Updating repository for $d"
+    git fetch --all
+    git reset --hard origin/master
+    #git pull origin master
+    #git pull
+    if [ -f update.sh ]; then
+       echo "Running updatescript for $d"
+       bash ./update.sh
+    fi
+    cd ..
+done
+
+#
+
 
 
 
@@ -206,6 +223,9 @@ cd ./project
 for d in */ ; do
     cd "$d"
     echo  "Update $d"
+    git add *
+    git commit -a -m "local file server commit message"
+
     git reset --hard HEAD
     git clean -f -d
     git pull
