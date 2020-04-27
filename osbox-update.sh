@@ -234,7 +234,7 @@ if [ ! -d /etc/osbox/ssl/blackbox.surfwijzer.nl ]; then
    # wget ssl certs.
 fi
 
-
+echo "Restarting services"
 systemctl restart osbox
 systemctl restart osbox-scheduler
 
