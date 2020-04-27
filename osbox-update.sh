@@ -207,8 +207,11 @@ cd ./project
 for d in */ ; do
     cd "$d"
     echo  "Update $d"
-    git fetch --all
-    git reset --hard origin/master
+    git reset --hard HEAD
+    git clean -f -d
+    git pull
+    ##git fetch --all
+    ##git reset --hard origin/master
     #git pull origin master
     cd ..
 done
