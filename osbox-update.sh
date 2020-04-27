@@ -103,9 +103,11 @@ done
 #
 
 
+systemctl restart osbox
+systemctl restart osbox-scheduler
 
 
-
+exit;
 
 
 MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
