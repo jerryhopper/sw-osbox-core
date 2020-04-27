@@ -215,7 +215,6 @@ done
 
 cd ..
 
-
 #PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d
 PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini /usr/local/osbox/bin/composer.phar --working-dir=/usr/local/osbox/project/sw-osbox-core update
 
@@ -227,6 +226,7 @@ if [ -d /etc/avahi/services ]; then
    cp ./lib/avahi/* /etc/avahi/services
    service avahi-daemon restart
 fi
+
 
 # ssl
 if [ ! -d /etc/osbox/ssl/blackbox.surfwijzer.nl ]; then
