@@ -6,6 +6,11 @@ if [ "$1" == "update" ]; then
     exit;
 fi
 
+if [ "$1" == "reinstall" ]; then
+    /usr/local/osbox/osbox-update
+    exit;
+fi
+
 
 if [ "$1" == "watch" ]; then
   echo "Watching codebase for changes."
