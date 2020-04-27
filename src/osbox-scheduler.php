@@ -53,16 +53,22 @@ Co\run(function() {
 
 
 
+if( file_exists("/etc/osbox/osbox.db") ){
+    $updateTask = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
+}
+
+$tasks = array();
+
 /*
-
-
-*/
 $tasks = array(
     array("raw"=>"osbox update","type"=>"hourly","value"=>"22:00"),
     array("raw"=>"osbox disable group 4","type"=>"at","value"=>"* * * * *"),
     array("raw"=>"osbox disable group 4","type"=>"daily","value"=>"22:03"),
     array("raw"=>"osbox enable group 4","type"=>"daily","value"=>"22:05")
 );
+
+*/
+
 
 
 function scheduleTasks( $tasks ){
@@ -231,18 +237,11 @@ function scheduleTasks( $tasks ){
 
 
 
-
-
-
-
-
 $pid = getmypid();
+// "/var/run/osbox-scheduler.pid"
+
 echo "Running under pid $pid";
 
-$taskId = Swoole\Timer::tick((1000*60), "tick", $tasks);
+$taskId = Swoole\Timer::tick((1000*60), "tick", array_merge($tasks,$updateTask) ;
 
 
-
-
-
-///var/run/
