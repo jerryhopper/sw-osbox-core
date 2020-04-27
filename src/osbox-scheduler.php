@@ -206,18 +206,7 @@ $tasks = array(
     array("raw"=>"osbox disable group 4","type"=>"daily","value"=>"22:03"),
     array("raw"=>"osbox enable group 4","type"=>"daily","value"=>"22:05")
 );
-
 */
-
-
-
-
-
-
-
-
-
-
 
 $pid = getmypid();
 // "/var/run/osbox-scheduler.pid"
