@@ -15,60 +15,12 @@ Swoole \Timer::set([
     'enable_coroutine' => true,
 ]);
 
-$count = 0;
 function tick($timerid, $tasks)
 {
-    global $count;
-    $count++;
-
     $scheduler = scheduleTasks($tasks);
     // Let the scheduler execute jobs which are due.
     $scheduler->run();
-
-    //var_dump($count);
-    //go(function() {
-        //$ret = Swoole\Coroutine\System::exec("ls -latr");
-        //print_r($ret);
-        //print_r(Swoole\Timer::list() );
-    //});
-    #echo $count;
-    #if($count >= 2)
-    #{
-    #    Swoole\Timer::clear($timerid);
-    #}
 }
-
-
-/*
-Co\run(function() {
-    Swoole\Coroutine::sleep(1);
-    #echo "Done.\n";
-});
-Co\run(function() {
-    Swoole\Coroutine::sleep(3);
-    #echo "Done2.\n";
-});
-*/
-
-
-
-
-if( file_exists("/etc/osbox/osbox.db") ){
-    $updateTask = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
-}
-
-$tasks = array();
-
-/*
-$tasks = array(
-    array("raw"=>"osbox update","type"=>"hourly","value"=>"22:00"),
-    array("raw"=>"osbox disable group 4","type"=>"at","value"=>"* * * * *"),
-    array("raw"=>"osbox disable group 4","type"=>"daily","value"=>"22:03"),
-    array("raw"=>"osbox enable group 4","type"=>"daily","value"=>"22:05")
-);
-
-*/
-
 
 
 function scheduleTasks( $tasks ){
@@ -235,13 +187,42 @@ function scheduleTasks( $tasks ){
 
 }
 
+/**
+ * Always add the update task.
+ **/
+$updateTask = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
+
+/**
+ * Add the tasks from the database.
+ **/
+if( file_exists("/etc/osbox/osbox.db") ){
+    // read tasks from the database.
+    $tasks = array();
+}
+/*
+$tasks = array(
+    array("raw"=>"osbox update","type"=>"hourly","value"=>"22:00"),
+    array("raw"=>"osbox disable group 4","type"=>"at","value"=>"* * * * *"),
+    array("raw"=>"osbox disable group 4","type"=>"daily","value"=>"22:03"),
+    array("raw"=>"osbox enable group 4","type"=>"daily","value"=>"22:05")
+);
+
+*/
+
+
+
+
+
+
+
+
+
 
 
 $pid = getmypid();
 // "/var/run/osbox-scheduler.pid"
 
 echo "Running under pid $pid";
-
 $taskId = Swoole\Timer::tick((1000*60), "tick", array_merge($tasks,$updateTask) ;
 
 
