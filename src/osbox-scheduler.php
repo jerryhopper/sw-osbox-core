@@ -1,36 +1,29 @@
 <?php
 
-
+use GO\Scheduler;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 
+#error_reporting(1);
+#ini_set(display_errors,true);
 
 
-
+#display_errors(1);
 
 Swoole \Timer::set([
     'enable_coroutine' => true,
 ]);
 
 $count = 0;
-function tick($timerid, $taskObjects)
+function tick($timerid, $tasks)
 {
     global $count;
     $count++;
 
-
-    // https://github.com/peppeocchi/php-cron-scheduler
-    // Create a new scheduler
-    $scheduler = new Scheduler();
-
-    // ... configure the scheduled jobs (see below) ...
-
+    $scheduler = scheduleTasks($tasks);
     // Let the scheduler execute jobs which are due.
     $scheduler->run();
-
-
-
 
     //var_dump($count);
     //go(function() {
@@ -38,198 +31,218 @@ function tick($timerid, $taskObjects)
         //print_r($ret);
         //print_r(Swoole\Timer::list() );
     //});
-
-    if($count >= 25)
-    {
-        Swoole\Timer::clear($timerid);
-    }
+    #echo $count;
+    #if($count >= 2)
+    #{
+    #    Swoole\Timer::clear($timerid);
+    #}
 }
-
-
-
-$taskId = Swoole\Timer::tick(1000, "tick",$tasks);
-
-
-die();
-
 
 
 /*
-
-
-
-
-
-
-echo "TimerID = ".$x."\n";
-//print_r($x);
-
-#print_r(Swoole\Timer::list() );
-#print_r(Swoole\Timer::info());
-#print_r(Swoole\Timer::stats());
-
-die();
-
-echo "start\n";
-
-
-$data['startTime'] = time()+15;;
-$data['endTime'] = $data['startTime']+60;
-$data['action']="disable";;
-$data['group']= 4;
-$data['list']= "bla";
-
-
-class taskObject {
-
-    private $startTime;
-    private $endTime;
-    private $action;
-    private $group;
-    private $list;
-
-
-    function setStartTime($value){
-        $this->startTime = $value;
-    }
-    function setEndTime($value){
-        $this->endTime = $value;
-    }
-    function setAction($value){
-        $this->action = $value;
-    }
-    function setGroup($value){
-        $this->group = $value;
-    }
-    function setList($value){
-        $this->list = $value;
-    }
-    function __get($name)
-    {
-        // TODO: Implement __get() method.
-        if ( property_exists(this,$name)){
-            return $this->$name;
-        }
-        throw new Exception("property does not exist.");
-    }
-}
-
-
-
-
-if ($data['action']=='disable'){
-   $action1="disable";
-   $action2="enable";
-}else{
-    $action1="enable";
-    $action2="disable";
-}
-
-$sleepstart = ($data['startTime'] -time());
-$sleepend = $data['endTime']-time();
-
-$action =$data['action'];
-$group = $data['group'];
-
-
-echo $action1." list ".$data['list']." group ".$data['group']." ".date(DATE_RFC2822,$data['startTime'])."\n";
-
-echo $action2." list ".$data['list']." group ".$data['group']." ".date(DATE_RFC2822,$data['endTime'])."\n";
-
-
-
-
-
-$run = new Swoole\Coroutine\Scheduler;
-
-
-
-
-$run->add(function () {
-    global $sleepstart;
-    Co::sleep($sleepstart);
-    //echo $startTime-time();
-    echo "Done 1.\n";
-});
-
-$run->add(function () {
-    global $sleepend;
-
-    Co::sleep($sleepend);
-    echo "Done 2.\n";
-});
-$run->start();
-
-
-die();
-
-
-/*
-# multiple conexts
-
-$run = new Swoole\Coroutine\Scheduler;
-
-$run->add(function () {
-    echo "Waiting until start-time."
-
-    Swoole\Coroutine::sleep($startTime-time());
-    echo "Start!\n";
-});
-
-
-$run->add(function () {
-    Swoole\Coroutine::sleep($endTime-time());
-    echo "End!\n";
-});
-
-
-$run->start();
-
-# or
-
 Co\run(function() {
     Swoole\Coroutine::sleep(1);
-    echo "Done.\n";
+    #echo "Done.\n";
 });
+Co\run(function() {
+    Swoole\Coroutine::sleep(3);
+    #echo "Done2.\n";
+});
+*/
 
 
-exit;
+
 
 /*
 
-recurring true/false
 
-sun mon tue wed thu fri sat sun
+*/
+$tasks = array(
+    array("raw"=>"osbox update","type"=>"hourly","value"=>"22:00"),
+    array("raw"=>"osbox disable group 4","type"=>"at","value"=>"* * * * *"),
+    array("raw"=>"osbox disable group 4","type"=>"daily","value"=>"22:03"),
+    array("raw"=>"osbox enable group 4","type"=>"daily","value"=>"22:05")
+);
 
-start-time end-time
 
-* /
+function scheduleTasks( $tasks ){
+
+    // https://github.com/peppeocchi/php-cron-scheduler
+    // Create a new scheduler
+    //$scheduler = new Scheduler([
+    //    'tempDir' => 'path/to/my/tmp/dir'
+    //]);
+    $scheduler = new Scheduler();
+    foreach( $tasks as $task){
+
+
+        if($task['type']=="at") {
+            $scheduler->raw($task['raw'])->at($task['value']);
+
+        }elseif ($task['type']=="daily"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->daily();
+            }else{
+                $scheduler->raw($task['raw'])->daily($task['value']);
+            }
+
+        }elseif ($type=="hourly"){
+            if($task['value']!=""){
+                $scheduler->raw($task['raw'])->hourly($task['value']);
+            }else{
+                $scheduler->raw($task['raw'])->hourly();
+            }
+
+        }elseif($type=="everyMinute"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->everyMinute();
+            }else{
+                $scheduler->raw($task['raw'])->everyMinute($task['value']);
+            }
+
+        }elseif($type=="sunday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->sunday();
+            }else{
+                $scheduler->raw($task['raw'])->sunday($task['value']);
+            }
+        }elseif($type=="monday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->monday();
+            }else{
+                $scheduler->raw($task['raw'])->monday($task['value']);
+            }
+        }
+        elseif($type=="tuesday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->tuesday();
+            }else{
+                $scheduler->raw($task['raw'])->tuesday($task['value']);
+            }
+        }
+        elseif($type=="wednesday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->wednesday();
+            }else{
+                $scheduler->raw($task['raw'])->wednesday($task['value']);
+            }
+        }
+        elseif($type=="thursday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->thursday();
+            }else{
+                $scheduler->raw($task['raw'])->thursday($task['value']);
+            }
+        }
+        elseif($type=="friday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->friday();
+            }else{
+                $scheduler->raw($task['raw'])->friday($task['value']);
+            }
+        }elseif($type=="saturday"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->saturday();
+            }else{
+                $scheduler->raw($task['raw'])->saturday($task['value']);
+            }
+        }elseif($type=="january"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->january();
+            }else{
+                $scheduler->raw($task['raw'])->january($task['value']);
+            }
+        }elseif($type=="february"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->february();
+            }else{
+                $scheduler->raw($task['raw'])->february($task['value']);
+            }
+        }elseif($type=="march"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->march();
+            }else{
+                $scheduler->raw($task['raw'])->march($task['value']);
+            }
+        }elseif($type=="april"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->april();
+            }else{
+                $scheduler->raw($task['raw'])->april($task['value']);
+            }
+        }elseif($type=="may"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->may();
+            }else{
+                $scheduler->raw($task['raw'])->may($task['value']);
+            }
+        }elseif($type=="june"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->june();
+            }else{
+                $scheduler->raw($task['raw'])->june($task['value']);
+            }
+        }elseif($type=="july"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->july();
+            }else{
+                $scheduler->raw($task['raw'])->july($task['value']);
+            }
+        }elseif($type=="august"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->august();
+            }else{
+                $scheduler->raw($task['raw'])->august($task['value']);
+            }
+        }elseif($type=="september"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->september();
+            }else{
+                $scheduler->raw($task['raw'])->september($task['value']);
+            }
+        }elseif($type=="october"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->october();
+            }else{
+                $scheduler->raw($task['raw'])->october($task['value']);
+            }
+        }elseif($type=="november"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->november();
+            }else{
+                $scheduler->raw($task['raw'])->november($task['value']);
+            }
+        }elseif($type=="december"){
+            if($task['value']==""){
+                $scheduler->raw($task['raw'])->december();
+            }else{
+                $scheduler->raw($task['raw'])->december($task['value']);
+            }
+        }
 
 
 
 
-Swoole \Timer::set([
-    'enable_coroutine' => true,
-]);
-
-$count = 0;
-function run($timerid, $param)
-{
-    global $count;
-    $count++;
-    var_dump($count);
-    if($count >= 10)
-    {
-        Swoole\Timer::clear($timerid);
     }
+
+    return $scheduler;
+
 }
 
 
-$x= Swoole\Timer::tick(1000, "run",["startTime"=>0, "endTime"=>10]);
 
 
-print_r($x);
 
-die();
-*/
 
+
+
+$pid = getmypid();
+echo "Running under pid $pid";
+
+$taskId = Swoole\Timer::tick((1000*60), "tick", $tasks);
+
+
+
+
+
+///var/run/
