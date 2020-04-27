@@ -2,6 +2,7 @@
     "require": {
         "slim/slim": "^3.9",
         "pachico/slim-swoole": "^0.3.0",
-        "guzzlehttp/guzzle": "^6.5"
+        "guzzlehttp/guzzle": "^6.5",
+        "peppeocchi/php-cron-scheduler": "3.*"
     }
 }

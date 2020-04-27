@@ -1,208 +1,9 @@
 <?php
 
 
-echo "Hallo";
 
-class actionType {
-    var type = "oneshot";  // oneoff/recurring
+require __DIR__ . '/../vendor/autoload.php';
 
-}
-
-
-interface taskInterface
-{
-    public function startAction();
-    public function stopAction();
-}
-
-
-class basicTask implements taskInterface {
-
-    function __construct()
-    {
-
-    }
-
-    public function startAction(){
-
-    }
-    public function stopAction(){
-
-    }
-
-
-    function move_user_to_group($user,$group) {
-
-    }
-
-}
-
-
-class groupListTask {
-
-    function __construct($user,$list)
-    {
-
-    }
-
-    public function startAction(){
-
-    }
-
-    public function stopAction(){
-
-    }
-
-
-    function add_list_to_group($list,$group) {
-
-    }
-    function remove_list_from_group($list,$group) {
-
-    }
-
-}
-
-
-
-
-
-$basicTask = new basicTask();
-
-var_dump($basicTask);
-die();
-
-
-$startTime = time()+2;;
-$endTime = $startTime+5;
-$action="enable";;
-$group= 4;
-$list= "porn";
-
-
-
-
-$obj = new taskObject();
-
-$obj->setStartTime($startTime);
-$obj->setEndTime($endTime);
-$obj->setDay("mon,tue,wed,thu,fri,sat,sun");
-$obj->setAction($action);
-$obj->setGroup($group);
-$obj->setList($list);
-
-
-
-$startTime = time()+2;;
-$endTime = $startTime+5;
-$action="enable";;
-$group= 4;
-$list= "ads";
-
-$obj1 = new taskObject();
-
-$obj1->setStartTime($startTime+6);
-$obj1->setEndTime($endTime+15);
-$obj->setDay("mon,tue,wed,thu,fri,sat,sun");
-$obj1->setAction($action);
-$obj1->setGroup(5);
-$obj1->setList($list);
-
-
-$tasks = array($obj,$obj1);
-
-
-
-
-
-class taskObject {
-
-    private $startTime;
-    private $endTime;
-    private $active = null;
-    private $dayofweek;
-
-
-    private $action;
-    private $group;
-    private $list;
-
-
-
-
-    function isActive(){
-        if(is_null($this->active)){
-            return false;
-        }else{
-            return $this->active;
-        }
-    }
-
-    public function startTask(){
-        echo "startTask : ".$this->action." the ".$this->list." blocklist for group ".$this->group." \n";
-
-        $this->active=true;
-    }
-    public function endTask(){
-        echo "endTask : ".$this->endAction($this->action)." the ".$this->list." blocklist for group ".$this->group." \n";
-        $this->active=false;
-    }
-
-    function endAction ( $action){
-        $states = array("enable"=>"disable","disable"=>"enable");
-        return $states[$action];
-    }
-
-    function setStartTime($value){
-        $this->startTime = $value;
-    }
-
-    function setEndTime($value){
-        $this->endTime = $value;
-    }
-
-    function setAction($value){
-        $this->action = $value;
-    }
-
-    function setGroup($value){
-        $this->group = $value;
-    }
-
-    function setList($value){
-        $this->list = $value;
-    }
-
-    function setDay($value){
-        $this->$dayofweek = explode(",",$value);
-
-    }
-
-    function __get($name)
-    {
-        // TODO: Implement __get() method.
-        //if ( property_exists($this,$name) ){
-            return $this->$name;
-        //}
-
-        //throw new Exception("property does not exist.");
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-echo strtolower(date("D"));
-
-
-die();
 
 
 
@@ -218,15 +19,17 @@ function tick($timerid, $taskObjects)
     global $count;
     $count++;
 
-    foreach($taskObjects as $task){
 
-        if( time() >= $task->startTime && time() <= $task->endTime && ! $task->isActive()  ){
-            $task->startTask();
-        }
-        if( time() >= $task->endTime &&  $task->active &&  $task->isActive() ){
-            $task->endTask();
-        }
-    }
+    // https://github.com/peppeocchi/php-cron-scheduler
+    // Create a new scheduler
+    $scheduler = new Scheduler();
+
+    // ... configure the scheduled jobs (see below) ...
+
+    // Let the scheduler execute jobs which are due.
+    $scheduler->run();
+
+
 
 
     //var_dump($count);
@@ -244,12 +47,14 @@ function tick($timerid, $taskObjects)
 
 
 
-$taskId = Swoole\Timer::tick(1050, "tick",$tasks);
+$taskId = Swoole\Timer::tick(1000, "tick",$tasks);
 
 
 die();
 
 
+
+/*
 
 
 

@@ -86,6 +86,7 @@ class AutoReload
         });
     }
 
+
     function reload()
     {
         $this->putLog("reloading");
