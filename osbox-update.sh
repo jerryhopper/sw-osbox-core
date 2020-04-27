@@ -193,13 +193,12 @@ if [ ! -d /etc/osbox ]; then
 else
     echo "/etc/osbox exists"
 fi
-
+#
 #if [ ./project/osbox-core ]; then
 #     git clone https://githubbblablablabla  ./project
 #else
 #     echo "./project/osbox-core exists"
 #fi
-
 
 
 cd ./project
