@@ -4,24 +4,6 @@ source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
 
-cd /usr/local/osbox/project
-for d in */ ; do
-    cd $d
-    echo "Updating repository for $d"
-    git reset --hard HEAD
-    git clean -f -d
-    git pull
-    if [ -f update.sh ]; then
-       echo "Running updatescript for $d"
-       bash ./update.sh
-    fi
-    cd ..
-done
-
-#
-
-
-
 
 
 
@@ -99,6 +81,32 @@ fi
 if ! is_command git ;then
    apt-get -f install git
 fi
+
+
+
+
+
+cd /usr/local/osbox/project
+for d in */ ; do
+    cd $d
+    echo "Updating repository for $d"
+    git reset --hard HEAD
+    git clean -f -d
+    git pull
+    if [ -f update.sh ]; then
+       echo "Running updatescript for $d"
+       bash ./update.sh
+    fi
+    cd ..
+done
+
+#
+
+
+
+
+
+
 
 MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
 BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
