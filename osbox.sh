@@ -7,7 +7,7 @@ if [ "$1" == "update" ]; then
 fi
 
 if [ "$1" == "reinstall" ]; then
-    /usr/local/osbox/osbox-update
+    /usr/local/osbox/project/sw-osbox-core/osbox-update.sh
     exit;
 fi
 
@@ -18,6 +18,7 @@ if [ "$1" == "watch" ]; then
   exit;
 fi
 
+#
 
 
 echo "Usage: "
