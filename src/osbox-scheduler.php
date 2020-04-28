@@ -212,6 +212,6 @@ $pid = getmypid();
 // "/var/run/osbox-scheduler.pid"
 
 echo "Running under pid $pid";
-$taskId = Swoole\Timer::tick((1000*60), "tick", array_merge($tasks,$updateTask) ;
+$taskId = Swoole\Timer::tick((1000*60), "tick", array_merge($tasks,$updateTask) );
 
 
