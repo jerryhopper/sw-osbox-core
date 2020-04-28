@@ -71,7 +71,7 @@ class AuthorisationMiddleware
 
         // checks
         if(
-            ( !$this->allowanonymous  && $token_is_valid && $this->token_is_allowed() ) ^^
+            ( !$this->allowanonymous  && $token_is_valid && $this->token_is_allowed() ) ^
             ( $this->allowanonymous && !$token_is_valid )
         ){
             // Allow, if anon is not allowed, and token is valid & allowed
