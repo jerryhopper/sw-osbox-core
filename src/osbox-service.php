@@ -20,6 +20,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 require_once __DIR__.'/Middleware/AuthorisationMiddleware.php';
 
+error_reporting(1);
+ini_set(display_errors,true);
+
 
 
 /*

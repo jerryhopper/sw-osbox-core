@@ -5,8 +5,8 @@ use GO\Scheduler;
 require __DIR__ . '/../vendor/autoload.php';
 
 
-#error_reporting(1);
-#ini_set(display_errors,true);
+error_reporting(1);
+ini_set(display_errors,true);
 
 
 #display_errors(1);
