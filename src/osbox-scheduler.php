@@ -190,14 +190,14 @@ function scheduleTasks( $tasks ){
 /**
  * Always add the update task.
  **/
-$updateTask = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
+$tasks = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
 
 /**
  * Add the tasks from the database.
  **/
 if( file_exists("/etc/osbox/osbox.db") ){
     // read tasks from the database.
-    $tasks = array();
+    //$tasks[] = array();
 }
 /*
 $tasks = array(
@@ -212,6 +212,6 @@ $pid = getmypid();
 // "/var/run/osbox-scheduler.pid"
 
 echo "Running under pid $pid";
-$taskId = Swoole\Timer::tick((1000*60), "tick", array_merge($tasks,$updateTask) );
+$taskId = Swoole\Timer::tick((1000*60), "tick", $tasks );
 
 
