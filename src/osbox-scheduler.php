@@ -190,7 +190,8 @@ function scheduleTasks( $tasks ){
 /**
  * Always add the update task.
  **/
-$tasks = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
+$tasks = array();
+$tasks[] = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
 
 /**
  * Add the tasks from the database.
