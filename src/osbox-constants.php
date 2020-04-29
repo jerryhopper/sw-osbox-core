@@ -6,9 +6,9 @@
 
 class osboxConstants{
 
-    const AVAHI_OSBOX       = "_osbox._tcp";
-    const AVAHI_OSBOXMASTER = "_osboxmaster._tcp";
-    const AVAHI_LOCAL_DN    = "osbox.local";
+    const AVAHI_SERVICE_OSBOX       = "_osbox._tcp";
+    const AVAHI_SERVICE_OSBOXMASTER = "_osboxmaster._tcp";
+    const AVAHI_SERVICE_LOCAL_DN    = "osbox.local";
 
     const MASTER_FQDN       = "blackbox.surfwijzer.nl";
 
