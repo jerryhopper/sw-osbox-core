@@ -306,7 +306,31 @@ $app->get('/xx',function (Http\Request $request, Http\Response $response, array 
     return $response->withJson( "" );
 });
 
+
+
+
+
+
+$app->get('/setup/network1',function (Http\Request $request, Http\Response $response, array $args) {
+
+    return $response->withJson( "" );
+});
+$app->get('/setup/network2',function (Http\Request $request, Http\Response $response, array $args) {
+
+    return $response->withJson( "" );
+});
+
+
+
+
+
+
+
+
+
+
 // finished functions.
+
 
 
 /**
@@ -332,7 +356,7 @@ $app->get('/discover/master',function (Http\Request $request, Http\Response $res
     #$r = $avahi->browse("_http-alt._tcp");
     $r = $avahi->browse("_osboxmaster._tcp");
     if(count($r)==0){
-        return $response->withJson( array("status"=>"ok","data"=>$r) )->withStatus(404);
+        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*")->withStatus(404);
     }
     return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
@@ -346,7 +370,7 @@ $app->get('/discover/all',function (Http\Request $request, Http\Response $respon
     #$r = $avahi->browse("_http-alt._tcp");
     $r = $avahi->browseAll();
     if(count($r)==0){
-        return $response->withJson( array("status"=>"ok","data"=>$r) )->withStatus(404);
+        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*")->withStatus(404);
     }
     return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
