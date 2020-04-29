@@ -18,8 +18,10 @@ use Yurun\Util\Swoole\Guzzle\SwooleHandler;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+require_once __DIR__.'/osbox-constants.php';
 require_once __DIR__.'/Middleware/AuthorisationMiddleware.php';
-#require_once __DIR__.'/PHPmDns/mdns.php';
+require_once __DIR__."/Middleware/HostnameMiddleware.php";
+require_once __DIR__.'/Classes/avahi.php';
 
 
 error_reporting(1);
@@ -144,53 +146,6 @@ $token = (new Parser())->parse((string) $token); // Parses from a string
 $token->getHeaders(); // Retrieves the token header
 $token->getClaims(); // Retrieves the token claims
 
-echo $token->getHeader('jti'); // will print "4f1g23a12aa"
-echo $token->getClaim('iss'); // will print "http://example.com"
-echo $token->getClaim('uid'); // will print "1"
-
-
-#verify
-$data = new ValidationData(); // It will use the current time to validate (iat, nbf and exp)
-$data->setIssuer('http://example.com');
-$data->setAudience('http://example.org');
-$data->setId('4f1g23a12aa');
-
-var_dump($token->validate($data)); // false, because token cannot be used before now() + 60
-
-$data->setCurrentTime($time + 61); // changing the validation time to future
-
-var_dump($token->validate($data)); // true, because current time is between "nbf" and "exp" claims
-
-$data->setCurrentTime($time + 4000); // changing the validation time to future
-
-var_dump($token->validate($data)); // false, because token is expired since current time is greater than exp
-
-// We can also use the $leeway parameter to deal with clock skew (see notes below)
-// If token's claimed time is invalid but the difference between that and the validation time is less than $leeway,
-// then token is still considered valid
-$dataWithLeeway = new ValidationData($time, 20);
-$dataWithLeeway->setIssuer('http://example.com');
-$dataWithLeeway->setAudience('http://example.org');
-$dataWithLeeway->setId('4f1g23a12aa');
-
-var_dump($token->validate($dataWithLeeway)); // false, because token can't be used before now() + 60, not within leeway
-
-$dataWithLeeway->setCurrentTime($time + 51); // changing the validation time to future
-
-var_dump($token->validate($dataWithLeeway)); // true, because current time plus leeway is between "nbf" and "exp" claims
-
-$dataWithLeeway->setCurrentTime($time + 3610); // changing the validation time to future but within leeway
-
-var_dump($token->validate($dataWithLeeway)); // true, because current time - 20 seconds leeway is less than exp
-
-$dataWithLeeway->setCurrentTime($time + 4000); // changing the validation time to future outside of leeway
-
-var_dump($token->validate($dataWithLeeway)); // false, because token is expired since current time is greater than exp
-
-
-*/
-
-
 ##################################################################################################################
 ##################################################################################################################
 
@@ -217,13 +172,20 @@ var_dump($token->validate($dataWithLeeway)); // false, because token is expired 
 
 
 
-/**
- * Define your routes
- */
+
 /**
  * Define your routes
  */
 $app->get('/', function ($request, $response, $args) {
+
+    if( $request->getHost() == "osbox.local" && false ){
+        # request on osbox.local and configured is false
+
+    }elseif( $request->getHost() == "blackbox.surfwijzer.nl" ){
+        # request on a configured device.
+
+
+    }
 
 
 });
@@ -306,6 +268,13 @@ $app->get('/foo[/{myArg}]', function ( $request,  $response, array $args) {
 
 $app->get('/boo',function (Http\Request $request, Http\Response $response, array $args) {
 
+    $request->getScheme();
+
+    $request->getHost();
+    $request->getPort();
+
+
+    //$request->getHeader();
 	//Swoole\Timer->list();
 
     //$res = exec("ls /root/standalone/project -l",$output,$returnvar);
@@ -318,6 +287,57 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 });
 
 
+
+
+
+
+$app->get('/',function (Http\Request $request, Http\Response $response, array $args) {
+
+    return $response->withJson( "" );
+});
+
+// finished functions.
+
+
+/**
+ * Osbox Discovery endpoint.
+ * Returns all osboxes on the network.
+ **/
+$app->get('/discover',function (Http\Request $request, Http\Response $response, array $args) {
+    $avahi = new avahi();
+    #$r = $avahi->browse("_http-alt._tcp");
+    $r = $avahi->browse("_osbox._tcp");
+
+    return $response->withJson( $r );
+});
+
+/**
+ * Master Discovery endpoint.
+ * Returns the osboxmaster on the network.
+ **/
+$app->get('/discover/master',function (Http\Request $request, Http\Response $response, array $args) {
+    $avahi = new avahi();
+    #$r = $avahi->browse("_http-alt._tcp");
+    $r = $avahi->browse("_osboxmaster._tcp");
+    if(count($r)==0){
+        return $response->withJson( $r )->withStatus(404);
+    }
+    return $response->withJson( $r );
+});
+
+/**
+ * Master Discovery endpoint.
+ * Returns the osboxmaster on the network.
+ **/
+$app->get('/discover/all',function (Http\Request $request, Http\Response $response, array $args) {
+    $avahi = new avahi();
+    #$r = $avahi->browse("_http-alt._tcp");
+    $r = $avahi->browseAll();
+    if(count($r)==0){
+        return $response->withJson( $r )->withStatus(404);
+    }
+    return $response->withJson( $r );
+});
 ##################################################################################################################
 ##################################################################################################################
 
