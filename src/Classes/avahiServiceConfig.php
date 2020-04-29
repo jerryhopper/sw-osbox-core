@@ -14,11 +14,13 @@ class avahiServiceConfig{
 
 
     function createOsboxMaster(){
-        $this->service($this->_servicename,"_osboxmaster._tcp",9501,$txtRecords=array("SSL=true") );
+
+        // osboxConstants::WEB_PORT
+        $this->service($this->_servicename,osboxConstants::AVAHI_SERVICE_OSBOXMASTER,osboxConstants::WEB_PORT,$txtRecords=array("SSL=true") );
     }
 
     function createOsbox(){
-        $this->service($this->_servicename,"_osbox._tcp",9501,$txtRecords=array("SSL=false") );
+        $this->service($this->_servicename,osboxConstants::AVAHI_SERVICE_OSBOX,osboxConstants::WEB_PORT,$txtRecords=array("SSL=false") );
     }
 
     private function service($servicename,$service,$port=false,$txtRecords=array() )

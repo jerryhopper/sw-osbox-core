@@ -53,16 +53,18 @@ $options = array(
     //'user' => 'osbox',
     //'group' => 'osbox',
     'log_level' => 0,
-    'log_file' => '/var/log/swoole.log',
+    'log_file' => '/var/log/osbox.log',
     //'open_http2_protocol' => true, // Enable HTTP2 protocol
 );
 
 
+$port = osboxConstants::WEB_PORT;
+
 
 if(!$_SSL){
-    $srv = new Swoole\HTTP\Server("0.0.0.0", 9501,SWOOLE_BASE, SWOOLE_SOCK_TCP);
+    $srv = new Swoole\HTTP\Server("0.0.0.0", $port,SWOOLE_BASE, SWOOLE_SOCK_TCP);
 }else{
-    $srv = new Swoole\HTTP\Server("0.0.0.0", 9501, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+    $srv = new Swoole\HTTP\Server("0.0.0.0", $port, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
     $ssl_dir="/etc/osbox/ssl";
 
     $options['ssl_cert_file'] = $ssl_dir . '/ssl.cert';

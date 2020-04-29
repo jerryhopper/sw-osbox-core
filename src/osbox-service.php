@@ -19,15 +19,28 @@ use Yurun\Util\Swoole\Guzzle\SwooleHandler;
 require __DIR__ . '/../vendor/autoload.php';
 
 require_once __DIR__.'/osbox-constants.php';
+
 require_once __DIR__.'/Middleware/AuthorisationMiddleware.php';
 require_once __DIR__."/Middleware/HostnameMiddleware.php";
+
 require_once __DIR__.'/Classes/avahi.php';
+require_once __DIR__.'/Classes/avahiServiceConfig.php';
+
+
+
 
 
 error_reporting(1);
 ini_set(display_errors,true);
 
+// Does the /etc/osbox dir exist?
 
+if(file_exists("/etc/osbox")){
+    if(file_exists("/etc/osbox/osbox.ini")){
+
+    }
+
+}
 
 /*
 $_loaderdirs=["Middleware"];
