@@ -334,7 +334,7 @@ $app->get('/discover/master',function (Http\Request $request, Http\Response $res
     if(count($r)==0){
         return $response->withJson( array("status"=>"ok","data"=>$r) )->withStatus(404);
     }
-    return $response->withJson( array("status"=>"ok","data"=>$r) );
+    return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
 
 /**
@@ -348,7 +348,7 @@ $app->get('/discover/all',function (Http\Request $request, Http\Response $respon
     if(count($r)==0){
         return $response->withJson( array("status"=>"ok","data"=>$r) )->withStatus(404);
     }
-    return $response->withJson( array("status"=>"ok","data"=>$r) );
+    return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
 ##################################################################################################################
 ##################################################################################################################
