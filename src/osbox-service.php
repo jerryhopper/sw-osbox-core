@@ -333,19 +333,6 @@ $app->get('/setup/network2',function (Http\Request $request, Http\Response $resp
 
 
 
-/**
- * Osbox Discovery endpoint.
- * Returns all osboxes on the network.
- **/
-$app->get('/discover',function (Http\Request $request, Http\Response $response, array $args) {
-    $avahi = new avahi();
-    #$r = $avahi->browse("_http-alt._tcp");
-    $r = $avahi->browse("_osbox._tcp");
-
-
-
-    return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");
-});
 
 /**
  * Master Discovery endpoint.
@@ -356,7 +343,7 @@ $app->get('/discover/master',function (Http\Request $request, Http\Response $res
     #$r = $avahi->browse("_http-alt._tcp");
     $r = $avahi->browse("_osboxmaster._tcp");
     if(count($r)==0){
-        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*")->withStatus(404);
+        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");
     }
     return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
@@ -370,10 +357,26 @@ $app->get('/discover/all',function (Http\Request $request, Http\Response $respon
     #$r = $avahi->browse("_http-alt._tcp");
     $r = $avahi->browseAll();
     if(count($r)==0){
-        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*")->withStatus(404);
+        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");
     }
     return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
 });
+
+/**
+ * Osbox Discovery endpoint.
+ * Returns all osboxes on the network.
+ **/
+$app->get('/setup/discover',function (Http\Request $request, Http\Response $response, array $args) {
+    $avahi = new avahi();
+    #$r = $avahi->browse("_http-alt._tcp");
+    $boxes = $avahi->browse("_osbox._tcp");
+    $master = $avahi->browse("_osboxmaster._tcp");
+    ;
+
+
+    return $response->withJson( array("status"=>"ok","data"=>array("boxes"=>$boxes,"master"=>$master) ) )->withHeader("Access-Control-Allow-Origin","*");
+});
+
 ##################################################################################################################
 ##################################################################################################################
 

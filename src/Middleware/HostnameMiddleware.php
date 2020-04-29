@@ -21,7 +21,7 @@ class HostnameMiddleware{
         $proto="https://";
         $localdn="osbox.local";
 
-
+/*
         if( $request->getHost() == $localdn && $configured ) {
             # request on osbox.local and configured is true
             return $response->withRedirect($proto.$configuredfqdn);
@@ -39,7 +39,7 @@ class HostnameMiddleware{
 
         }
 
-
+*/
 
         $response = $next($request, $response);
 
