@@ -35,10 +35,7 @@ ini_set(display_errors,true);
 
 // Does the /etc/osbox dir exist?
 
-if(file_exists("/etc/osbox")){
-    if(file_exists("/etc/osbox/osbox.ini")){
-
-    }
+if(!file_exists("/etc/osbox/osbox.db")){
 
 }
 
@@ -321,7 +318,7 @@ $app->get('/discover',function (Http\Request $request, Http\Response $response, 
     #$r = $avahi->browse("_http-alt._tcp");
     $r = $avahi->browse("_osbox._tcp");
 
-    return $response->withJson( $r );
+    return $response->withJson( $r )->withHeader("Access-Control-Allow-Origin: *");
 });
 
 /**
