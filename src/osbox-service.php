@@ -301,7 +301,7 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 
 
 
-$app->get('/',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/xx',function (Http\Request $request, Http\Response $response, array $args) {
 
     return $response->withJson( "" );
 });
