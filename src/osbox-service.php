@@ -188,10 +188,10 @@ $token->getClaims(); // Retrieves the token claims
  */
 $app->get('/', function ($request, $response, $args) {
 
-    if( $request->getHost() == "osbox.local" && false ){
+    if( $request->getUri()->getHost() == "osbox.local" && false ){
         # request on osbox.local and configured is false
 
-    }elseif( $request->getHost() == "blackbox.surfwijzer.nl" ){
+    }elseif( $request->getUri()->getHost() == "blackbox.surfwijzer.nl" ){
         # request on a configured device.
 
 
@@ -278,10 +278,10 @@ $app->get('/foo[/{myArg}]', function ( $request,  $response, array $args) {
 
 $app->get('/boo',function (Http\Request $request, Http\Response $response, array $args) {
 
-    $request->getScheme();
+    $request->getUri()->getScheme();
 
-    $request->getHost();
-    $request->getPort();
+    $request->getUri()->getHost();
+    $request->getUri()->getPort();
 
 
     //$request->getHeader();
@@ -297,14 +297,30 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 });
 
 
-
+#nmap -v -sn 10.0.1.4/24 -oG -|grep Host|awk '{print $2}'
 
 
 
 $app->get('/xx',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( "" );
+
+
+    exec("nmap -v -sn 10.0.1.4/24 -oG -|grep Host",$output,$returnvar);
+
+    $regels = explode("\n",$output);
+
+    #foreach($regels as $regel){
+
+        //print_r(explode(" ",$regel));
+
+    #}
+
+
+
+    return $response->withJson( explode("\n",$output) );
 });
+
+
 
 
 
