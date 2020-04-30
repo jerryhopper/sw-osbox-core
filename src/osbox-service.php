@@ -313,11 +313,13 @@ $app->get('/xx',function (Http\Request $request, Http\Response $response, array 
 
 $app->get('/setup/network1',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( "" );
+    sleep(1);
+    return $response->withJson( "" )->withHeader("Access-Control-Allow-Origin","*");
 });
-$app->get('/setup/network2',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( "" );
+$app->get('/setup/network2',function (Http\Request $request, Http\Response $response, array $args) {
+    sleep(1);
+    return $response->withJson( "" )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 
@@ -334,19 +336,6 @@ $app->get('/setup/network2',function (Http\Request $request, Http\Response $resp
 
 
 
-/**
- * Master Discovery endpoint.
- * Returns the osboxmaster on the network.
- **/
-$app->get('/discover/master',function (Http\Request $request, Http\Response $response, array $args) {
-    $avahi = new avahi();
-    #$r = $avahi->browse("_http-alt._tcp");
-    $r = $avahi->browse("_osboxmaster._tcp");
-    if(count($r)==0){
-        return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");
-    }
-    return $response->withJson( array("status"=>"ok","data"=>$r) )->withHeader("Access-Control-Allow-Origin","*");;
-});
 
 /**
  * Master Discovery endpoint.
