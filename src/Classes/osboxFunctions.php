@@ -4,7 +4,7 @@
 class osboxFunctions {
 
 
-    function networkinfo(){
+    static function networkinfo(){
         exec("bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh",$output,$returnvar);
 
         $res = explode(",",$output[0]);
@@ -15,7 +15,7 @@ class osboxFunctions {
 
     }
 
-    function nmap($network){
+    static function nmap($network){
 
         //  10.0.1.4/24
         exec("nmap -v -sn $network -oG -|grep Host",$output,$returnvar);
