@@ -25,6 +25,8 @@ require_once __DIR__."/Middleware/HostnameMiddleware.php";
 
 require_once __DIR__.'/Classes/avahi.php';
 require_once __DIR__.'/Classes/avahiServiceConfig.php';
+require_once __DIR__.'/Classes/osboxFunctions.php';
+
 
 
 
@@ -134,7 +136,40 @@ $slimConfig = array('settings' => $slimSettings);
  * to check that the entire app stack is being setup and executed
  * properly.
  */
+
 $app = new \Slim\App($slimConfig );
+
+
+$container = $app->getContainer();
+
+$container['myService'] = function ($container) {
+
+    $process = new Swoole\Process(function($process){
+        //execute the external program
+        $process->exec("nmap", array('-v -sn 10.0.1.4/24 -oG -|grep Host'));
+    }, true); // enable the redirection of stdin and stdout
+
+    $process->start();
+
+    return $process;
+
+
+
+
+    //Inter-Process Communication Of main process and child process by stdin and stdout
+
+    //$process->write("hello child process from main process");
+
+    #$res = $process->read();
+
+    #var_dump($res);
+
+
+    #$myService = new MyService();
+    #return $myService;
+};
+
+
 
 
 #$app->add(function ($request, $response, $next) {
@@ -300,24 +335,35 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 #nmap -v -sn 10.0.1.4/24 -oG -|grep Host|awk '{print $2}'
 
 
+$app->get('/setup/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
 
-$app->get('/xx',function (Http\Request $request, Http\Response $response, array $args) {
+    exec("bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh",$output,$returnvar);
 
+    $res = explode(",",$output[0]);
+    //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] );
+    //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] )
 
+    return $response->withJson( array("status"=>"ok","data"=>array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] ) ) );
+});
 
+$app->get('/setup/networkscan',function (Http\Request $request, Http\Response $response, array $args) {
+    //$this->myService->start();
+    //$res = $this->myService->read();
     exec("nmap -v -sn 10.0.1.4/24 -oG -|grep Host",$output,$returnvar);
 
-    $regels = explode("\n",$output);
+    # $regels = explode("\n",$output);
+    $list=array();
+    $freelist = array();
+    foreach($output as $regel){
+        $tmp = explode(" ",$regel);
+        $list[] = array($tmp[1],$tmp[3]);
 
-    #foreach($regels as $regel){
+        if($tmp[3]=="Down"){
+            $freelist[] = $tmp[1];
+        }
 
-        //print_r(explode(" ",$regel));
-
-    #}
-
-
-
-    return $response->withJson( explode("\n",$output) );
+    }
+    return $response->withJson( array("status"=>"ok","data"=>array("free"=>$freelist,"all"=>$list)  ));
 });
 
 
