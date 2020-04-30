@@ -23,6 +23,7 @@ class osboxFunctions {
         # $regels = explode("\n",$output);
         $list=array();
         $freelist = array();
+
         foreach($output as $regel){
             $tmp = explode(" ",$regel);
             $list[] = array($tmp[1],$tmp[3]);
