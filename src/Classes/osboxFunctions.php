@@ -11,7 +11,7 @@ class osboxFunctions {
         //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] );
         //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] )
 
-        return array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] )
+        return array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] );
 
     }
 
