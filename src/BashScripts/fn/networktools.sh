@@ -11,7 +11,7 @@ find_IPv4_information() {
 
     # Named, local variables
     local route
-    local IPv4bare
+    #local IPv4bare
 
     # Find IP used to route to outside world by checking the the route to Google's public DNS server
     route=$(ip route get 8.8.8.8)
