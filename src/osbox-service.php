@@ -334,36 +334,40 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 
 #nmap -v -sn 10.0.1.4/24 -oG -|grep Host|awk '{print $2}'
 
+$app->post('/setup/reboot',function (Http\Request $request, Http\Response $response, array $args) {
+    osboxFunctions::reboot();
+    return $response->withJson( array("status"=>"ok","data"=>"" ) );
+});
+
 
 $app->get('/setup/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
 
-    exec("bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh",$output,$returnvar);
-
-    $res = explode(",",$output[0]);
-    //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] );
-    //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] )
-
-    return $response->withJson( array("status"=>"ok","data"=>array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] ) ) );
+    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) );
 });
 
 $app->get('/setup/networkscan',function (Http\Request $request, Http\Response $response, array $args) {
-    //$this->myService->start();
-    //$res = $this->myService->read();
-    exec("nmap -v -sn 10.0.1.4/24 -oG -|grep Host",$output,$returnvar);
+
+    $netinfo = osboxFunctions::networkinfo();
+    $items = osboxFunctions::nmap($netinfo["NET"]);
+
 
     # $regels = explode("\n",$output);
     $list=array();
     $freelist = array();
-    foreach($output as $regel){
-        $tmp = explode(" ",$regel);
-        $list[] = array($tmp[1],$tmp[3]);
 
-        if($tmp[3]=="Down"){
-            $freelist[] = $tmp[1];
+    foreach($items as $tmp){
+        $list[] = array($tmp[0],$tmp[1]);
+        if($tmp[1]=="Down"){
+            $freelist[] = $tmp[0];
         }
 
     }
     return $response->withJson( array("status"=>"ok","data"=>array("free"=>$freelist,"all"=>$list)  ));
+});
+
+$app->get('/setup/status',function (Http\Request $request, Http\Response $response, array $args) {
+
+    return $response->withJson( array("status"=>"ok","data"=> osboxFunctions::setupstatus() ) );
 });
 
 

@@ -3,9 +3,20 @@
 
 class osboxFunctions {
 
+    static function reboot(){
+        exec("osbox reboot",$output,$returnvar);
+
+    }
+    static function setupstatus(){
+        exec("osbox setup status",$output,$returnvar);
+
+        $res = explode(",",$output[0]);
+
+        return array((int)$res[0],$res[1]);
+    }
 
     static function networkinfo(){
-        exec("bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh",$output,$returnvar);
+        exec("osbox network info",$output,$returnvar);
 
         $res = explode(",",$output[0]);
         //array( "IPV4"=>$res[0],"TYPE"=>$res[1],"NET"=>$res[2],"GATEWAY"=>$res[3] );
@@ -15,10 +26,14 @@ class osboxFunctions {
 
     }
 
+    /**
+     * @param $network  String 10.0.1.4/24
+     * @return array
+     */
     static function nmap($network){
 
         //  10.0.1.4/24
-        exec("nmap -v -sn $network -oG -|grep Host",$output,$returnvar);
+        exec("osbox network scan",$output,$returnvar);
 
         # $regels = explode("\n",$output);
         $list=array();

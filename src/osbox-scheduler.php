@@ -8,6 +8,9 @@ require __DIR__ . '/../vendor/autoload.php';
 #error_reporting(1);
 #ini_set(display_errors,true);
 
+$pid = getmypid();
+#echo "PID:$pid";
+
 
 #display_errors(1);
 
@@ -209,10 +212,17 @@ $tasks = array(
 );
 */
 
-$pid = getmypid();
+
 // "/var/run/osbox-scheduler.pid"
 
-echo "Running under pid $pid";
+
+
+
+
+$pid = getmypid();
+echo "Running under pid $pid\n";
 $taskId = Swoole\Timer::tick((1000*60), "tick", $tasks );
+
+
 
 
