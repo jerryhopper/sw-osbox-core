@@ -12,18 +12,74 @@ returnedstatus(){
 }
 #==============================================================
 
+
+
+
+
+#########################
+#  idle,0,text
+#  running,0,text
+#  finished,0,text
+#########################
 # osbox service functions
 if [ "$1" == "setup" ]; then
   if [ "$2" == "status" ]; then
       if [ ! -f "/etc/osbox/setup.state" ];then
-          echo "0,no setup state"
+          echo "idle,0,no setup state">/etc/osbox/setup.state
       else
           echo "$(</etc/osbox/setup.state)"
       fi
       exit
   fi
+  # module installer
+  # module: sw-osbox-core
+  # module: sw-osbox-test
+  if [ "$2" == "module" ]; then
+        # osbox setup module sw-osbox-core
+        if [ "$3" != "" ]; then
+            if [ "$3" == "sw-osbox-core" ];then
+                # set network static!
+                sudo echo "running,10,Netwerk configureren.">/etc/osbox/setup.state
+
+                NEWGW="$(osbox network info|awk  -F ',' '{print $4}')"
+                NEWIP="$(osbox network scan|grep -m 1 Down|awk  '{print $2}')/$(osbox network info|awk -F ',' '{print $3}'|awk -F '/' '{print $2}')"
+                # set_static_ip 10.0.1.4/24 10.0.1.1
+                bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_static_ip.sh "$NEWIP" "$NEWGW"
+
+#               bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_static_ip.sh "$(osbox network scan|grep -m 1 Down|awk  '{print $2}')/$(osbox network info|awk -F ',' '{print $3}'|awk -F '/' '{print $2}')" "$(osbox network info|awk  -F ',' '{print $4}')"
+
+
+
+            fi
+            if [ -f "/usr/local/osbox/project/$3/src/Installation/install-service.sh" ]; then
+                sudo echo "running,10,Installatie gestart.">/etc/osbox/setup.state
+                bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/create_install_service.sh $3
+
+                exit
+            else
+                sudo echo "finished,10,cannot find installation script.">/etc/osbox/setup.state
+                echo "cant find installationscript: (/usr/local/osbox/project/$3/src/BashScripts/create_install_service.sh)"
+                exit 1
+            fi
+        fi
+        echo "Usage: "
+        echo "  osbox setup module <modulenaam>"
+        exit
+  fi
+
+
+  if [ "$2" == "startstatus" ]; then
+      #sudo cp /usr/local/osbox/project/sw-osbox-core/src/Installation/testboot.sh /var/lib/dietpi/dietpi-autostart/custom.sh
+      #sudo chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
+      #sudo echo "running,10,Installatie gestart.">/etc/osbox/setup.state
+
+      exit
+  fi
+
   echo "Usage: "
   echo "  osbox setup status"
+  echo "  osbox setup module <modulenaam>"
+
   exit
 fi
 
@@ -86,7 +142,7 @@ if [ "$1" == "network" ]; then
   fi
   if [ "$2" == "scan" ]; then
       network="$(bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh|awk -F"," '{print $3}')"
-      nmap -v -sn $network -oG -|grep Host
+      nmap -v -sn $network -oG -|grep Host|awk '{if(NR>1)print}'
       exit;
   fi
 

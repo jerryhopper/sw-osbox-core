@@ -3,6 +3,10 @@
 
 set -e
 
+
+echo "heartbeat" > /sys/class/leds/nanopi:red:pwr/trigger
+
+
 sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
@@ -43,3 +47,5 @@ echo "finished,10,finished">/etc/osbox/setup.state
 
 systemctl disable osbox-install
 rm -f /etc/systemd/system/osbox-install.service
+
+echo 0 > /sys/class/leds/nanopi:red:pwr/brightness
