@@ -1,9 +1,15 @@
 #!/bin/bash
 
+source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/networktools.sh
+source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/is_command.sh
 
 
+if [ "$1" == "" ];then
+  find_IPv4_information
 
-
+else
+  IPV4_ADDRESS=$1
+fi
 
 
 mkdir -p /etc/pihole

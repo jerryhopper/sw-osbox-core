@@ -49,9 +49,10 @@ GATEWAY="$2"
 
 
 
+echo "IP $IP SUB $SUBNET GW $GATEWAY"
 
 
-
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh "$1"
 
 
 
@@ -83,3 +84,7 @@ echo  "gateway 192.168.0.1">>/etc/network/interfaces
 echo  "wireless-power off">>/etc/network/interfaces
 echo  "wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf">>/etc/network/interfaces
 echo  "#dns-nameservers 8.8.8.8 8.8.4.4">>/etc/network/interfaces
+
+
+
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_dhcpcd.sh $1 $GATEWAY

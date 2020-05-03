@@ -332,11 +332,10 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 });
 
 
-#nmap -v -sn 10.0.1.4/24 -oG -|grep Host|awk '{print $2}'
 
 $app->post('/setup/reboot',function (Http\Request $request, Http\Response $response, array $args) {
-    osboxFunctions::reboot();
-    return $response->withJson( array("status"=>"ok","data"=>"" ) );
+    ;
+    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::reboot() ) )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 
@@ -365,9 +364,9 @@ $app->get('/setup/networkscan',function (Http\Request $request, Http\Response $r
     return $response->withJson( array("status"=>"ok","data"=>array("free"=>$freelist,"all"=>$list)  ));
 });
 
-$app->get('/setup/status',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/setup/status/{nix}',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( array("status"=>"ok","data"=> osboxFunctions::setupstatus() ) );
+    return $response->withJson( array("status"=>"ok","data"=> osboxFunctions::setupstatus() ) )->withHeader("Cache-Control","no-cache")->withHeader("Access-Control-Allow-Origin","*");
 });
 
 
@@ -377,10 +376,20 @@ $app->get('/setup/status',function (Http\Request $request, Http\Response $respon
 
 
 
-$app->get('/setup/network1',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/setup/module/{module}',function (Http\Request $request, Http\Response $response, array $args) {
+
+     $output=osboxFunctions::setupmodule($args['module']);
+
+     //    exec("sudo osbox setup module sw-osbox-core",$output,$returnvar);
+    //  set network to static.
+
+    //  set postboot action
+
+    //  reboot
+
 
     sleep(1);
-    return $response->withJson( "" )->withHeader("Access-Control-Allow-Origin","*");
+    return $response->withJson( $output )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 $app->get('/setup/network2',function (Http\Request $request, Http\Response $response, array $args) {

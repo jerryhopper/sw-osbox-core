@@ -3,8 +3,16 @@
 
 class osboxFunctions {
 
+
+
+
+    static function setupmodule($module){
+        exec("sudo osbox setup module sw-osbox-core",$output,$returnvar);
+        return $output;
+    }
+
     static function reboot(){
-        exec("osbox reboot",$output,$returnvar);
+        exec("sudo osbox reboot",$output,$returnvar);
 
     }
     static function setupstatus(){
@@ -12,7 +20,7 @@ class osboxFunctions {
 
         $res = explode(",",$output[0]);
 
-        return array((int)$res[0],$res[1]);
+        return array($res[0],$res[1],$res[2]);
     }
 
     static function networkinfo(){

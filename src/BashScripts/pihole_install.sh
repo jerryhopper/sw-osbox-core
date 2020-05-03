@@ -20,6 +20,8 @@ source /usr/lib/osbox/stage/service_dhcpcd.sh
 #########################################################################3
 
 
+SETUPSTATE="/etc/osbox/setup.state"
+
 
 # Check an IP address to see if it is a valid one
 valid_ip() {
@@ -133,6 +135,10 @@ piholesetupvarsconf
 piholeadlists
 piholeftlconf
 
+
+apt-get -y install php-common php-sqlite3 php-xml php-intl php-zip php-mbstring php-gd php-apcu php-cgi composer dialog dhcpcd5 dnsutils lsof nmap netcat idn2 dns-root-data
+
+
 wget https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20install/basic-install.sh
 bash basic-install.sh --unattended
 
@@ -145,7 +151,7 @@ echo "yes"|pihole checkout web release/v5.0
 
 
 
-
+exit
 
 
 

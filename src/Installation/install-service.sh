@@ -3,40 +3,43 @@
 
 set -e
 
-sudo echo "running,10,stap1">/etc/osbox/setup.state
+sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 
-sleep 10
-
-sudo echo "running,10,stap2">/etc/osbox/setup.state
-
-sleep 10
-
-sudo echo "running,10,stap3">/etc/osbox/setup.state
-
-sleep 10
-
-sudo echo "running,10,stap4">/etc/osbox/setup.state
-
-sleep 5
-
-sudo echo "running,10,stap5">/etc/osbox/setup.state
-
-sleep 5
-
-echo "running,10,stap6">/etc/osbox/setup.state
-
-sleep 5
-
-echo "running,10,stap7">/etc/osbox/setup.state
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklists.sh
+#bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
 
 sleep 2
 
-echo "running,10,stap8">/etc/osbox/setup.state
+sudo echo "running,10,Installing requirements">/etc/osbox/setup.state
 
-sleep 2
 
-echo "running,10,stap9">/etc/osbox/setup.state
+apt-get -y install php-common php-sqlite3 php-xml php-intl php-zip php-mbstring php-gd php-apcu php-cgi composer dialog dhcpcd5 dnsutils lsof nmap netcat idn2 dns-root-data composer
 
-sleep 2
+sudo echo "running,10,Installing services (this may take a while)">/etc/osbox/setup.state
+
+wget https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20install/basic-install.sh
+bash ./basic-install.sh --unattended
+
+
+sudo echo "running,10,Upgrading release">/etc/osbox/setup.state
+
+# Set repo to V5 beta
+echo "release/v5.0" | sudo tee /etc/pihole/ftlbranch
+echo "yes"|pihole checkout core release/v5.0
+echo "yes"|pihole checkout web release/v5.0
+
+
+sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
+
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklists.sh
+#bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
+sleep 5
+
 
 echo "finished,10,finished">/etc/osbox/setup.state
+
+
+systemctl disable osbox-install
+rm -f /etc/systemd/system/osbox-install.service

@@ -12,4 +12,4 @@
     echo "https://blocklists.surfwijzer.nl/g/3">>/etc/pihole/adlists.list
     echo "https://blocklists.surfwijzer.nl/g/4">>/etc/pihole/adlists.list
     echo "https://blocklists.surfwijzer.nl/g/5">>/etc/pihole/adlists.list
-}
+
