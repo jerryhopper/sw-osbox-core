@@ -42,10 +42,19 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklist
 sleep 5
 
 
-
+IP="$(osbox network info|awk -F ',' '{print $1}')"
 NETTYPE="$(osbox network info|awk -F ',' '{print $2}')"
 
 if [ "$NETTYPE" == "STATIC" ];then
+
+  echo "$IP nonexistent.surfwijzer.nl" > /etc/pihole/custom.list
+  echo "$IP blackbox.surfwijzer.nl" >> /etc/pihole/custom.list
+
+  echo "$IP osbox" > /etc/pihole/local.list
+  echo "$IP pi.hole" >> /etc/pihole/local.list
+
+  echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core/src/web-index.php\");" > /var/www/html/index.php
+
    echo "staticnetwork,10,Network configuration completed.">/etc/osbox/setup.state
 else
    echo "finished,10,finished">/etc/osbox/setup.state

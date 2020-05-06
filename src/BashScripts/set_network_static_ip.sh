@@ -87,4 +87,12 @@ echo  "#dns-nameservers 8.8.8.8 8.8.4.4">>/etc/network/interfaces
 
 
 
+
+
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_dhcpcd.sh $1 $GATEWAY
+
+echo "$IP nonexistent.surfwijzer.nl" > /etc/pihole/custom.list
+echo "$IP blackbox.surfwijzer.nl" >> /etc/pihole/custom.list
+
+echo "$IP osbox" > /etc/pihole/local.list
+echo "$IP pi.hole" >> /etc/pihole/local.list
