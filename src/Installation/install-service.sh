@@ -42,6 +42,10 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklist
 sleep 5
 
 
+git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/project/sw-osbox-core/src/osbox-web
+
+
+
 IP="$(osbox network info|awk -F ',' '{print $1}')"
 NETTYPE="$(osbox network info|awk -F ',' '{print $2}')"
 
@@ -55,7 +59,7 @@ if [ "$NETTYPE" == "STATIC" ];then
 
   echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core/src/web-index.php\");" > /var/www/html/index.php
 
-  
+
 
 
   echo "staticnetwork,10,Network configuration completed.">/etc/osbox/setup.state
