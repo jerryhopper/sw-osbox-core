@@ -41,13 +41,15 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklist
 #bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
 sleep 5
 
-
+rm -rf /usr/local/osbox/project/sw-osbox-core/src/osbox-web
 git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/project/sw-osbox-core/src/osbox-web
 
 
 
 IP="$(osbox network info|awk -F ',' '{print $1}')"
 NETTYPE="$(osbox network info|awk -F ',' '{print $2}')"
+
+echo "NETTYPE='$NETTYPE'"
 
 if [ "$NETTYPE" == "STATIC" ];then
 
