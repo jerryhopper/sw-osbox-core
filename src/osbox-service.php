@@ -333,18 +333,18 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 
 
 
-$app->post('/setup/reboot',function (Http\Request $request, Http\Response $response, array $args) {
+$app->post('/setup/{nix}/reboot',function (Http\Request $request, Http\Response $response, array $args) {
     ;
     return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::reboot() ) )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 
-$app->get('/setup/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/setup/{nix}/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
 
     return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) )->withHeader("Access-Control-Allow-Origin","*");;
 });
 
-$app->get('/setup/networkscan',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/setup/{nix}/networkscan',function (Http\Request $request, Http\Response $response, array $args) {
 
     $netinfo = osboxFunctions::networkinfo();
     $items = osboxFunctions::nmap($netinfo["NET"]);
@@ -364,7 +364,7 @@ $app->get('/setup/networkscan',function (Http\Request $request, Http\Response $r
     return $response->withJson( array("status"=>"ok","data"=>array("free"=>$freelist,"all"=>$list)  ));
 });
 
-$app->get('/setup/status/{nix}',function (Http\Request $request, Http\Response $response, array $args) {
+$app->get('/setup/{nix}/status',function (Http\Request $request, Http\Response $response, array $args) {
 
     return $response->withJson( array("status"=>"ok","data"=> osboxFunctions::setupstatus() ) )->withHeader("Cache-Control","no-cache")->withHeader("Access-Control-Allow-Origin","*");
 });
