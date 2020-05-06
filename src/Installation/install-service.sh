@@ -55,7 +55,10 @@ if [ "$NETTYPE" == "STATIC" ];then
 
   echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core/src/web-index.php\");" > /var/www/html/index.php
 
-   echo "staticnetwork,10,Network configuration completed.">/etc/osbox/setup.state
+  
+
+
+  echo "staticnetwork,10,Network configuration completed.">/etc/osbox/setup.state
 else
    echo "finished,10,finished">/etc/osbox/setup.state
 fi
