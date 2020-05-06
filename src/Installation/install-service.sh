@@ -42,7 +42,18 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklist
 sleep 5
 
 
-echo "finished,10,finished">/etc/osbox/setup.state
+
+NETTYPE="$(osbox network info|awk -F ',' '{print $2}')"
+
+if [ "$NETTYPE" == "STATIC" ];then
+   echo "staticnetwork,10,Network configuration completed.">/etc/osbox/setup.state
+else
+   echo "finished,10,finished">/etc/osbox/setup.state
+fi
+
+
+
+#echo "finished,10,finished">/etc/osbox/setup.state
 
 
 systemctl disable osbox-install

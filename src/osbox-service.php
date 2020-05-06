@@ -341,7 +341,7 @@ $app->post('/setup/reboot',function (Http\Request $request, Http\Response $respo
 
 $app->get('/setup/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) );
+    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) )->withHeader("Access-Control-Allow-Origin","*");;
 });
 
 $app->get('/setup/networkscan',function (Http\Request $request, Http\Response $response, array $args) {

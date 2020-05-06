@@ -10,6 +10,16 @@ returnedstatus(){
     fi
     exit
 }
+php(){
+  if [ ! -f "$1" ];then
+    echo "file does not exist!?"
+    exit
+  fi
+  PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f $1
+}
+
+
+
 #==============================================================
 
 
@@ -30,6 +40,11 @@ if [ "$1" == "setup" ]; then
           echo "$(</etc/osbox/setup.state)"
       fi
       exit
+  fi
+  if [ "$2" == "ssl" ]; then
+      echo "Setting up ssl.";
+      bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_ssl.sh
+      exit;
   fi
   # module installer
   # module: sw-osbox-core
