@@ -6,9 +6,27 @@ use Swoole\Coroutine\Server\Connection;
 use Pachico\SlimSwoole\BridgeManager;
 
 $_SSL = false;
-if( file_exists("/etc/osbox/ssl/ssl.cert") ){
 
 
+if( file_exists("/etc/osbox/ssl_enabled") ){
+
+
+    $filename = "/etc/osbox/ssl_enabled";
+    $handle = fopen($filename, "r");
+    $ssldomain = trim(fread($handle, filesize($filename)));
+    fclose($handle);
+
+
+    $ssl_dir="/etc/osbox/ssl/".$ssldomain;
+
+    if ( file_exists($ssl_dir."/ssl.key") && file_exists($ssl_dir."/ssl.cert") ){
+        $_SSL =true;
+    }
+
+
+
+
+    /*
     $certpath = "/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert";
     $certpath = "/etc/osbox/ssl/ssl.cert";
 
@@ -26,7 +44,8 @@ if( file_exists("/etc/osbox/ssl/ssl.cert") ){
         error_log("SSLCert Valid To:".$valid_to);
 
     }
-    $_SSL =true;
+    */
+
 
 
 }
@@ -65,7 +84,7 @@ if(!$_SSL){
     $srv = new Swoole\HTTP\Server("0.0.0.0", $port,SWOOLE_BASE, SWOOLE_SOCK_TCP);
 }else{
     $srv = new Swoole\HTTP\Server("0.0.0.0", $port, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
-    $ssl_dir="/etc/osbox/ssl";
+
 
     $options['ssl_cert_file'] = $ssl_dir . '/ssl.cert';
     $options['ssl_key_file']  = $ssl_dir . '/ssl.key';
