@@ -333,6 +333,16 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 
 
 
+
+$app->post('/setup/{nix}/setssl',function (Http\Request $request, Http\Response $response, array $args) {
+
+    //osboxFunctions::setssl();
+
+
+    return $response->withJson( array("status"=>"ok","data"=>"XX" ) )->withHeader("Access-Control-Allow-Origin","*");
+});
+
+
 $app->post('/setup/{nix}/reboot',function (Http\Request $request, Http\Response $response, array $args) {
     ;
     return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::reboot() ) )->withHeader("Access-Control-Allow-Origin","*");
@@ -341,7 +351,7 @@ $app->post('/setup/{nix}/reboot',function (Http\Request $request, Http\Response 
 
 $app->get('/setup/{nix}/networkinfo',function (Http\Request $request, Http\Response $response, array $args) {
 
-    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) )->withHeader("Access-Control-Allow-Origin","*");;
+    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::networkinfo() ) )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 $app->get('/setup/{nix}/networkscan',function (Http\Request $request, Http\Response $response, array $args) {

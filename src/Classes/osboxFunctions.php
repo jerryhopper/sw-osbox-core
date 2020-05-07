@@ -4,7 +4,10 @@
 class osboxFunctions {
 
 
-
+    static function setssl(){
+        exec("sudo osbox setup ssl",$output,$returnvar);
+        return $output;
+    }
 
     static function setupmodule($module){
         exec("sudo osbox setup module sw-osbox-core",$output,$returnvar);
