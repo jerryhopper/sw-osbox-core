@@ -39,15 +39,15 @@ sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklists.sh
 #bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
-sleep 5
+sleep 1
 
 
-if [ -d "/usr/local/osbox/project/sw-osbox-core/src/osbox-web" ]; then
-    rm -rf /usr/local/osbox/project/sw-osbox-core/src/osbox-web
+# get osbox-core-web
+if [ -d "/usr/local/osbox/project/sw-osbox-core-web" ]; then
+    rm -rf /usr/local/osbox/project/sw-osbox-core-web
 fi
-
-
-git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/project/sw-osbox-core/src/osbox-web
+sudo echo "running,10,Installing blackbox web.">/etc/osbox/setup.state
+git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/project/sw-osbox-core-web
 
 
 
@@ -65,7 +65,8 @@ if [ "$NETTYPE" == "STATIC" ];then
   echo "$IP osbox" > /etc/pihole/local.list
   echo "$IP pi.hole" >> /etc/pihole/local.list
 
-  echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core/src/web-index.php\");" > /var/www/html/index.php
+  echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core-web/src/index.php\");" > /var/www/html/index.php
+  chown -R +r /usr/local/osbox/project/sw-osbox-core-web/src/
 
 
 
