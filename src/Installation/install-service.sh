@@ -51,7 +51,9 @@ if [ -d "/usr/local/osbox/project/sw-osbox-core-web" ]; then
 fi
 
 # remove osbox
-rm -rf /var/www/htnl/osbox
+if [ -f "/var/www/htnl/osbox" ]; then
+    rm -rf /var/www/htnl/osbox
+fi
 sudo echo "running,10,Installing blackbox web.">/etc/osbox/setup.state
 
 # get gitrepository
