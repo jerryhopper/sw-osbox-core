@@ -333,6 +333,14 @@ $app->get('/boo',function (Http\Request $request, Http\Response $response, array
 
 
 
+$app->post('/setup/{nix}/sslcheck',function (Http\Request $request, Http\Response $response, array $args) {
+
+    //osboxFunctions::setssl();
+
+
+    return $response->withJson( array("status"=>"ok","data"=>"TODO" ) )->withHeader("Access-Control-Allow-Origin","*");
+});
+
 
 $app->post('/setup/{nix}/setssl',function (Http\Request $request, Http\Response $response, array $args) {
 

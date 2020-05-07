@@ -28,9 +28,15 @@ echo "}">>/etc/lighttpd/external.conf
 
 echo "blackbox.surfwijzer.nl">/etc/osbox/ssl_enabled
 
-# reload whatever
 
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_osbox_master.sh
+
+
+
+# reload whatever
+systemctl restart avahi-daemon.service
 systemctl restart osbox.service
 systemctl restart lighttpd.service
+
 
 
