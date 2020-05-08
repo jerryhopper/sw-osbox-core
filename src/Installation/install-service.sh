@@ -58,13 +58,15 @@ sudo echo "running,10,Installing blackbox web.">/etc/osbox/setup.state
 
 # get gitrepository
 git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/project/sw-osbox-core-web
-echo "<?php include(\"/usr/local/osbox/project/sw-osbox-core-web/src/index.php\");" > /var/www/html/index.php
 
 # set permissions
-chmod -R +r /usr/local/osbox/project/sw-osbox-core-web/src
-# symlink
-ln /usr/local/osbox/project/sw-osbox-core-web/src/osbox /var/www/htnl/osbox
+chmod -R +r /usr/local/osbox/project/sw-osbox-core-web
 
+# symlink
+ln /usr/local/osbox/project/sw-osbox-core-web /var/www/htnl/osbox
+
+# create index file
+echo "<?php include(\"./osbox/index.php\");" > /var/www/html/index.php
 
 
 
