@@ -30,10 +30,10 @@ function scheduleTasks( $tasks ){
 
     // https://github.com/peppeocchi/php-cron-scheduler
     // Create a new scheduler
-    //$scheduler = new Scheduler([
-    //    'tempDir' => 'path/to/my/tmp/dir'
-    //]);
-    $scheduler = new Scheduler();
+    $scheduler = new Scheduler([
+        'tempDir' => '/tmp'
+    ]);
+    //$scheduler = new Scheduler();
     foreach( $tasks as $task){
 
         $type = $task['type'];
@@ -195,7 +195,11 @@ function scheduleTasks( $tasks ){
  * Always add the update task.
  **/
 $tasks = array();
-$tasks[] = array("raw"=>"osbox update","type"=>"hourly","value"=>"");
+#$tasks[] = array("raw"=>"osbox update web","type"=>"hourly","value"=>"");
+$tasks[] = array("raw"=>"osbox update web>/var/log/php_errors.log","type"=>"everyMinute","value"=>"");
+$tasks[] = array("raw"=>"echo 'yes'>/var/log/php_errors.log ","type"=>"at","value"=>"* * * * *");
+$tasks[] = array("raw"=>"echo 'yes!'>/var/log/php_errors.log ","type"=>"everyMinute","value"=>"");
+
 
 /**
  * Add the tasks from the database.
