@@ -344,10 +344,7 @@ $app->post('/setup/{nix}/sslcheck',function (Http\Request $request, Http\Respons
 
 $app->post('/setup/{nix}/setssl',function (Http\Request $request, Http\Response $response, array $args) {
 
-    //osboxFunctions::setssl();
-
-
-    return $response->withJson( array("status"=>"ok","data"=>"XX" ) )->withHeader("Access-Control-Allow-Origin","*");
+    return $response->withJson( array("status"=>"ok","data"=>osboxFunctions::setssl() ) )->withHeader("Access-Control-Allow-Origin","*");
 });
 
 
