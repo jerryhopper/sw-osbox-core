@@ -3,9 +3,10 @@
 
 set -e
 
-# set the led to blinking
-echo "heartbeat" > /sys/class/leds/nanopi:red:pwr/trigger
-
+if [ -f "/sys/class/leds/nanopi:red:pwr" ]; then
+    # set the led to blinking
+    echo "heartbeat" > /sys/class/leds/nanopi:red:pwr/trigger
+fi
 
 sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 
@@ -108,4 +109,6 @@ fi
 systemctl disable osbox-install
 rm -f /etc/systemd/system/osbox-install.service
 
-echo 0 > /sys/class/leds/nanopi:red:pwr/brightness
+if [ -f "/sys/class/leds/nanopi:red:pwr" ]; then
+    echo 0 > /sys/class/leds/nanopi:red:pwr/brightness
+fi
