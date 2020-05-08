@@ -23,6 +23,7 @@ apt-get -y install php-common php-sqlite3 php-xml php-intl php-zip php-mbstring 
 
 # download and run the pihole installer
 sudo echo "running,10,Installing services (this may take a while)">/etc/osbox/setup.state
+rm -f ./basic-install.sh
 wget https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20install/basic-install.sh
 bash ./basic-install.sh --unattended
 

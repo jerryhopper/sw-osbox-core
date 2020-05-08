@@ -208,7 +208,18 @@ fi
 
 
 if [ "$1" == "update" ]; then
-    /usr/local/osbox/osbox-update
+    if [ "$2" == "all" ]; then
+        /usr/local/osbox/osbox-update
+    fi
+
+    if [ "$2" == "web" ]; then
+            cd /usr/local/osbox/project/sw-osbox-core-web
+            echo "Updating repository for sw-osbox-core-web"
+            git reset --hard HEAD
+            git clean -f -d
+            git pull
+    fi
+
     exit;
 fi
 
