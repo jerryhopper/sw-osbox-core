@@ -36,11 +36,12 @@ function scheduleTasks( $tasks ){
     $scheduler = new Scheduler();
     foreach( $tasks as $task){
 
+        $type = $task['type'];
 
-        if($task['type']=="at") {
+        if($type=="at") {
             $scheduler->raw($task['raw'])->at($task['value']);
 
-        }elseif ($task['type']=="daily"){
+        }elseif ($type=="daily"){
             if($task['value']==""){
                 $scheduler->raw($task['raw'])->daily();
             }else{
