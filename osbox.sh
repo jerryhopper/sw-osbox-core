@@ -213,11 +213,8 @@ if [ "$1" == "update" ]; then
     fi
 
     if [ "$2" == "web" ]; then
-            cd /usr/local/osbox/project/sw-osbox-core-web
-            echo "Updating repository for sw-osbox-core-web"
-            git reset --hard HEAD
-            git clean -f -d
-            git pull
+        bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/update_coreweb.sh|grep HEAD|awk '{print $5}'>/etc/osbox/core-web.v
+        echo "$(</etc/osbox/core-web.v)"
     fi
 
     exit;
