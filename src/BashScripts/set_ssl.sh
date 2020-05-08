@@ -34,9 +34,10 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_osbox_master.sh
 
 
 # reload whatever
+systemctl restart lighttpd.service
 systemctl restart avahi-daemon.service
 systemctl restart osbox.service
-systemctl restart lighttpd.service
 
+sleep 2
 
 

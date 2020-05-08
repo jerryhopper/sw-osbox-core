@@ -45,6 +45,8 @@ sleep 1
 
 
 
+
+
 # get osbox-core-web
 if [ -d "/usr/local/osbox/project/sw-osbox-core-web" ]; then
     rm -rf /usr/local/osbox/project/sw-osbox-core-web
@@ -63,7 +65,7 @@ git clone https://github.com/jerryhopper/sw-osbox-core-web.git /usr/local/osbox/
 chmod -R +r /usr/local/osbox/project/sw-osbox-core-web
 
 # symlink
-ln /usr/local/osbox/project/sw-osbox-core-web /var/www/htnl/osbox
+ln -s /usr/local/osbox/project/sw-osbox-core-web /var/www/html/osbox
 
 # create index file
 echo "<?php include(\"./osbox/index.php\");" > /var/www/html/index.php
