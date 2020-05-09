@@ -25,6 +25,24 @@ echo "    ssl.pemfile= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert\"">>/etc
 echo "    ssl.ca-file= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca\"">>/etc/lighttpd/external.conf
 echo "}">>/etc/lighttpd/external.conf
 
+echo " ">>/etc/lighttpd/external.conf
+echo "$HTTP[\"host\"] =~ \"^pi\.hole\" {">>/etc/lighttpd/external.conf
+echo "    url.redirect = (">>/etc/lighttpd/external.conf
+echo "        \"^/(.*)\" => \"https://blackbox.surfwijzer.nl/$1/\"">>/etc/lighttpd/external.conf
+echo "    )">>/etc/lighttpd/external.conf
+echo "}">>/etc/lighttpd/external.conf
+
+echo " ">>/etc/lighttpd/external.conf
+echo "$HTTP[\"host\"] =~ \"blackbox.surfwijzer.nl\" {">>/etc/lighttpd/external.conf
+echo "  url.rewrite-once = (">>/etc/lighttpd/external.conf
+echo "    \"^/osbox/assets/(?$)\" => \"/osbox/assets/$0\",">>/etc/lighttpd/external.conf
+echo "    \"^/(.+)/?$\" => \"/index.php/$1\"">>/etc/lighttpd/external.conf
+echo "  )">>/etc/lighttpd/external.conf
+echo "}">>/etc/lighttpd/external.conf
+
+
+
+
 
 echo "blackbox.surfwijzer.nl">/etc/osbox/ssl_enabled
 
