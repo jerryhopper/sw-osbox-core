@@ -204,7 +204,7 @@ $tasks[] = array("raw"=>"osbox update web","type"=>"everyHour","value"=>"");
 /**
  * Add the tasks from the database.
  **/
-if( file_exists("/etc/osbox/osbox.db") ){
+if( file_exists("/etc/osbox/db/osbox.db") ){
     // read tasks from the database.
     //$tasks[] = array();
 }

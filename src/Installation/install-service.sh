@@ -45,7 +45,10 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklist
 sleep 1
 
 
-
+echo "dns-loop-detect">/etc/dnsmasq.d/99-ipbinding.conf
+echo "except-interface=lo">/etc/dnsmasq.d/99-ipbinding.conf
+#echo "listen-address=10.0.1.4">/etc/dnsmasq.d/99-ipbinding.conf
+echo "bind-interfaces">/etc/dnsmasq.d/99-ipbinding.conf
 
 
 
@@ -113,3 +116,11 @@ rm -f /etc/systemd/system/osbox-install.service
 if [ -f "/sys/class/leds/nanopi:red:pwr" ]; then
     echo 0 > /sys/class/leds/nanopi:red:pwr/brightness
 fi
+
+
+echo "IDP_CLIENTID=82252ce6-ad4a-4a7f-8ff3-f7074f1a58dc">/etc/osbox/osbox.ini
+echo "IDP_AUTHORIZE_URL=https://idp.surfwijzer.nl/oauth2/authorize">>/etc/osbox/osbox.ini
+echo "IDP_ISSUER=idp.surfwijzer.nl">>/etc/osbox/osbox.ini
+echo "IDP_REDIRECT_URL=https://setup.surfwijzer.nl/blackbox/login">>/etc/osbox/osbox.ini
+
+

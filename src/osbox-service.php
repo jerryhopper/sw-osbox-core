@@ -37,7 +37,7 @@ ini_set(display_errors,true);
 
 // Does the /etc/osbox dir exist?
 
-if(!file_exists("/etc/osbox/osbox.db")){
+if(!file_exists("/etc/osbox/db/osbox.db")){
 
 }
 

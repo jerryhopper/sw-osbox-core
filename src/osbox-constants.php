@@ -14,7 +14,7 @@ class osboxConstants{
 
     const WEB_PORT          = 9501;
 
-    const OSBOX_DB          = "/etc/osbox/osbox.db";
+    const OSBOX_DB          = "/etc/osbox/db/osbox.db";
 
 
 }
