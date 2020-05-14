@@ -46,9 +46,9 @@ sleep 1
 
 
 echo "dns-loop-detect">/etc/dnsmasq.d/99-ipbinding.conf
-echo "except-interface=lo">/etc/dnsmasq.d/99-ipbinding.conf
-#echo "listen-address=10.0.1.4">/etc/dnsmasq.d/99-ipbinding.conf
-echo "bind-interfaces">/etc/dnsmasq.d/99-ipbinding.conf
+echo "except-interface=lo">>/etc/dnsmasq.d/99-ipbinding.conf
+#echo "listen-address=10.0.1.4">>/etc/dnsmasq.d/99-ipbinding.conf
+echo "bind-interfaces">>/etc/dnsmasq.d/99-ipbinding.conf
 
 
 
