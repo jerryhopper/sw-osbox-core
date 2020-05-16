@@ -196,7 +196,7 @@ function scheduleTasks( $tasks ){
  **/
 $tasks = array();
 #$tasks[] = array("raw"=>"osbox update web","type"=>"hourly","value"=>"");
-$tasks[] = array("raw"=>"osbox update web","type"=>"everyHour","value"=>"");
+#$tasks[] = array("raw"=>"osbox update web","type"=>"everyHour","value"=>"");
 #$tasks[] = array("raw"=>"echo 'yes'>>/var/log/php_errors.log ","type"=>"at","value"=>"* * * * *");
 #$tasks[] = array("raw"=>"echo 'yes!'>>/var/log/php_errors.log ","type"=>"everyMinute","value"=>"");
 
