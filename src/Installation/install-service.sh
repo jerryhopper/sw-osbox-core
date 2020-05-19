@@ -73,7 +73,7 @@ chmod -R +r /usr/local/osbox/project/sw-osbox-core-web
 ln -s /usr/local/osbox/project/sw-osbox-core-web /var/www/html/osbox
 
 # create index file
-echo "<?php include(\"./osbox/index.php\"); $app->run(); " > /var/www/html/index.php
+echo "<?php include(\"./osbox/index.php\"); \$app->run(); " > /var/www/html/index.php
 
 
 
