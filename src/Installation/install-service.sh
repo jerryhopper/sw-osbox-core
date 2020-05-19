@@ -30,12 +30,12 @@ wget https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20instal
 bash ./basic-install.sh --unattended
 
 
-sudo echo "running,10,Upgrading release">/etc/osbox/setup.state
+#sudo echo "running,10,Upgrading release">/etc/osbox/setup.state
 
 # Set pihole repo to V5 beta
-echo "release/v5.0" | sudo tee /etc/pihole/ftlbranch
-echo "yes"|pihole checkout core release/v5.0
-echo "yes"|pihole checkout web release/v5.0
+#echo "release/v5.0" | sudo tee /etc/pihole/ftlbranch
+#echo "yes"|pihole checkout core release/v5.0
+#echo "yes"|pihole checkout web release/v5.0
 
 
 sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
@@ -43,7 +43,7 @@ sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 # set our default configs.
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklists.sh
-#bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh
 sleep 1
 
 
