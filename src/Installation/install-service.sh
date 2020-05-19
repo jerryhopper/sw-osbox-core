@@ -10,6 +10,8 @@ fi
 
 sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
 
+
+
 # preset some configs
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_ftl.sh
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_blocklists.sh
