@@ -113,6 +113,27 @@ fi
 
 
 
+if [ ! -d '/etc/osbox/db' ]; then
+    mkdir /etc/osbox/db
+    chown www-data /etc/osbox/db
+
+else
+    chown www-data /etc/osbox/db
+
+fi
+
+
+if [ ! -f '/etc/osbox/db/osbox.db' ]; then
+    touch /etc/osbox/db/osbox.db
+    chown www-data /etc/osbox/db/osbox.db
+    chmod +w /etc/osbox/db/osbox.db
+else
+    chown www-data /etc/osbox/db/osbox.db
+    chmod +w /etc/osbox/db/osbox.db
+fi
+
+
+
 
 #echo "finished,10,finished">/etc/osbox/setup.state
 
