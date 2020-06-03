@@ -221,7 +221,7 @@ if [ "$1" == "update" ]; then
 fi
 
 if [ "$1" == "reinstall" ]; then
-    /usr/local/osbox/project/sw-osbox-core/osbox-update.sh
+    bash /usr/local/osbox/project/sw-osbox-core/osbox-update.sh
     exit;
 fi
 
