@@ -3,7 +3,9 @@
 # set avahi to master
 # set ssl ON
 
-if "$1" = "reset" ; then
+
+
+if [ $1 == "reset" ]; then
     echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->">/etc/avahi/services/osbox.service
     echo "<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">">>/etc/avahi/services/osbox.service
     echo "<service-group>">>/etc/avahi/services/osbox.service
@@ -19,7 +21,6 @@ if "$1" = "reset" ; then
     echo "Avahi & SSL are in default state."
    exit
 fi
-
 
 
 echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->">/etc/avahi/services/osbox.service
