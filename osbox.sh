@@ -225,6 +225,13 @@ if [ "$1" == "reinstall" ]; then
     exit;
 fi
 
+if [ "$1" == "reset" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/osbox-reset.sh
+    exit;
+fi
+
+
+
 if [ "$1" == "reboot" ]; then
     nohup sudo reboot & >/dev/null
     exit;
