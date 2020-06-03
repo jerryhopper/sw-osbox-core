@@ -18,8 +18,10 @@ bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_dynamic_
 
 # remove /etc/pihole/* stuff
 
-//echo "idle,0,no setup state">/etc/osbox/setup.state
-sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
+#echo "idle,0,no setup state">/etc/osbox/setup.state
+#sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
+sudo echo "preinstall,10,Pre-installation state">/etc/osbox/setup.state
+
 
 # reset systemctl services
 # bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/create_install_service.sh $3
@@ -32,9 +34,7 @@ if [ -f /etc/osbox/db/osbox.db  ]; then
 fi
 
 
-#reboot
-echo "systemctl restart networking"
-systemctl restart networking
+reboot
 
 
 systemctl restart avahi-daemon.service
