@@ -7,6 +7,7 @@ source /usr/local/osbox/lib/bashfunc/is_command
 
 
 echo "reset avahi to default."
+#if [ -f "" ]
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_osbox_master.sh "reset"
 
 echo " reset lightttpd config"
