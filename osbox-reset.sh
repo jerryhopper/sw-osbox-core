@@ -17,6 +17,7 @@ echo "reset network to default."
 bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_dynamic_ip.sh
 
 # remove /etc/pihole/* stuff
+bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_pihole_setupvars.sh " "
 
 #echo "idle,0,no setup state">/etc/osbox/setup.state
 #sudo echo "running,10,Preparing files.">/etc/osbox/setup.state
