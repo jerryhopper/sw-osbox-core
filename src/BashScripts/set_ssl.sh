@@ -14,6 +14,9 @@ chmod +r  /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.key
 chmod +r  /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca
 chmod +r  /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert
 
+
+cat /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert > /etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca.lighttpd
+
 # install ssl cert
 
 echo "server.modules += ( \"mod_openssl\" )">/etc/lighttpd/external.conf
@@ -22,7 +25,7 @@ echo "    ssl.engine = \"enable\"">>/etc/lighttpd/external.conf
 echo "    ssl.openssl.ssl-conf-cmd = (\"Protocol\" => \"-ALL, TLSv1.2, TLSv1.3\") # (recommended to accept only TLSv1.2 and TLSv1.3)">>/etc/lighttpd/external.conf
 echo "    ssl.privkey= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.key\"">>/etc/lighttpd/external.conf
 echo "    ssl.pemfile= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.cert\"">>/etc/lighttpd/external.conf
-echo "    ssl.ca-file= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca\"">>/etc/lighttpd/external.conf
+echo "    ssl.ca-file= \"/etc/osbox/ssl/blackbox.surfwijzer.nl/ssl.ca.lighttpd\"">>/etc/lighttpd/external.conf
 echo "}">>/etc/lighttpd/external.conf
 
 
