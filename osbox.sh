@@ -44,6 +44,8 @@ if [ "$1" == "update" ]; then
     echo "updating sw-osbox-bin via download"
     echo "updating sw-osbox-core via download"
   fi
+  docker restart osbox-core
+
 fi
 
 

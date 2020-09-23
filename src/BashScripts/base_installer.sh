@@ -124,6 +124,8 @@ else
 fi
 
 
+chmod +x /usr/local/osbox/project/sw-osbox-core/src/www/server.php
+
 createUser
 
 docker run -d --name osbox-core --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
