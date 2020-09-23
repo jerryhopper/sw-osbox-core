@@ -45,6 +45,9 @@ if [ "$1" == "update" ]; then
     echo "updating sw-osbox-bin via download"
     echo "updating sw-osbox-core via download"
   fi
+
+
+  docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
   echo "docker restart osbox-core"
   docker restart osbox-core
 
