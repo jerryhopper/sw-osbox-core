@@ -25,6 +25,29 @@ php(){
 
 
 
+if [ "$1" == "setup" ]; then
+  echo "installer"
+
+fi
+
+
+if [ "$1" == "update" ]; then
+  echo "update"
+  cd /home/osbox/.osbox/sw-osbox-bin
+  git pull
+  cd /home/osbox/.osbox/sw-osbox-core
+  git pull
+fi
+
+
+  # command information
+if [ "$1" == "" ]; then
+  echo "Usage: "
+  echo "  osbox install - installs the application"
+  echo "  osbox update  - updates the application"
+  exit
+fi
+exit;
 
 
 #########################
@@ -203,6 +226,10 @@ if [ "$1" == "network" ]; then
   fi
   exit;
 fi
+
+
+
+
 
 
 
