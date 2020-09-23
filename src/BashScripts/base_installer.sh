@@ -48,6 +48,7 @@ createUser(){
 # Installer!
 bash /usr/local/osbox/osbox update
 
+
 # check if avahi-daemon command exists.
 if ! is_command avahi-daemon ; then
     echo "Error. avahi-daemon is not available."
@@ -59,16 +60,23 @@ if ! is_command avahi-daemon ; then
 else
     log "avahi-daemon is available"
 fi
-# check if avahi-daemon command exists.
-if ! is_command docker ; then
-    echo "Error. docker is not available."
-    echo "Trying to install docker"
-    log "Trying to install docker."
-    /boot/dietpi/dietpi-software install 162 --unattended
-    #exit
+
+
+if ! is_command avahi-browse ; then
+   log "Trying to install avahi-utils."
+   apt-get install -y avahi-utils libsodium23 libgd3 libzip4 libedit2 libxslt1.1
 else
-    log "docker is available"
+   log "avahi-utils are available."
 fi
+
+
+if ! is_command nmap ; then
+   log "Trying to install avahi-utils."
+   apt-get install -y nmap
+else
+   log "avahi-utils are available."
+fi
+
 
 
 
@@ -103,7 +111,19 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   #  echo "   ">>/var/lib/dietpi/postboot.d/requirements.sh
   echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
 
-
+  echo "bash /usr/local/osbox/src/BashScripts/base_installer.sh"
 fi
 
+
+# check if avahi-daemon command exists.
+if ! is_command docker ; then
+    log  "Error. docker is not available,rebooting"
+    reboot
+else
+    log "docker is available"
+fi
+
+
 createUser
+
+docker run -d --name osbox-core --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
