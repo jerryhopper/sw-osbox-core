@@ -32,11 +32,18 @@ fi
 
 
 if [ "$1" == "update" ]; then
-  echo "update"
-  cd /home/osbox/.osbox/sw-osbox-bin
-  git pull
-  cd /home/osbox/.osbox/sw-osbox-core
-  git pull
+  # if development flag is set
+  if [ -f /etc/osbox/dev ]; then
+    echo "updating sw-osbox-bin via git"
+    cd /home/osbox/.osbox/sw-osbox-bin
+    git pull
+    echo "updating sw-osbox-core via git"
+    cd /home/osbox/.osbox/sw-osbox-core
+    git pull
+  else
+    echo "updating sw-osbox-bin via download"
+    echo "updating sw-osbox-core via download"
+  fi
 fi
 
 
