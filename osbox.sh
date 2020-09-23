@@ -34,6 +34,7 @@ fi
 if [ "$1" == "update" ]; then
   # if development flag is set
   if [ -f /etc/osbox/dev ]; then
+    docker stop osbox-core
     echo "updating sw-osbox-bin via git"
     cd /home/osbox/.osbox/sw-osbox-bin
     git pull
