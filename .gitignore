@@ -2,3 +2,4 @@ vendor/
 composer.lock
 srv/osbox-web/
 src/www/vendor/
+src/www/composer.lock
