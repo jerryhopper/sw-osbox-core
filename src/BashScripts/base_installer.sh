@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+OSBOX_BIN_USR="osbox"
+
 # installation log
 log(){
     echo "$(date) : $1">>/var/log/osbox-install.log
@@ -20,7 +22,7 @@ is_command() {
 
 createUser(){
     # adduser
-    log "Adding $OSBOX_BIN_USR user."
+    log "Checking for $OSBOX_BIN_USR user."
     if id -u osbox >/dev/null 2>&1; then
         log "Skipping, user '${OSBOX_BIN_USR}' already exists."
     else
@@ -102,3 +104,5 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
 
 
 fi
+
+createUser
