@@ -9,6 +9,7 @@ use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 
 $server = new Server("0.0.0.0", 9501);
+$server->set(["worker_num" => 2]);
 
 $server->on("start", function (Server $server) {
     echo "Swoole WebSocket Server is started at http://127.0.0.1:9502\n";
