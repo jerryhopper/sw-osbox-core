@@ -25,9 +25,9 @@ php(){
 
 
 
-if [ "$1" == "setup" ]; then
-  echo "installer"
-
+if [ "$1" == "install" ]; then
+  bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/base_installer.sh
+  exit
 fi
 
 
