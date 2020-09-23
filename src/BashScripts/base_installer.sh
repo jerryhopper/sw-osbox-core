@@ -46,6 +46,7 @@ createUser(){
 
 
 # Installer!
+bash /usr/local/osbox/osbox update
 
 # check if avahi-daemon command exists.
 if ! is_command avahi-daemon ; then
