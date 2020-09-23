@@ -53,6 +53,8 @@ if ! is_command avahi-daemon ; then
     /boot/dietpi/dietpi-software install 152 --unattended
     apt-get install -y avahi-utils libsodium23 libgd3 libzip4 libedit2 libxslt1.1
     #exit
+else
+    log "avahi-daemon is available"
 fi
 # check if avahi-daemon command exists.
 if ! is_command docker ; then
@@ -61,6 +63,8 @@ if ! is_command docker ; then
     log "Trying to install docker."
     /boot/dietpi/dietpi-software install 162 --unattended
     #exit
+else
+    log "docker is available"
 fi
 
 
@@ -68,6 +72,8 @@ fi
 
 #
 if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
+  log "set boot-time requirements"
+
   echo '#!/bin/bash'>/var/lib/dietpi/postboot.d/requirements.sh
   chmod +x /var/lib/dietpi/postboot.d/requirements.sh
 
