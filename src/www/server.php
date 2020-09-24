@@ -66,7 +66,7 @@ class commandProcess{
             $this->command_exists($this->command);
 
         }catch( Exception $e){
-            $x = json_encode( $this->outputFormat($e->getMessage()) );
+            $x = json_encode( $this->result($e->getMessage()) );
             $this->SocketServer ->push($frame->fd, $x );
         }
 
