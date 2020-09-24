@@ -57,7 +57,7 @@ class commandProcess{
     function __construct($frame,$server)
     {
         $this->SocketServer = $server;
-        $this->command = $frame->fd;
+        $this->command = $frame->data;
 
         echo "rXeceived message: {$frame->fd}\n";
 
@@ -87,7 +87,7 @@ class commandProcess{
             throw new Exception("Invalid command");
         }
 
-        $subcommands = explode($cmdparts," ");
+        $subcommands = explode((str)$cmdparts," ");
 
         if( ! in_array($subcommands[0],get_class_methods( $cmdparts[0] )) ){
             $this->statusCode = 500;
