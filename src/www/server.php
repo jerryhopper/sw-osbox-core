@@ -37,11 +37,11 @@ class discover {
     }
 
     function osbox(){
-
+        return "x";
     }
 
     function osboxmaster(){
-
+        return "x";
     }
 }
 
@@ -73,9 +73,10 @@ class commandProcess{
 
 
 
+        $this->statusCode=200;
+        $this->statusMsg="ok";
 
-
-        $this->SocketServer ->push($frame->fd, $this->result() );
+        $this->SocketServer ->push($frame->fd, $this->result("xxxxx") );
 
     }
 
@@ -85,17 +86,23 @@ class commandProcess{
         $class = "\\".$cmdparts[0];
 
         if( !class_exists($class) ){
-            echo "class '".$class."' doenst exist\n";
+            //echo "class '".$class."' doenst exist\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid command";
             throw new Exception("Invalid command");
         }
 
-        $subcommands = explode((string)$cmdparts," ");
+        $subcommands = explode(" ", $cmdparts[1] );
+        //echo "subcommands = ".json_encode($subcommands)."\n";
+
+        $subcommand = $subcommands[0];
+        //echo "> ".json_encode($subcommands )."\n";
+        //echo " ". json_encode(get_class_methods($class) )."\n";
+        echo "subcommand:".$subcommand."\n";
 
 
-        if( ! method_exists( "\\".$class,$subcommands[0]) ){
-            echo "method doesnt exist.\n";
+        if( ! in_array($subcommand,get_class_methods($class))  ){
+            //echo "method ".$subcommand." doesnt exist.\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid method";
             throw new Exception("Invalid method");
