@@ -68,6 +68,7 @@ class commandProcess{
         }catch( Exception $e){
             $x = $this->result($e->getMessage() );
             $this->SocketServer ->push($frame->fd, $x );
+            return;
         }
 
 
