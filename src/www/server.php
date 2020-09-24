@@ -19,7 +19,7 @@ use Swoole\WebSocket\Frame;
 class commandProcess{
     function __construct($data)
     {
-        echo "received message: {$data}\n";
+        echo "rXeceived message: {$data}\n";
     }
 
     function result(){
