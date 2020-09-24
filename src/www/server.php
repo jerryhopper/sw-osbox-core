@@ -80,6 +80,21 @@ class commandProcess{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $server = new Server("0.0.0.0", 9501);
 $server->set(["worker_num" => 2]);
 
@@ -99,7 +114,7 @@ $server->on('message', function (Server $server, Frame $frame) {
     $cp = new commandProcess($frame,$server);
 
     //$cp = new commandProcess($frame->data);
-    $server->push($frame->fd, $cp->result() );
+    //$server->push($frame->fd, $cp->result() );
 });
 
 $server->on('close', function (Server $server, int $fd) {
