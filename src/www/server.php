@@ -60,6 +60,7 @@ class commandProcess{
         $this->command = $frame->data;
 
         echo "rXeceived message: {$frame->fd}\n";
+        echo "rXeceived message: {$frame->data}\n";
 
         try{
             $this->command_exists($this->command);
@@ -87,7 +88,7 @@ class commandProcess{
             throw new Exception("Invalid command");
         }
 
-        $subcommands = explode((string)$cmdparts," ");
+        $subcommands = explode(string)$cmdparts," ");
 
         if( ! in_array($subcommands[0],get_class_methods( $cmdparts[0] )) ){
             $this->statusCode = 500;
