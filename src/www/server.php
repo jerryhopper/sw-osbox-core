@@ -61,15 +61,15 @@ class commandProcess{
 
         $x = 1;
 
-        return $this->outputFormat( ["hello", time()] );
+        return $this->outputFormat( [ "hello",time() ] );
     }
 
     function outputFormat($data){
-        return array(
+        return json_encode( array(
             "code"=>$this->statusCode,
             "msg"=>$this->statusMsg,
             "cmd"=>$this->command,
-            "data"=>$data);
+            "data"=>$data));
     }
 }
 
