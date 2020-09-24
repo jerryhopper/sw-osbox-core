@@ -67,14 +67,14 @@ class commandProcess{
 
         }catch( Exception $e){
             $x = json_encode( $this->outputFormat($e->getMessage()) );
-            $this->SocketServer ->push($this->fd, $x );
+            $this->SocketServer ->push($frame->fd, $x );
         }
 
 
 
 
 
-        $this->SocketServer ->push($this->command, $this->result() );
+        $this->SocketServer ->push($frame->fd, $this->result() );
 
     }
 
