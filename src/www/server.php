@@ -81,8 +81,8 @@ class commandProcess{
 
     function command_exists($command){
         $cmdparts = explode('|', $command);
-
-        if( !class_exists($cmdparts[0]) ){
+        $class = "\\".$cmdparts[0];
+        if( !class_exists($class) ){
             $this->statusCode = 500;
             $this->statusMsg = "Invalid command";
             throw new Exception("Invalid command");
@@ -96,7 +96,7 @@ class commandProcess{
             throw new Exception("Invalid method");
         }
 
-        $this->class = new $$cmdparts[0]($subcommands);
+        $this->class = new $class($subcommands);
 
     }
 
