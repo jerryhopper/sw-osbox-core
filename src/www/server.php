@@ -65,7 +65,7 @@ class commandProcess{
     }
 
     function outputFormat($data){
-        return (object)array(
+        return array(
             "code"=>$this->statusCode,
             "msg"=>$this->statusMsg,
             "cmd"=>$this->command,
