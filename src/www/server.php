@@ -88,7 +88,7 @@ class commandProcess{
             throw new Exception("Invalid command");
         }
 
-        $subcommands = explode(string)$cmdparts," ");
+        $subcommands = explode((string)$cmdparts," ");
 
         if( ! in_array($subcommands[0],get_class_methods( $cmdparts[0] )) ){
             $this->statusCode = 500;
