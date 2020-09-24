@@ -54,7 +54,7 @@ class commandProcess{
 
     function result(){
 
-        $x = ne
+        $x = 1;
 
 
         return json_encode(["hello", time()]);
