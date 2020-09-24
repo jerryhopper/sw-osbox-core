@@ -10,20 +10,62 @@ use Swoole\WebSocket\Frame;
 
 
 
+/*
 
+discover|osbox
+discover|osboxmaster
+
+response :
+command: discover|osbox
+code: 200
+msg: ok
+data: {
+
+}
+
+
+
+ */
 
 
 
 
 
 class commandProcess{
-    function __construct($data)
+
+    function __construct($frame,$server)
     {
-        echo "rXeceived message: {$data}\n";
+        $this->SocketServer = $server;
+        $this->command = $frame->fd;
+
+        echo "rXeceived message: {$frame->fd}\n";
+
+
+        $this->SocketServer ->push($this->command, $this->result() );
+
     }
 
+
+
+
+
+
+
+
     function result(){
+
+        $x = ne
+
+
         return json_encode(["hello", time()]);
+    }
+
+    function outputFormat($data){
+        return (object)array(
+            "code"=>$this->statusCode,
+            "msg"=>$this->statusMsg,
+            "cmd"=>$this->command,
+            "data"=>$data);
     }
 }
 
@@ -33,7 +75,7 @@ class commandProcess{
 
 
 $server = new Server("0.0.0.0", 9501);
-$server->set(["worker_num" => 1]);
+$server->set(["worker_num" => 2]);
 
 $server->on("start", function (Server $server) {
     echo "Swoole WebSocket Server is started at http://127.0.0.1:9502\n";
@@ -48,7 +90,9 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
 
-    $cp = new commandProcess($frame->data);
+    $cp = new commandProcess($frame,$server);
+
+    //$cp = new commandProcess($frame->data);
     $server->push($frame->fd, $cp->result() );
 });
 
