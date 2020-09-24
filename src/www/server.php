@@ -48,7 +48,7 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
 
-    $cp new commandProcess($frame->data);
+    $cp = new commandProcess($frame->data);
     $server->push($frame->fd, $cp->result() );
 });
 
