@@ -29,13 +29,29 @@ data: {
 
 
 
+class discover {
+
+    function __construct($subcommands)
+    {
+
+    }
+
+    function osbox(){
+
+    }
+
+    function osboxmaster(){
+
+    }
+}
+
+
 
 
 class commandProcess{
 
     private $statusCode = 500;
     private $statusMsg  = "Unknown error";
-
 
 
     function __construct($frame,$server)
@@ -45,33 +61,59 @@ class commandProcess{
 
         echo "rXeceived message: {$frame->fd}\n";
 
+        try{
+            $this->command_exists($this->command);
+
+        }catch( Exception $e){
+            $x = json_encode( $this->outputFormat($e->getMessage()) );
+            $this->SocketServer ->push($this->command, $x );
+        }
+
+
+
+
 
         $this->SocketServer ->push($this->command, $this->result() );
 
     }
 
 
+    function command_exists($command){
+        $cmdparts = explode('|', $command);
 
+        if( !class_exists($cmdparts[0]) ){
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid command";
+            throw new Exception("Invalid command");
+        }
+
+        $subcommands = explode($cmdparts," ");
+
+        if( ! in_array($subcommands[0],get_class_methods( $cmdparts[0] )) ){
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid method";
+            throw new Exception("Invalid method");
+        }
+
+        $this->class = new $$cmdparts[0]($subcommands);
+
+    }
 
 
 
 
 
     function result(){
-
         $data = 4;
-
-        return json_encode( $this->outputFormat( $data )  );
+        return $this->outputFormat( $data );
     }
 
     function outputFormat($data){
-
-        return [$this->statusCode, time(), array(
+        return json_encode( [$this->statusCode, time(), array(
             "code"=>$this->statusCode,
             "msg"=>$this->statusMsg,
             "cmd"=>$this->command,
-            "result"=>(object)$data )];
-
+            "result"=>(object)$data )] );
     }
 }
 
