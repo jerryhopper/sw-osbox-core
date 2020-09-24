@@ -8,6 +8,30 @@ use Swoole\WebSocket\Server;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 
+
+
+
+
+
+
+
+
+class commandProcess{
+    function __construct($data)
+    {
+        echo "received message: {$data}\n";
+    }
+
+    function result(){
+        return json_encode(["hello", time()]);
+    }
+}
+
+
+
+
+
+
 $server = new Server("0.0.0.0", 9501);
 $server->set(["worker_num" => 1]);
 
@@ -18,13 +42,14 @@ $server->on("start", function (Server $server) {
 $server->on('open', function (Server $server, Swoole\Http\Request $request) {
     echo "connection open: {$request->fd}\n";
     $server->tick(1000, function () use ($server, $request) {
-        $server->push($request->fd, json_encode(["hello", time()]));
+        $server->push($request->fd, json_encode(["noop", time()]));
     });
 });
 
 $server->on('message', function (Server $server, Frame $frame) {
-    echo "received message: {$frame->data}\n";
-    $server->push($frame->fd, json_encode(["hello", time()]));
+
+    $cp new commandProcess($frame->data);
+    $server->push($frame->fd, $cp->result() );
 });
 
 $server->on('close', function (Server $server, int $fd) {
