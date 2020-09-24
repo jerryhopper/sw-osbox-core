@@ -33,8 +33,8 @@ data: {
 
 class commandProcess{
 
-    $statusCode = 500;
-    $statusMsg  = "Unknown error";
+    private $statusCode = 500;
+    private $statusMsg  = "Unknown error";
 
 
 
