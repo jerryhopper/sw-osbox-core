@@ -59,8 +59,8 @@ class commandProcess{
         $this->SocketServer = $server;
         $this->command = $frame->data;
 
-        echo "rXeceived message: {$frame->fd}\n";
-        echo "rXeceived message: {$frame->data}\n";
+        echo "received message: {$frame->fd}\n";
+        echo "received message: {$frame->data}\n";
 
         try{
             $this->command_exists($this->command);
@@ -85,6 +85,7 @@ class commandProcess{
         $class = "\\".$cmdparts[0];
 
         if( !class_exists($class) ){
+            echo "class '".$class."' doenst exist\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid command";
             throw new Exception("Invalid command");
@@ -92,7 +93,9 @@ class commandProcess{
 
         $subcommands = explode((string)$cmdparts," ");
 
-        if( ! in_array($subcommands[0],get_class_methods( $cmdparts[0] )) ){
+
+        if( ! method_exists( "\\".$class,$subcommands[0]) ){
+            echo "method doesnt exist.\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid method";
             throw new Exception("Invalid method");
