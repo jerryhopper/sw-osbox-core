@@ -33,6 +33,11 @@ data: {
 
 class commandProcess{
 
+    $statusCode = 500;
+    $statusMsg  = "Unknown error";
+
+
+
     function __construct($frame,$server)
     {
         $this->SocketServer = $server;
@@ -56,8 +61,7 @@ class commandProcess{
 
         $x = 1;
 
-
-        return json_encode(["hello", time()]);
+        return $this->outputFormat( ["hello", time()] );
     }
 
     function outputFormat($data){
