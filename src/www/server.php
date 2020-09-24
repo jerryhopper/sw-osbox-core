@@ -66,7 +66,7 @@ class commandProcess{
             $this->command_exists($this->command);
 
         }catch( Exception $e){
-            $x = json_encode( $this->result($e->getMessage()) );
+            $x = $this->result($e->getMessage() );
             $this->SocketServer ->push($frame->fd, $x );
         }
 
@@ -82,6 +82,7 @@ class commandProcess{
     function command_exists($command){
         $cmdparts = explode('|', $command);
         $class = "\\".$cmdparts[0];
+
         if( !class_exists($class) ){
             $this->statusCode = 500;
             $this->statusMsg = "Invalid command";
