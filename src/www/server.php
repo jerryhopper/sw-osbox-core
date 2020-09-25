@@ -36,11 +36,12 @@ class commandBase {
 
     function __construct( Array $subcommands,pusher $pusher)
     {
-        echo "class!\n";
         $this->pusher=$pusher;
 
         $this->method=$subcommands[0];
         $this->subcommands = $subcommands;
+
+        echo "class! (".$this->method.")\n";
 
     }
 
@@ -136,12 +137,46 @@ class ProcessMessage {
 
 
 
+class Executor{
+
+    function __construct()
+    {
+        $this->process = new Swoole\Process(function($process){
+            //execute the external program
+            //$process->exec("/usr/bin/osbox", array(''));
+        }, FALSE); // enable the redirection of stdin and stdout
+
+        //execute the external program
+//        $process->exec("/bin/ls", array(''));
+//        $process->start();
+//        $res = $process->read();
+//        echo $res;
+        //var_dump($res);
+    }
+
+
+    function test(){
+
+        //execute the external program
+        try{
+            $this->process->exec("/bin/ls", array(''));
+        }catch(Exception $e){
+            echo "aarg!";
+        }
+
+        $this->process->start();
+        $res = $this->process->read();
+        echo $res;
+
+    }
+
+}
 
 
 
+$executor = new Executor();
 
-
-
+//$executor->test();
 
 
 
@@ -170,6 +205,9 @@ class Pusher
 
 
 
+
+
+
 $server = new Server("0.0.0.0", 9501);
 $server->set(["worker_num" => 2]);
 
@@ -186,8 +224,9 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
 
-
+    global $executor;
     $pusher = new Pusher($server,$frame);
+    $executor->test();
 
     #$pusher->push("YEEHAW");
     #$pusher->push("YEEHAW");
