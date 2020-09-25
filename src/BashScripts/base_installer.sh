@@ -112,7 +112,7 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
 
 
-  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh & >/dev/null">>/var/lib/dietpi/postboot.d/requirements.sh
+  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh && >/dev/null">>/var/lib/dietpi/postboot.d/requirements.sh
 
   echo "bash /usr/local/osbox/src/BashScripts/base_installer.sh"
 fi
