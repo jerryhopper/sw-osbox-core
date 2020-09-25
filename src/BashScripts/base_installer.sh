@@ -80,7 +80,9 @@ fi
 
 
 
-
+if [  -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
+    rm -f /var/lib/dietpi/postboot.d/requirements.sh
+fi
 #
 if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   log "set boot-time requirements"
