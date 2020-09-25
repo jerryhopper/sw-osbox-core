@@ -31,17 +31,41 @@ data: {
 
 class discover {
 
-    function __construct($subcommands)
+    private $command;
+
+
+    function __construct( Array $subcommands,pusher $pusher)
     {
 
+        $this->pusher=$pusher;
+
+
+        $this->method=$subcommands[0];
+        $this->subcommands = $subcommands;
+
+
+
+//        $this->pusher->push(  );
+
+//        $this->SocketServer ->push($this->frame->fd, $this->result( $this->class->result() ) );
+
+    }
+
+
+
+
+
+    function result(){
+        $cmd = $this->method;
+        return $this->$cmd();
     }
 
     function osbox(){
-        return "x";
+        return ["OSBOX"];
     }
 
     function osboxmaster(){
-        return "x";
+        return "OSBOXMASTER";
     }
 }
 
@@ -54,20 +78,28 @@ class commandProcess{
     private $statusMsg  = "Unknown error";
 
 
-    function __construct($frame,$server)
+    function __construct(Frame $frame, Server $server, $pusher )
     {
         $this->SocketServer = $server;
+        $this->frame = $frame;
+
         $this->command = $frame->data;
 
         echo "received message: {$frame->fd}\n";
         echo "received message: {$frame->data}\n";
+
+
+        array( "frame"=>$frame, "sockertserver"=>$server);
+
+
 
         try{
             $this->command_exists($this->command);
 
         }catch( Exception $e){
             $x = $this->result($e->getMessage() );
-            $this->SocketServer ->push($frame->fd, $x );
+
+            $this->pusher->push( "error", 500, $e->getMessage() );
             return;
         }
 
@@ -76,9 +108,17 @@ class commandProcess{
         $this->statusCode=200;
         $this->statusMsg="ok";
 
-        $this->SocketServer ->push($frame->fd, $this->result("xxxxx") );
+        //$r = $this->class;
+        //$r->result();
+
+
+        //$this->SocketServer ->push($this->frame->fd, $this->result( $this->class->result() ) );
+
+        //$this->SocketServer ->push($frame->fd, $this->result( $this->class->result() ) );
 
     }
+
+
 
 
     function command_exists($command){
@@ -108,7 +148,7 @@ class commandProcess{
             throw new Exception("Invalid method");
         }
 
-        $this->class = new $class($subcommands);
+        $this->class = new $class($subcommands,$this->SocketServer,$this->frame);
 
     }
 
@@ -116,8 +156,10 @@ class commandProcess{
 
 
 
-    function result(){
-        $data = 4;
+    function result($data){
+
+
+        //$data = 4;
         return $this->outputFormat( $data );
     }
 
@@ -142,7 +184,26 @@ class commandProcess{
 
 
 
+class pusher
+{
+    private $socketserver;
+    private $frame;
 
+    function __construct( Server $server,Frame $frame)
+    {
+        $this->socketserver = $server;
+        $this->frame = $frame;
+    }
+
+    function push( $data , $statuscode=200,$statusmsg="ok"){
+        $this->SocketServer ->push($this->frame->fd, $this->outputFormat( $data ) );
+    }
+
+    private function outputFormat($data, $statuscode,$statusmsg){
+        return json_encode( [$this->statusCode, time(), array("result"=>(object)$data )] );
+    }
+
+}
 
 
 
@@ -166,7 +227,12 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
 
-    $cp = new commandProcess($frame,$server);
+
+    $pusher = new pusher($server,$frame);
+
+    $pusher->push("YEEHAW");
+
+    //$cp = new commandProcess($frame,$server,$pusher);
 
     //$cp = new commandProcess($frame->data);
     //$server->push($frame->fd, $cp->result() );
