@@ -105,14 +105,14 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   echo "   apt-get install -y avahi-utils libsodium23 libgd3 libzip4 libedit2 libxslt1.1">>/var/lib/dietpi/postboot.d/requirements.sh
   echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
 
-  echo "#!/bin/bash">/var/lib/dietpi/postboot.d/requirements.sh
+  #echo "#!/bin/bash">/var/lib/dietpi/postboot.d/requirements.sh
   echo "if ! is_command docker ; then">>/var/lib/dietpi/postboot.d/requirements.sh
   echo "   /boot/dietpi/dietpi-software install 162 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
   #  echo "   ">>/var/lib/dietpi/postboot.d/requirements.sh
   echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
 
 
-  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh && >/dev/null">>/var/lib/dietpi/postboot.d/requirements.sh
+  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &&">>/var/lib/dietpi/postboot.d/requirements.sh
 
   echo "bash /usr/local/osbox/src/BashScripts/base_installer.sh"
 fi
