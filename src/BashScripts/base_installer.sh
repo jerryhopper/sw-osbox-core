@@ -128,6 +128,23 @@ chmod +x /usr/local/osbox/project/sw-osbox-core/src/www/server.php
 
 createUser
 
+
+# osbox-pipe-service!
+if [ -d /var/osbox ]; then
+  rm -rf /var/osbox
+fi
+mkdir -p /var/osbox
+mkfifo /var/osbox/mypipe
+
+if [ -f /usr/local/osbox/lib/systemd/osbox-pipe.service ]; then
+  rm -f /usr/local/osbox/lib/systemd/osbox-pipe.service
+fi
+cp /usr/local/osbox/lib/systemd/osbox-pipe.service /etc/systemd/system
+
+
+
+
+
 # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
 
 docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
