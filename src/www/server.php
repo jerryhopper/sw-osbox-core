@@ -8,6 +8,8 @@ use Swoole\WebSocket\Server;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 
+require_once ("commands/discover.php");
+require_once ("commands/network.php");
 
 
 /*
@@ -27,69 +29,56 @@ data: {
 
  */
 
-
-
-class discover {
-
-    private $command;
-
+class commandBase {
+    public $method;
+    public $subcommands;
+    public $pusher;
 
     function __construct( Array $subcommands,pusher $pusher)
     {
-
+        echo "class!\n";
         $this->pusher=$pusher;
-
 
         $this->method=$subcommands[0];
         $this->subcommands = $subcommands;
 
-
-
-//        $this->pusher->push(  );
-
-//        $this->SocketServer ->push($this->frame->fd, $this->result( $this->class->result() ) );
-
     }
 
-
-
-
-
-    function result(){
+    public function _result(){
         $cmd = $this->method;
-        return $this->$cmd();
-    }
-
-    function osbox(){
-        return ["OSBOX"];
-    }
-
-    function osboxmaster(){
-        return "OSBOXMASTER";
+        $this->$cmd();
     }
 }
 
 
 
 
-class commandProcess{
+
+
+
+
+
+
+
+
+
+
+
+class ProcessMessage {
 
     private $statusCode = 500;
     private $statusMsg  = "Unknown error";
 
 
-    function __construct(Frame $frame, Server $server, $pusher )
+    function __construct(Frame $frame, $pusher )
     {
-        $this->SocketServer = $server;
+        $this->pusher = $pusher;
         $this->frame = $frame;
-
         $this->command = $frame->data;
 
         echo "received message: {$frame->fd}\n";
         echo "received message: {$frame->data}\n";
 
-
-        array( "frame"=>$frame, "sockertserver"=>$server);
 
 
 
@@ -104,17 +93,7 @@ class commandProcess{
         }
 
 
-
-        $this->statusCode=200;
-        $this->statusMsg="ok";
-
-        //$r = $this->class;
-        //$r->result();
-
-
-        //$this->SocketServer ->push($this->frame->fd, $this->result( $this->class->result() ) );
-
-        //$this->SocketServer ->push($frame->fd, $this->result( $this->class->result() ) );
+        $this->class->_result();
 
     }
 
@@ -148,28 +127,10 @@ class commandProcess{
             throw new Exception("Invalid method");
         }
 
-        $this->class = new $class($subcommands,$this->SocketServer,$this->frame);
+        $this->class = new $class($subcommands,$this->pusher);
 
     }
 
-
-
-
-
-    function result($data){
-
-
-        //$data = 4;
-        return $this->outputFormat( $data );
-    }
-
-    function outputFormat($data){
-        return json_encode( [$this->statusCode, time(), array(
-            "code"=>$this->statusCode,
-            "msg"=>$this->statusMsg,
-            "cmd"=>$this->command,
-            "result"=>(object)$data )] );
-    }
 }
 
 
@@ -184,7 +145,7 @@ class commandProcess{
 
 
 
-class pusher
+class Pusher
 {
     private $socketserver;
     private $frame;
@@ -195,18 +156,16 @@ class pusher
         $this->frame = $frame;
     }
 
-    function push( $data , $statuscode=200,$statusmsg="ok"){
-        $this->SocketServer ->push($this->frame->fd, $this->outputFormat( $data ) );
+    public function push( $data , $statuscode=200,$statusmsg="ok"){
+        echo "Pushed message!\n";
+        $this->socketserver->push($this->frame->fd, $this->outputFormat( $data ,$statuscode,$statusmsg) );
     }
 
     private function outputFormat($data, $statuscode,$statusmsg){
-        return json_encode( [$this->statusCode, time(), array("result"=>(object)$data )] );
+        return json_encode( [$this->statuscode, time(), array("result"=>(object)$data )] );
     }
 
 }
-
-
-
 
 
 
@@ -228,11 +187,11 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 $server->on('message', function (Server $server, Frame $frame) {
 
 
-    $pusher = new pusher($server,$frame);
+    $pusher = new Pusher($server,$frame);
 
-    $pusher->push("YEEHAW");
-
-    //$cp = new commandProcess($frame,$server,$pusher);
+    #$pusher->push("YEEHAW");
+    #$pusher->push("YEEHAW");
+    $cp = new ProcessMessage($frame,$pusher);
 
     //$cp = new commandProcess($frame->data);
     //$server->push($frame->fd, $cp->result() );
