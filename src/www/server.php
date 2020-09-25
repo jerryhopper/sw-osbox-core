@@ -49,6 +49,21 @@ class commandBase {
         $cmd = $this->method;
         $this->$cmd();
     }
+
+    public function _send($data)
+    {
+        // $data
+        $fp = fopen('/hostpipe', 'w');
+        fwrite($fp, $data);
+        fclose($fp);
+
+        sleep(2);
+        $filename="/var/osbox/reponse/pipe";
+        $handle = fopen($filename, "r");
+        $contents = fread($handle, filesize($filename));
+        fclose($handle);
+        return $contents;
+    }
 }
 
 
@@ -157,15 +172,19 @@ class Executor{
 
     function test(){
 
-        //execute the external program
-        try{
-            $this->process->exec("/bin/ls", array(''));
-        }catch(Exception $e){
-            echo "aarg!";
-        }
+        $fp = fopen('/hostpipe', 'w');
+        fwrite($fp, 'ip addr');
+        fclose($fp);
 
-        $this->process->start();
-        $res = $this->process->read();
+        //execute the external program
+        //try{
+        //    $this->process->exec("/bin/echo", array('"osbox"','>','/hostpipe'));
+        //}catch(Exception $e){
+        //    echo "aarg!";
+        //}
+
+        //$this->process->start();
+        //$res = $this->process->read();
         echo $res;
 
     }
@@ -224,9 +243,9 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
 
-    global $executor;
+    //global $executor;
     $pusher = new Pusher($server,$frame);
-    $executor->test();
+    //$executor->test();
 
     #$pusher->push("YEEHAW");
     #$pusher->push("YEEHAW");
