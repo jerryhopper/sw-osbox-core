@@ -53,9 +53,9 @@ if [ "$1" == "update" ]; then
 
 fi
 
-# osbox scheduler functions
+# osbox discover functions
 if [ "$1" == "discover" ]; then
-  echo "someresult"
+  bash src/BashScripts/discover.sh
   exit
 fi
 

@@ -59,9 +59,18 @@ class commandBase {
 
         sleep(2);
         $filename="/hostresponse/pipe";
-        $handle = fopen($filename, "r");
-        $contents = fread($handle, filesize($filename));
+        $handle = fopen($filename, "rb");
+        $contents = '';
+        while (!feof($handle)) {
+            $contents .= fread($handle, 8192);
+        }
         fclose($handle);
+
+
+
+        #$handle = fopen($filename, "r");
+        #$contents = fread($handle, filesize($filename));
+        #fclose($handle);
         return $contents;
     }
 }
@@ -216,7 +225,7 @@ class Pusher
     }
 
     private function outputFormat($data, $statuscode,$statusmsg){
-        return json_encode( [$this->statuscode, time(), array("result"=>(object)$data )] );
+        return json_encode( [$statuscode, time(), array("result"=>(object)$data )] );
     }
 
 }
@@ -237,7 +246,7 @@ $server->on("start", function (Server $server) {
 $server->on('open', function (Server $server, Swoole\Http\Request $request) {
     echo "connection open: {$request->fd}\n";
     $server->tick(1000, function () use ($server, $request) {
-        $server->push($request->fd, json_encode(["noop", time()]));
+        $server->push($request->fd, json_encode([204, time(),"noop"]));
     });
 });
 
