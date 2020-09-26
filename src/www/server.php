@@ -58,7 +58,7 @@ class commandBase {
         fclose($fp);
 
         sleep(2);
-        $filename="/var/osbox/reponse/pipe";
+        $filename="/hostresponse/pipe";
         $handle = fopen($filename, "r");
         $contents = fread($handle, filesize($filename));
         fclose($handle);
