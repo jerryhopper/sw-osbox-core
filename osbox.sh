@@ -53,12 +53,22 @@ if [ "$1" == "update" ]; then
 
 fi
 
+# osbox scheduler functions
+if [ "$1" == "discover" ]; then
+  echo "someresult"
+  exit
+fi
+
+
+
+
 
   # command information
 if [ "$1" == "" ]; then
   echo "Usage: "
   echo "  osbox install - installs the application"
   echo "  osbox update  - updates the application"
+  echo "  osbox discover - gets network discovery information"
   exit
 fi
 exit;
