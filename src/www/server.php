@@ -11,7 +11,7 @@ use Swoole\WebSocket\Frame;
 require_once ("commands/discover.php");
 require_once ("commands/network.php");
 
-
+require_once ("commands/websetup.php");
 /*
 
 discover|osbox
@@ -57,21 +57,42 @@ class commandBase {
         fwrite($fp, $data);
         fclose($fp);
 
-        sleep(2);
+        sleep(1);
         $filename="/hostresponse/pipe";
         $handle = fopen($filename, "rb");
         $contents = '';
         while (!feof($handle)) {
             $contents .= fread($handle, 8192);
         }
+        echo "contents = ".strlen($contents)." characters  ( ".$contents.")\n";
+
+        if( strpos($contents,"\n" ) ){
+            echo "has newline \n";
+            $contents = explode("\n",$contents);
+
+            $contents = array_filter($contents, function($v){
+                return trim($v);
+            });
+
+            //var_dump($result);
+//array_slice()
+
+            //var_dump($res);
+
+        }
+
         fclose($handle);
 
-
+        if ($data !=$contents[0]){
+            # error?!
+            echo "COMMAND ERROR!? \n";
+        }
+        $results = array_splice($contents,1);
 
         #$handle = fopen($filename, "r");
         #$contents = fread($handle, filesize($filename));
         #fclose($handle);
-        return $contents;
+        return $results;
     }
 }
 
@@ -111,7 +132,7 @@ class ProcessMessage {
             $this->command_exists($this->command);
 
         }catch( Exception $e){
-            $x = $this->result($e->getMessage() );
+            //$x = $this->result($e->getMessage() );
 
             $this->pusher->push( "error", 500, $e->getMessage() );
             return;
@@ -126,29 +147,34 @@ class ProcessMessage {
 
 
     function command_exists($command){
-        $cmdparts = explode('|', $command);
-        $class = "\\".$cmdparts[0];
+        $cmdparts = explode(' ', $command);
+        # [0] osbox
+        # [1] discover  (class)
+        # [2] all (class:method)
+
+        $class = "\\".$cmdparts[1];
+        $method = $cmdparts[2];
+
+        $subcommands = array_splice($cmdparts,2);
+        //print_r($subcommands);
 
         if( !class_exists($class) ){
             //echo "class '".$class."' doenst exist\n";
             $this->statusCode = 500;
-            $this->statusMsg = "Invalid command";
+            $this->statusMsg = "Invalid command\n";
+            echo "Invalid command";
             throw new Exception("Invalid command");
+        }else{
+            echo "class $class exists!\n";
         }
 
-        $subcommands = explode(" ", $cmdparts[1] );
-        //echo "subcommands = ".json_encode($subcommands)."\n";
-
-        $subcommand = $subcommands[0];
-        //echo "> ".json_encode($subcommands )."\n";
-        //echo " ". json_encode(get_class_methods($class) )."\n";
-        echo "subcommand:".$subcommand."\n";
+        echo "method:".$method."\n";
 
 
-        if( ! in_array($subcommand,get_class_methods($class))  ){
+        if( ! in_array($method,get_class_methods($class))  ){
             //echo "method ".$subcommand." doesnt exist.\n";
             $this->statusCode = 500;
-            $this->statusMsg = "Invalid method";
+            $this->statusMsg = "Invalid method\n";
             throw new Exception("Invalid method");
         }
 
@@ -199,9 +225,6 @@ class Executor{
     }
 
 }
-
-
-
 $executor = new Executor();
 
 //$executor->test();
@@ -225,7 +248,7 @@ class Pusher
     }
 
     private function outputFormat($data, $statuscode,$statusmsg){
-        return json_encode( [$statuscode, time(), array("result"=>(object)$data )] );
+        return json_encode( [$statuscode, time(), $data ] );
     }
 
 }
@@ -240,18 +263,19 @@ $server = new Server("0.0.0.0", 9501);
 $server->set(["worker_num" => 2]);
 
 $server->on("start", function (Server $server) {
+
     echo "Swoole WebSocket Server is started at http://127.0.0.1:9502\n";
 });
 
 $server->on('open', function (Server $server, Swoole\Http\Request $request) {
     echo "connection open: {$request->fd}\n";
-    $server->tick(1000, function () use ($server, $request) {
-        $server->push($request->fd, json_encode([204, time(),"noop"]));
-    });
+    //$server->tick(200, function () use ($server, $request) {
+        //$server->push($request->fd, json_encode([204, time(),["noop"]]));
+    //});
 });
 
 $server->on('message', function (Server $server, Frame $frame) {
-
+    echo "On message: {$fd}\n";
     //global $executor;
     $pusher = new Pusher($server,$frame);
     //$executor->test();

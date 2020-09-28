@@ -77,6 +77,15 @@ else
    log "avahi-utils are available."
 fi
 
+if ! is_command sqlite3 ; then
+   log "Trying to install sqlite ."
+   //apt-get install -y nmap
+   /boot/dietpi/dietpi-software install 87 --unattended
+else
+   log "sqlite is available."
+fi
+
+
 
 
 
@@ -95,6 +104,12 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   echo "  command -v \"\${check_command}\"  >/dev/null 2>&1">>/var/lib/dietpi/postboot.d/requirements.sh
   echo "}">>/var/lib/dietpi/postboot.d/requirements.sh
 
+
+
+
+  echo "if ! is_command sqlite3 ; then">>/var/lib/dietpi/postboot.d/requirements.sh
+  echo "   /boot/dietpi/dietpi-software install 87 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
+  echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
 
 
   echo "if ! is_command git ; then">>/var/lib/dietpi/postboot.d/requirements.sh

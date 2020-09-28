@@ -4,21 +4,30 @@
 
 
 
+#echo $1
+IFS=
+if [ "$1" == "master" ];then
+  MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
+  echo $MASTER
+  exit
+fi
+if [ "$1" == "all" ];then
+  BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
+  echo $BOXES
 
-
-if ! is_command nmap ;then
-   apt-get -y install nmap
+  exit
 fi
 
+echo "Usage 'osbox discover X' :"
+echo "  master"
+echo "  all"
 
-MASTER=$(avahi-browse -rtp _osboxmaster._tcp|grep "=;eth0;IPv4")
-BOXES=$(avahi-browse -rtp _osbox._tcp|grep "=;eth0;IPv4")
 
 #echo $MASTER;
-echo $BOXES
+
 
 #echo  $IPv4bare
-#exit;
+exit;
 
 if [ "$MASTER" == "" ] ;then
     echo "NO MASTER ON NETWORK"
