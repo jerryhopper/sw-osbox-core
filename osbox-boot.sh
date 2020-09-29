@@ -12,6 +12,7 @@ is_command() {
 
 # Install REQUIREMENTS.
 if ! is_command "docker" ; then
+   reboot
    /boot/dietpi/dietpi-software install 162 --unattended
    reboot
 fi
@@ -36,7 +37,7 @@ fi
 if [ "$(docker image ls|grep 4.5.4-php7.3)" ]; then
   a=1
 else
-  echo "Pulling docker image"
+  #echo "Pulling docker image"
   docker pull jerryhopper/swoole:4.5.4-php7.3
 fi
 
@@ -44,7 +45,7 @@ fi
 if [ "$(docker ps -a|grep osbox-core)" ]; then
   a=1
 else
-  echo "Starting  docker container"
+  #echo "Starting  docker container"
   docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox/mypipe:/hostpipe -v /var/osbox/response:/hostresponse -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
 fi
 
