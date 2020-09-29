@@ -170,8 +170,14 @@ createUser
 if [ -d /var/osbox ]; then
   rm -rf /var/osbox
 fi
-mkdir -p /var/osbox
-mkfifo /var/osbox/mypipe
+
+if [ ! -d /var/osbox ]; then
+  mkdir -p /var/osbox
+fi
+
+if [ ! -f /var/osbox/mypipe ]; then
+  mkfifo /var/osbox/mypipe
+fi
 
 if [ -f /usr/local/osbox/lib/systemd/osbox-pipe.service ]; then
   rm -f /usr/local/osbox/lib/systemd/osbox-pipe.service
