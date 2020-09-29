@@ -86,7 +86,7 @@ else
 fi
 
 
-
+#ln -s /var/lib/dietpi/postboot.d/osbox-boot /usr/local/osbox/osbox-boot
 
 
 if [  -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
