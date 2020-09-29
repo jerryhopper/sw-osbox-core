@@ -96,44 +96,6 @@ fi
 if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
   log "set boot-time requirements"
 
-  echo '#!/bin/bash'>/var/lib/dietpi/postboot.d/requirements.sh
-  chmod +x /var/lib/dietpi/postboot.d/requirements.sh
-
-  echo "is_command() {">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "  local check_command=\"\$1\" ">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "  command -v \"\${check_command}\"  >/dev/null 2>&1">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "}">>/var/lib/dietpi/postboot.d/requirements.sh
-
-
-
-
-  echo "if ! is_command sqlite3 ; then">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "   /boot/dietpi/dietpi-software install 87 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
-
-
-  echo "if ! is_command git ; then">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "   /boot/dietpi/dietpi-software install 17 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
-
-  echo "#!/bin/bash">/var/lib/dietpi/postboot.d/requirements.sh
-  echo "if ! is_command avahi-daemon ; then">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "   /boot/dietpi/dietpi-software install 152 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "   apt-get install -y avahi-utils libsodium23 libgd3 libzip4 libedit2 libxslt1.1">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
-
-  #echo "#!/bin/bash">/var/lib/dietpi/postboot.d/requirements.sh
-  echo "if ! is_command docker ; then">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "   /boot/dietpi/dietpi-software install 162 --unattended">>/var/lib/dietpi/postboot.d/requirements.sh
-  #  echo "   ">>/var/lib/dietpi/postboot.d/requirements.sh
-  echo "fi">>/var/lib/dietpi/postboot.d/requirements.sh
-
-
-  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/requirements.sh
-
-  docker pull jerryhopper/swoole:4.5.4-php7.3
-
-
   echo "bash /usr/local/osbox/src/BashScripts/base_installer.sh"
 fi
 
@@ -192,8 +154,14 @@ fi
 
 
 # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
+if [ "$(docker ps -a|grep osbox-core)" ]; then
+  a=1
+else
+  echo "Starting  docker container"
+  docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox/mypipe:/hostpipe -v /var/osbox/response:/hostresponse -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+fi
 
-docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox/mypipe:/hostpipe -v /var/osbox/response:/hostresponse -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+
 
 
 
