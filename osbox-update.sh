@@ -4,6 +4,9 @@ source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
 
+exit
+
+
 if [ ! -f /etc/osbox/db/osbox.db  ]; then
   #
   echo "Update failure. "

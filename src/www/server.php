@@ -29,6 +29,12 @@ data: {
 
  */
 
+
+
+
+
+
+
 class commandBase {
     public $method;
     public $subcommands;
@@ -50,14 +56,14 @@ class commandBase {
         $this->$cmd();
     }
 
-    public function _send($data)
+    public function _send($data,$sleep=2)
     {
         // $data
         $fp = fopen('/hostpipe', 'w');
         fwrite($fp, $data);
         fclose($fp);
 
-        sleep(1);
+        sleep($sleep);
         $filename="/hostresponse/pipe";
         $handle = fopen($filename, "rb");
         $contents = '';
@@ -134,7 +140,7 @@ class ProcessMessage {
         }catch( Exception $e){
             //$x = $this->result($e->getMessage() );
 
-            $this->pusher->push( "error", 500, $e->getMessage() );
+            $this->pusher->push( "error", 500, "command_exists (".$this->command.")".$e->getMessage() );
             return;
         }
 
@@ -252,6 +258,17 @@ class Pusher
     }
 
 }
+
+
+
+
+
+
+
+# check if sqlite3 db exists.
+#
+#  /host/etc/osbox/master.db
+#  /host/etc/osbox/osbox.db
 
 
 

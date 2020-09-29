@@ -44,7 +44,6 @@ createUser(){
 
 
 
-
 # Installer!
 bash /usr/local/osbox/osbox update
 
@@ -79,8 +78,9 @@ fi
 
 if ! is_command sqlite3 ; then
    log "Trying to install sqlite ."
-   //apt-get install -y nmap
+   #//apt-get install -y nmap
    /boot/dietpi/dietpi-software install 87 --unattended
+
 else
    log "sqlite is available."
 fi
@@ -131,8 +131,25 @@ if [ ! -f /var/lib/dietpi/postboot.d/requirements.sh  ]; then
 
   echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/requirements.sh
 
+  docker pull jerryhopper/swoole:4.5.4-php7.3
+
+
   echo "bash /usr/local/osbox/src/BashScripts/base_installer.sh"
 fi
+
+
+# check if sqlite3 db exists.
+#
+#  /host/etc/osbox/master.db
+#  /host/etc/osbox/osbox.db
+if [ ! -f /etc/osbox/osbox.db ];then
+  touch /etc/osbox/osbox.db
+  sqlite3 -batch /etc/osbox/osbox.db "create table installog (id INTEGER PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
+  sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO table ( installog ) VALUES( 'osbox.db created' );"
+
+fi
+
+
 
 
 # check if avahi-daemon command exists.

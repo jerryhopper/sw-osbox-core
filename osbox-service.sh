@@ -4,7 +4,7 @@
 source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
-
+exit
 
 
 if ! is_command avahi-browse ;then
