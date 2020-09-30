@@ -79,6 +79,12 @@ sethostname() {
 }
 
 
+
+#ln -s  ${OSBOX_BIN_INSTALLDIR}osbox-boot /var/lib/dietpi/postboot.d/osbox-boot
+#chmod +x /var/lib/dietpi/postboot.d/osbox-boot
+
+
+
 sethostname
 # setup and configure avahi
 configureAvahi
