@@ -154,6 +154,7 @@ fi
 
 
 
+
 # check if avahi-daemon command exists.
 if ! is_command docker ; then
     log  "Error. docker is not available,rebooting"
