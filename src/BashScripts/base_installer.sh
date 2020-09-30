@@ -30,6 +30,7 @@ createUser(){
         log "Adding ${OSBOX_BIN_USR} user."
     fi
 
+
     # add to sudoers
     if [ -f /etc/sudoers.d/${OSBOX_BIN_USR} ]; then
        rm -f /etc/sudoers.d/${OSBOX_BIN_USR}
