@@ -39,9 +39,48 @@ createUser(){
 
 
 
+configureAvahi(){
+
+  # check if avahi-daemon command exists.
+  if ! is_command avahi-daemon ; then
+      echo "Error. avahi-daemon is not available."
+      echo "Trying to install avahi-daemon."
+      log "Trying to install avahi-daemon."
+      /boot/dietpi/dietpi-software install 152 --unattended
+      #exit
+  else
+      log "avahi-daemon is available"
+  fi
 
 
+  # copy avahi configuration
+  echo "Configuring avahi."
+  log "Configuring avahi."
+  if [ -f /etc/avahi/services/osbox.service ]; then
+    rm -f /etc/avahi/services/osbox.service
+  fi
+  if [ -f /etc/avahi/services/osbox.master.service ]; then
+    rm -f /etc/avahi/services/osbox.master.service
+  fi
+  cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services/osbox.service
+  systemctl restart avahi-daemon
+}
 
+sethostname() {
+    # Set the hostname
+    echo "127.0.0.1 localhost">/etc/hosts
+    echo "127.0.1.1 osbox">>/etc/hosts
+    echo "::1       localhost ip6-localhost ip6-loopback">>/etc/hosts
+    echo "ff02::1   ip6-allnodes">>/etc/hosts
+    echo "ff02::2   ip6-allrouters">>/etc/hosts
+    echo "osbox">/etc/hostname
+    hostnamectl set-hostname osbox
+}
+
+
+sethostname
+# setup and configure avahi
+configureAvahi
 
 
 # Installer!
@@ -117,7 +156,8 @@ fi
 # check if avahi-daemon command exists.
 if ! is_command docker ; then
     log  "Error. docker is not available,rebooting"
-    reboot
+    #reboot
+    exit 0
 else
     log "docker is available"
 fi
