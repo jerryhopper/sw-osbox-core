@@ -64,6 +64,6 @@ fi
 /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
 
 
-bash /usr/local/osbox/src/BashScripts/base_installer.sh
+#bash /usr/local/osbox/src/BashScripts/base_installer.sh
 
 
