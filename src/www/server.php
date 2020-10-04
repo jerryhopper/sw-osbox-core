@@ -59,12 +59,12 @@ class commandBase {
     public function _send($data,$sleep=2)
     {
         // $data
-        $fp = fopen('/hostpipe', 'w');
+        $fp = fopen('/host/osbox/pipe', 'w');
         fwrite($fp, $data);
         fclose($fp);
 
         sleep($sleep);
-        $filename="/hostresponse/pipe";
+        $filename="/host/osbox/response";
         $handle = fopen($filename, "rb");
         $contents = '';
         while (!feof($handle)) {
