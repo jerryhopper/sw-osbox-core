@@ -171,6 +171,7 @@ else
 fi
 
 
+chmod +x /usr/local/osbox/project/sw-osbox-core/src/www/server.php
 
 createUser
 
@@ -205,7 +206,7 @@ if [ "$(docker ps -a|grep osbox-core)" ]; then
   a=1
 else
   echo "Starting  docker container"
-  docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+  docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox/mypipe:/hostpipe -v /var/osbox/response:/hostresponse -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
 fi
 
 
