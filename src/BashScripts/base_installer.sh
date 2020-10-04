@@ -171,6 +171,7 @@ else
 fi
 
 
+
 chmod +x /usr/local/osbox/project/sw-osbox-core/src/www/server.php
 
 createUser
