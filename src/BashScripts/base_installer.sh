@@ -152,7 +152,7 @@ fi
 #  /host/etc/osbox/osbox.db
 if [ ! -f /etc/osbox/osbox.db ];then
   touch /etc/osbox/osbox.db
-  sqlite3 -batch /etc/osbox/osbox.db "create table installog (id INTEGER PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
+  sqlite3 -batch /etc/osbox/osbox.db "CREATE table installog (id INTEGER PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
   sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO table ( installog ) VALUES( 'osbox.db created' );"
 
 fi
@@ -207,7 +207,7 @@ if [ "$(docker ps -a|grep osbox-core)" ]; then
   a=1
 else
   echo "Starting  docker container"
-  docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox/mypipe:/hostpipe -v /var/osbox/response:/hostresponse -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+  docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
 fi
 
 
