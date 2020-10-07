@@ -36,11 +36,11 @@ while true; do
       ## checking if "apt" is running
       if is_running apt; then
           log "apt is running"
-          install_docker
-          #reboot
           exit
       else
           log "apt is not running"
+          install_docker
+          #reboot
           exit
       fi
 
