@@ -25,7 +25,7 @@ log "osbox-installer-service"
 while true; do
 
   # check if dietpi is installed completely
-  if "{cat /boot/dietpi/.install_stage }" = "2" ; then
+  if "{cat /boot/dietpi/.install_stage}" = "2" ; then
 
     # Check if docker is available.
     if ! is_command docker ; then
@@ -43,6 +43,7 @@ while true; do
 
     fi
   else
+    log "sleep 60"
     sleep 60
   fi
 done
