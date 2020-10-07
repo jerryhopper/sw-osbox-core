@@ -36,6 +36,7 @@ while true; do
           log "apt is running"
       else
           log "apt is not running"
+          exit
       fi
 
     else
