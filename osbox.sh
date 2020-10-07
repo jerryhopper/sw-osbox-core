@@ -4,6 +4,15 @@
 
 set -e
 
+# is_command function
+is_command() {
+    # Checks for existence of string passed in as only function argument.
+    # Exit value of 0 when exists, 1 if not exists. Value is the result
+    # of the `command` shell built-in call.
+    local check_command="$1"
+    command -v "${check_command}" >/dev/null 2>&1
+}
+
 returnedstatus(){
   if [ $1 -eq 0 ]; then
       echo "$2"
@@ -40,13 +49,17 @@ fi
 if [ "$1" == "update" ]; then
   # if development flag is set
   if [ -f /etc/osbox/dev ]; then
-    docker stop osbox-core
+    if ! is_command "docker"; then
+      docker stop osbox-core
+    fi
     echo "updating sw-osbox-bin via git"
     cd /home/osbox/.osbox/sw-osbox-bin
     git pull
     echo "updating sw-osbox-core via git"
     cd /home/osbox/.osbox/sw-osbox-core
     git pull
+
+
   else
     echo "updating sw-osbox-bin via download"
     echo "updating sw-osbox-core via download"
@@ -55,7 +68,10 @@ if [ "$1" == "update" ]; then
 
   docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
   echo "docker restart osbox-core"
-  docker restart osbox-core
+  if ! is_command "docker"; then
+      docker restart osbox-core
+  fi
+
 
 fi
 
