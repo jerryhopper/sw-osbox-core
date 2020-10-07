@@ -49,7 +49,7 @@ fi
 if [ "$1" == "update" ]; then
   # if development flag is set
   if [ -f /etc/osbox/dev ]; then
-    if ! is_command "docker"; then
+    if is_command "docker"; then
       docker stop osbox-core
     fi
     echo "updating sw-osbox-bin via git"
@@ -65,10 +65,9 @@ if [ "$1" == "update" ]; then
     echo "updating sw-osbox-core via download"
   fi
 
-
-  docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-  echo "docker restart osbox-core"
-  if ! is_command "docker"; then
+  if is_command "docker"; then
+      docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
+      echo "docker restart osbox-core"
       docker restart osbox-core
   fi
 
