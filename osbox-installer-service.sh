@@ -6,5 +6,6 @@ log(){
     echo "$(date) : $1"
 }
 
+
 log "osbox-installer-service"
 

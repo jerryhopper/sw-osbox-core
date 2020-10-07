@@ -7,6 +7,58 @@ source /usr/local/osbox/lib/bashfunc/is_command
 exit
 
 
+
+
+
+
+check_docker(){
+  if ! is_command docker ; then
+    addr
+  fi
+
+}
+
+
+# Loop until install-stage is finished.
+while true; do
+  if "{cat /boot/dietpi/.install_stage }" = "2" ; then
+    # Check if docker is available.
+    if ! is_command docker ; then
+      addr
+    else
+      ss
+    fi
+  else
+    sleep 60
+  fi
+done
+
+
+
+
+
+
+
+
+if "{cat /boot/dietpi/.install_stage }" = "2" ; then
+
+
+  if "{cat /var/osbox/.install_stage}" = "2" ; then
+     # stage is TWO
+  fi
+
+fi
+
+
+exit
+
+sleep 1
+
+
+#check installation stage.
+
+# /boot/dietpi/.install_stage  2
+
 if ! is_command avahi-browse ;then
   echo "Somehow avahi-browse is missing. installing...."
   apt-get -y install avahi-utils

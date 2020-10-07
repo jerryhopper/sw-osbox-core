@@ -7,7 +7,7 @@ is_command() {
     command -v "${check_command}" >/dev/null 2>&1
 }
 
-
+exit
 
 
 # Install REQUIREMENTS.
