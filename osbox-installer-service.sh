@@ -22,7 +22,7 @@ log "osbox-installer-service"
 
 
 # Loop until install-stage is finished.
-while true;
+while true; do
 
   # check if dietpi is installed completely
   if "{cat /boot/dietpi/.install_stage }" = "2" ; then
