@@ -26,7 +26,7 @@ log "osbox-installer-service"
 while true; do
 
   # check if dietpi is installed completely
-  install_stage=$(</boot/dietpi/.install_stage)
+  install_stage=${</boot/dietpi/.install_stage}
   if "$install_stage" = "2" ; then
 
     # Check if docker is available.
