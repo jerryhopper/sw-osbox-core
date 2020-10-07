@@ -16,7 +16,9 @@ log(){
     echo "$(date) : $1"
 }
 
-
+install_docker(){
+  /boot/dietpi/dietpi-software install 162 --unattended
+}
 
 log "osbox-installer-service"
 
@@ -30,10 +32,13 @@ while true; do
 
     # Check if docker is available.
     if ! is_command docker ; then
-
+      log "Docker is not available"
       ## checking if "apt" is running
       if is_running apt; then
           log "apt is running"
+          install_docker
+          #reboot
+          exit
       else
           log "apt is not running"
           exit
