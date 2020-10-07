@@ -21,11 +21,12 @@ log(){
 log "osbox-installer-service"
 
 
+
 # Loop until install-stage is finished.
 while true; do
 
   # check if dietpi is installed completely
-  if "$(< /boot/dietpi/.install_stage)" = "2" ; then
+  if "$(</boot/dietpi/.install_stage)" = "2" ; then
 
     # Check if docker is available.
     if ! is_command docker ; then
