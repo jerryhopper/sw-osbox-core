@@ -18,6 +18,9 @@ log(){
 
 install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
+  if ! "$?" = "0"; then
+    reboot
+  fi
 }
 
 log "osbox-installer-service"
@@ -40,13 +43,15 @@ while true; do
       else
           log "apt is not running"
           install_docker
-          #reboot
+
+          reboot
           exit
       fi
 
     else
       ## docker exists
       log "Docker exists"
+      # check if container is available
       exit
     fi
   else
