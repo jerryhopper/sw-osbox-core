@@ -25,6 +25,9 @@ start_osboxcore(){
       systemctl stop osbox-installer
       systemctl disable osbox-installer
   else
+      log "Running composer"
+      docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
+
       log "Starting  docker container"
       docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
       if ! "$?" = "0"; then
@@ -82,6 +85,7 @@ while true; do
       fi
 
     else
+      echo "Docker exists"
       ## docker exists
       #log "Docker exists"
 
