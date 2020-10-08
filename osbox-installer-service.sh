@@ -47,7 +47,7 @@ while true; do
     else
       ## docker exists
       log "Docker exists"
-
+      exit
     fi
   else
     log "sleep 60"
