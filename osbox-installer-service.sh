@@ -16,12 +16,43 @@ log(){
     echo "$(date) : $1"
 }
 
+start_osboxcore(){
+  # check if container is available
+  # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
+  if [ "$(docker ps -a|grep osbox-core)" ]; then
+      log "Disabling installer service"
+      systemctl stop osbox-installer
+      systemctl disable osbox-installer
+  else
+      log "Starting  docker container"
+      docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+      if ! "$?" = "0"; then
+        log "ERROR!  docker returned error. "
+      else
+        log "Disabling installer service"
+        systemctl stop osbox-installer
+        systemctl disable osbox-installer
+      fi
+      #systemctl enable osbox-installer
+
+
+
+  fi
+
+}
+
 install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! "$?" = "0"; then
     reboot
   fi
+  log "Pulling image"
+  docker pull jerryhopper/swoole:4.5.4-php7.3
+
 }
+
+
+
 
 log "osbox-installer-service"
 
@@ -41,17 +72,21 @@ while true; do
           log "apt is running"
           exit
       else
-          log "apt is not running"
+          log "Installing docker"
           install_docker
 
-          reboot
+
           exit
       fi
 
     else
       ## docker exists
-      log "Docker exists"
-      # check if container is available
+      #log "Docker exists"
+
+      start_osboxcore
+
+
+
       exit
     fi
   else
