@@ -67,8 +67,15 @@ if [ "$1" == "update" ]; then
 
   if is_command "docker"; then
       docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-      echo "docker restart osbox-core"
-      docker restart osbox-core
+
+      if [ "$(docker ps -a|grep osbox-core)" ]; then
+        echo "docker restart osbox-core"
+        docker restart osbox-core
+
+
+      fi
+
+
   fi
 
 
