@@ -47,9 +47,10 @@ start_osboxcore(){
 
 install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
-  if ! "$?" = "0"; then
+  if ! $? = 0; then
     log "installation of docker failed!  rebooting!"
-    reboot
+    exit
+    #reboot
   fi
   log "Pulling image"
   docker pull jerryhopper/swoole:4.5.4-php7.3
