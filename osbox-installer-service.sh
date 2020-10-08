@@ -19,6 +19,7 @@ log(){
 start_osboxcore(){
   # check if container is available
   # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
+
   if [ "$(docker ps -a|grep osbox-core)" ]; then
       log "Disabling installer service"
       systemctl stop osbox-installer
@@ -44,6 +45,7 @@ start_osboxcore(){
 install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! "$?" = "0"; then
+    log "installation of docker failed!  rebooting!"
     reboot
   fi
   log "Pulling image"
