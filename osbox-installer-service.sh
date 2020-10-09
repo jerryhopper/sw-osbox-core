@@ -19,10 +19,11 @@ log(){
 start_osboxcore(){
   # check if container is available
   # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
-
+  log "start_osboxcore()"
   if [ "$(docker ps -a|grep osbox-core)" ]; then
-      log "Disabling installer service"
+      log "docker container osbox-core is running!"
       systemctl stop osbox-installer
+      log "Disabling installer service"
       systemctl disable osbox-installer
   else
       log "Running composer"
@@ -47,7 +48,7 @@ start_osboxcore(){
 }
 
 install_docker(){
-
+  log "Installing docker"
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! $? = 0; then
     log "installation of docker failed!  rebooting!"
@@ -87,7 +88,7 @@ while true; do
             sleep 60
             exit
         else
-            log "Installing docker"
+
             install_docker
             exit
         fi
