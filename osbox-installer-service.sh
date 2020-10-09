@@ -100,7 +100,12 @@ install_docker(){
   fi
   log "Pulling image"
   docker pull jerryhopper/swoole:4.5.4-php7.3
-
+  if ! $? = 0; then
+    log "Failed: docker pull jerryhopper/swoole:4.5.4-php7.3"
+    sleep 15
+    exit
+    #reboot
+  fi
 }
 
 
@@ -134,7 +139,7 @@ while true; do
         fi
 
       else
-        echo "Docker exists"
+        log "Docker exists, exiting osbox-installer"
         ## docker exists
         #log "Docker exists"
         systemctl stop osbox-installer
