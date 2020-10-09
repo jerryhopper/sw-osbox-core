@@ -30,7 +30,8 @@ start_osboxcore(){
 
       log "Starting  docker container"
       docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
-      if ! "$?" = "0"; then
+
+      if [  $? = "0" ]; then
         log "ERROR!  docker returned error. "
       else
         log "Disabling installer service"
@@ -50,7 +51,7 @@ install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! $? = 0; then
     log "installation of docker failed!  rebooting!"
-    sleep 3600
+    sleep 15
     exit
     #reboot
   fi
@@ -62,7 +63,7 @@ install_docker(){
 
 
 
-log "osbox-installer-service"
+log "Starting osbox-installer-service"
 
 
 
