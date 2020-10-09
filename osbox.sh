@@ -50,7 +50,9 @@ if [ "$1" == "update" ]; then
   # if development flag is set
   if [ -f /etc/osbox/dev ]; then
     if is_command "docker"; then
-      docker stop osbox-core
+      if [ "$(docker ps -a|grep osbox-core)" ]; then
+        docker stop osbox-core
+      fi
     fi
     echo "updating sw-osbox-bin via git"
     cd /home/osbox/.osbox/sw-osbox-bin
