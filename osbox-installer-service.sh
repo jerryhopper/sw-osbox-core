@@ -87,7 +87,6 @@ while true; do
             exit
         else
             log "Installing docker"
-            sleep 120
             install_docker
             exit
         fi
