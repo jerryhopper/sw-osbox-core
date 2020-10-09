@@ -68,36 +68,42 @@ log "osbox-installer-service"
 # Loop until install-stage is finished.
 while true; do
   sleep 20
+
   # check if dietpi is installed completely
   if [ -f /boot/dietpi/.installed ] ; then
 
-    # Check if docker is available.
-    if ! is_command docker ; then
-      log "Docker is not available"
-      ## checking if "apt" is running
-      if is_running apt; then
-          log "apt is running"
-          exit
+    INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
+    if [ ! "$INSTALLSTAGE" = "2" ]; then
+      #echo "VAR IS 2"
+      #if "$INSTALLSTAGE" = "2"
+      # Check if docker is available.
+      if ! is_command docker ; then
+        log "Docker is not available"
+        ## checking if "apt" is running
+        if is_running apt; then
+            log "apt is running"
+            sleep 60
+            exit
+        else
+            log "Installing docker"
+            sleep 120
+            #install_docker
+            exit
+        fi
+
       else
-          log "Installing docker"
-          sleep 120
-          #install_docker
-
-
-          exit
+        echo "Docker exists"
+        ## docker exists
+        #log "Docker exists"
+        start_osboxcore
+        exit
       fi
-
     else
-      echo "Docker exists"
-      ## docker exists
-      #log "Docker exists"
-
-      start_osboxcore
-
-
-
-      exit
+      # install-state is not 2. is installer busy?
+      sleep 120
     fi
+
+
   else
     log "sleep 60"
     sleep 120
