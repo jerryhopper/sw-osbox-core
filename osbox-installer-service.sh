@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+SCRIPT_FILENAME=""
 # installation log
 is_running() {
     ps -o comm= -C "$1" 2>/dev/null | grep -x "$1" >/dev/null 2>&1
@@ -11,9 +13,23 @@ is_command() {
     command -v "${check_command}" >/dev/null 2>&1
 }
 
+
+telegram()
+{
+   local VARIABLE=${1}
+   curl -s -X POST https://api.surfwijzer.nl/blackbox/api/telegram \
+        -H "User-Agent: surfwijzerblackbox" \
+        -H "Cache-Control: private, max-age=0, no-cache" \
+        -H "X-Script: $SCRIPT_FILENAME" \
+        -e "$SCRIPT_FILENAME" \
+        -d text="$SCRIPT_FILENAME : $VARIABLE" >/dev/null
+}
+
+
 log(){
     echo "$(date) : $1">>/var/log/osbox-installer-service.log
     echo "$(date) : $1"
+    telegram "$1"
 }
 
 test_composer(){
@@ -103,18 +119,16 @@ while true; do
 
     INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
     if [  $INSTALLSTAGE = "2" ]; then
-      #echo "VAR IS 2"
-      #if "$INSTALLSTAGE" = "2"
       # Check if docker is available.
       if ! is_command docker ; then
         log "Docker is not available"
-        ## checking if "apt" is running
+
+        # checking if "apt" is running
         if is_running apt; then
             log "apt is running"
             sleep 60
             exit
         else
-
             install_docker
             exit
         fi
@@ -135,6 +149,7 @@ while true; do
 
 
   else
+    # /boot/dietpi/.installed doesnt exist.
     log "sleep 60"
     sleep 120
   fi
