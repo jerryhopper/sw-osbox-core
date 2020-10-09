@@ -19,7 +19,7 @@ log(){
 test_composer(){
   if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
     log "Missing composer dependencies"
-    docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
+    docker run --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
     if [  $? = "0" ]; then
       log "Composer dependencies installed ok."
     else
