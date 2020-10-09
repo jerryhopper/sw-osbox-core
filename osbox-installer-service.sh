@@ -57,7 +57,7 @@ start_osboxcore(){
         systemctl stop osbox-installer
         systemctl disable osbox-installer
         log "Reboot!"
-        reboot
+        #reboot
       else
         log "ERROR!  docker run  swoole returned error. "
         exit 1
@@ -123,7 +123,9 @@ while true; do
         echo "Docker exists"
         ## docker exists
         #log "Docker exists"
-        start_osboxcore
+        systemctl stop osbox-installer
+        systemctl disable osbox-installer
+        #start_osboxcore
         exit
       fi
     else
