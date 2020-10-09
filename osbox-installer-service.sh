@@ -20,11 +20,11 @@ test_composer(){
   if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
     log "Missing composer dependencies"
     docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-    if [  $? = 0 ]; then
+    if [  $? = "0" ]; then
+      log "Composer dependencies installed ok."
+    else
       log "ERROR! [$?] docker run composer install returned error. "
       exit 1
-    else
-      log "Composer dependencies installed ok."
     fi
   else
     log "Composer dependencies are ok"
@@ -45,21 +45,20 @@ start_osboxcore(){
       log "Running composer"
       test_composer
       #docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-      if [  $? = "0" ]; then
-        log "ERROR!  docker run composer install returned error. "
-      else
-        log "Starting  docker container"
-        docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
 
-        if [  $? = "0" ]; then
-          log "ERROR!  docker run  swoole returned error. "
-        else
-          log "Disabling installer service"
-          /boot/dietpi/func/change_hostname osbox
-          systemctl stop osbox-installer
-          systemctl disable osbox-installer
-        fi
+      log "Starting  docker container"
+      docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+      if [  $? = "0" ]; then
+        log "Disabling installer service"
+        /boot/dietpi/func/change_hostname osbox
+        systemctl stop osbox-installer
+        systemctl disable osbox-installer
+
+      else
+        log "ERROR!  docker run  swoole returned error. "
+        exit 1
       fi
+
 
 
       #systemctl enable osbox-installer
