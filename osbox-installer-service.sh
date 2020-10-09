@@ -92,7 +92,7 @@ start_osboxcore(){
 install_docker(){
   log "Installing docker"
   /boot/dietpi/dietpi-software install 162 --unattended
-  if ! $? = 0; then
+  if ! $? = "0"; then
     log "installation of docker failed!  rebooting!"
     sleep 15
     exit
@@ -100,7 +100,7 @@ install_docker(){
   fi
   log "Pulling image"
   docker pull jerryhopper/swoole:4.5.4-php7.3
-  if ! $? = 0; then
+  if ! $? = "0"; then
     log "Failed: docker pull jerryhopper/swoole:4.5.4-php7.3"
     sleep 15
     exit
