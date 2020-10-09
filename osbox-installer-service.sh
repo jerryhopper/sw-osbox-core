@@ -50,6 +50,7 @@ start_osboxcore(){
           log "ERROR!  docker run  swoole returned error. "
         else
           log "Disabling installer service"
+          /boot/dietpi/func/change_hostname osbox
           systemctl stop osbox-installer
           systemctl disable osbox-installer
         fi
