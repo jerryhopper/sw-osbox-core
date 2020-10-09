@@ -117,7 +117,7 @@ log "Starting osbox-installer-service"
 
 # Loop until install-stage is finished.
 while true; do
-  sleep 20
+  #sleep 10
 
   # check if dietpi is installed completely
   if [ -f /boot/dietpi/.installed ] ; then
@@ -131,7 +131,7 @@ while true; do
         # checking if "apt" is running
         if is_running apt; then
             log "apt is running"
-            sleep 60
+            sleep 10
             exit
         else
             install_docker
@@ -149,7 +149,7 @@ while true; do
       fi
     else
       log "install-state is not 2. is installer busy?"
-      sleep 120
+      sleep 10
     fi
 
 
