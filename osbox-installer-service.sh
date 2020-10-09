@@ -16,6 +16,17 @@ log(){
     echo "$(date) : $1"
 }
 
+test_composer(){
+  if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
+    docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
+    if [  $? = "0" ]; then
+      log "ERROR!  docker run composer install returned error. "
+    else
+      log "Composer dependencies ok."
+    fi
+  fi
+}
+
 start_osboxcore(){
   # check if container is available
   # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
@@ -27,7 +38,8 @@ start_osboxcore(){
       systemctl disable osbox-installer
   else
       log "Running composer"
-      docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
+      test_composer
+      #docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
       if [  $? = "0" ]; then
         log "ERROR!  docker run composer install returned error. "
       else
