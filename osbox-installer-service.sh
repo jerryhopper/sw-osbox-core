@@ -50,6 +50,7 @@ install_docker(){
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! $? = 0; then
     log "installation of docker failed!  rebooting!"
+    sleep 3600
     exit
     #reboot
   fi
