@@ -46,6 +46,7 @@ start_osboxcore(){
 }
 
 install_docker(){
+
   /boot/dietpi/dietpi-software install 162 --unattended
   if ! $? = 0; then
     log "installation of docker failed!  rebooting!"
@@ -66,7 +67,7 @@ log "osbox-installer-service"
 
 # Loop until install-stage is finished.
 while true; do
-
+  sleep 20
   # check if dietpi is installed completely
   if [ -f /boot/dietpi/.installed ] ; then
 
@@ -79,7 +80,8 @@ while true; do
           exit
       else
           log "Installing docker"
-          install_docker
+          sleep 120
+          #install_docker
 
 
           exit
@@ -98,7 +100,7 @@ while true; do
     fi
   else
     log "sleep 60"
-    sleep 60
+    sleep 120
   fi
 done
 
