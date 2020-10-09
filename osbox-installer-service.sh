@@ -74,7 +74,7 @@ while true; do
   if [ -f /boot/dietpi/.installed ] ; then
 
     INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
-    if [ ! $INSTALLSTAGE = "2" ]; then
+    if [  $INSTALLSTAGE = "2" ]; then
       #echo "VAR IS 2"
       #if "$INSTALLSTAGE" = "2"
       # Check if docker is available.
