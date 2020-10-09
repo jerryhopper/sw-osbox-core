@@ -50,10 +50,14 @@ start_osboxcore(){
       docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
       if [  $? = "0" ]; then
         log "Disabling installer service"
+
         /boot/dietpi/func/change_hostname osbox
+        cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services
+        systemctl restart avahi-daemon.service
         systemctl stop osbox-installer
         systemctl disable osbox-installer
-
+        log "Reboot!"
+        reboot
       else
         log "ERROR!  docker run  swoole returned error. "
         exit 1
