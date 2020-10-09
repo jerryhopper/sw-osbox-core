@@ -18,12 +18,15 @@ log(){
 
 test_composer(){
   if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
+    log "Missing composer dependencies"
     docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
     if [  $? = "0" ]; then
       log "ERROR!  docker run composer install returned error. "
     else
       log "Composer dependencies ok."
     fi
+  else
+    log "Composer dependencies are ok"
   fi
 }
 
