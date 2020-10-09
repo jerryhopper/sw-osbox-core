@@ -31,6 +31,7 @@ start_osboxcore(){
   # check if container is available
   # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
   log "start_osboxcore()"
+  test_composer
   if [ "$(docker ps -a|grep osbox-core)" ]; then
       log "docker container osbox-core is running!"
       systemctl stop osbox-installer
