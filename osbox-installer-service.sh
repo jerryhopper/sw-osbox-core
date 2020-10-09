@@ -88,7 +88,7 @@ while true; do
         else
             log "Installing docker"
             sleep 120
-            #install_docker
+            install_docker
             exit
         fi
 
@@ -100,7 +100,7 @@ while true; do
         exit
       fi
     else
-      # install-state is not 2. is installer busy?
+      log "install-state is not 2. is installer busy?"
       sleep 120
     fi
 
