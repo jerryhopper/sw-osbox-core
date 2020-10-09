@@ -28,17 +28,22 @@ start_osboxcore(){
   else
       log "Running composer"
       docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-
-      log "Starting  docker container"
-      docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
-
       if [  $? = "0" ]; then
-        log "ERROR!  docker returned error. "
+        log "ERROR!  docker run composer install returned error. "
       else
-        log "Disabling installer service"
-        systemctl stop osbox-installer
-        systemctl disable osbox-installer
+        log "Starting  docker container"
+        docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
+
+        if [  $? = "0" ]; then
+          log "ERROR!  docker run  swoole returned error. "
+        else
+          log "Disabling installer service"
+          systemctl stop osbox-installer
+          systemctl disable osbox-installer
+        fi
       fi
+
+
       #systemctl enable osbox-installer
 
 
