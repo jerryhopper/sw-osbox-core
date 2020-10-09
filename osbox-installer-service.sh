@@ -22,8 +22,9 @@ test_composer(){
     docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
     if [  $? = "0" ]; then
       log "ERROR!  docker run composer install returned error. "
+      exit 1
     else
-      log "Composer dependencies ok."
+      log "Composer dependencies installed ok."
     fi
   else
     log "Composer dependencies are ok"
