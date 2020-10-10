@@ -32,16 +32,16 @@ log(){
 
 
 docker_container_exists(){
-    $(docker container ls|grep $1)
+    docker container ls|grep $1
 }
 
 docker_image_exists(){
-    $(docker image ls|grep $1)
+    docker image ls|grep $1
 }
 
 docker_pull(){
     log "docker pull $1"
-    $(docker pull $1)
+    docker pull $1
 }
 
 
