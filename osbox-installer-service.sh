@@ -193,11 +193,24 @@ if [ -f /boot/dietpi/.installed ] ; then
               fi
           fi
 
-          if ! docker_image_exists "jerryhopper/swoole"; then
-              docker_pull "jerryhopper/swoole:4.5.4-php7.3"
+          # check if image exists
+          if docker_image_exists "jerryhopper/swoole"; then
+              # check if container exists
+              if docker_container_exists "osbox-core"; then
+                  # check if container is running
+                  if docker_container_isrunning "osbox-core"; then
+                      # stop the running container.
+                      docker_stop "osbox-core"
+                  fi
+                  # remove the stopped container
+                  docker_rm "osbox-core"
+              fi
           fi
 
+          docker_pull "jerryhopper/swoole:4.5.4-php7.3"
 
+
+          # check if container exists
           if ! docker_container_exists "osbox-core"; then
               log "osbox-core container is not available."
               docker_run_swoole
@@ -207,7 +220,7 @@ if [ -f /boot/dietpi/.installed ] ; then
           fi
 
 
-
+          # check if container is running.
           if docker_container_isrunning "osbox-core"; then
               log "osbox-core is running"
               disable_installer
