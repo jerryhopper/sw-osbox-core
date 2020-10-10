@@ -74,7 +74,14 @@ enable_avahi(){
   systemctl restart avahi-daemon.service
 }
 
-
+enable_pipe(){
+  # osbox-pipe-service!
+  # enable the pipe listener.
+  /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+  echo "#!/bin/bash">/var/lib/dietpi/postboot.d/osbox-boot
+  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/osbox-boot
+  chmod +x /var/lib/dietpi/postboot.d/osbox-boot
+}
 
 
 
@@ -225,6 +232,7 @@ if [ -f /boot/dietpi/.installed ] ; then
           docker_pull "jerryhopper/swoole:4.5.4-php7.3"
 
 
+
           # check if container exists
           if ! docker_container_exists "osbox-core"; then
               log "osbox-core container is not available."
@@ -238,10 +246,11 @@ if [ -f /boot/dietpi/.installed ] ; then
           # check if container is running.
           if docker_container_isrunning "osbox-core"; then
               log "osbox-core is running"
+
               enable_avahi
               disable_installer
               log "rebooting!"
-              reboot
+              #reboot
           fi
 
           ## docker exists
