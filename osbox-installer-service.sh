@@ -185,8 +185,11 @@ if [ -f /boot/dietpi/.installed ] ; then
 
 
           if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
-              if [ ! docker_run_composer ]; then
+              echo "No vendor directory!"
+              if ! docker_run_composer ; then
                 echo "Composer failed?"
+              else
+                echo "Composer success"
               fi
           fi
 
