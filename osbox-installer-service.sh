@@ -31,25 +31,21 @@ log(){
 
 
 
-
-
-
-
-
-test_composer(){
-  if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
-    log "Missing composer dependencies"
-    run_composer
-    if [  $? = "0" ]; then
-      log "Composer dependencies installed ok."
-    else
-      log "ERROR! [$?] docker run composer install returned error. "
-      exit 1
-    fi
-  else
-    log "Composer dependencies are ok"
-  fi
+docker_container_exists(){
+    $(docker container ls|grep $1)
 }
+
+docker_image_exists(){
+    $(docker image ls|grep $1)
+}
+
+docker_pull(){
+    log "docker pull $1"
+    $(docker pull $1)
+}
+
+
+
 
 disable_installer(){
   systemctl stop osbox-installer
@@ -70,84 +66,14 @@ disable_installer(){
 
 
 
-docker_pull_composer(){
-    log "Pulling composer image"
-    docker pull composer
-    if $? = "0"; then
-      echo "ok"
-    else
-      log "Failed: docker pull composer"
-      exit 1
-    fi
-}
-docker_image_composer_exists(){
-    if [ "$(docker image ls|grep composer)" ]; then
-        log "docker 'composer' image exists."
-        #result
-    else
-        log "docker 'composer' image does not exist."
-        #noresult
-    fi
-}
-docker_container_composer_exists(){
-    if [ "$(docker container ls|grep composer)" ]; then
-        log "docker 'composer' container exists."
-        #result
-    else
-        log "docker 'composer' container does not exist."
-        #noresult
-    fi
-}
 
 docker_run_composer(){
+  log "docker_run_composer..."
   docker run --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
   if $? = "0"; then
     echo "ok"
   else
     log "Failed: docker run composer"
-    exit 1
-  fi
-}
-
-
-
-
-
-
-
-
-
-
-docker_container_exists(){
-    $(docker container ls|grep $1)
-}
-
-docker_image_exists(){
-    $(docker image ls|grep $1)
-}
-
-docker_pull(){
-  log "docker pull $1"
-  $(docker pull $1)
-}
-
-
-docker_image_swoole_exists(){
-    if [ "$(docker image ls|grep jerryhopper/swoole)" ]; then
-      log "docker 'jerryhopper/swoole' image exists."
-      #result
-    else
-      log "docker 'jerryhopper/swoole' image doesnt exist."
-      #noresult
-    fi
-}
-docker_pull_swoole(){
-  log "Pulling swoole image"
-  docker pull jerryhopper/swoole:4.5.4-php7.3
-  if $? = "0"; then
-    echo "ok"
-  else
-    log "Failed: docker pull jerryhopper/swoole:4.5.4-php7.3"
     exit 1
   fi
 }
