@@ -47,6 +47,16 @@ docker_pull(){
     docker pull $1 >/dev/null 2>&1
 }
 
+docker_stop(){
+    log "docker stop $1"
+    docker stop $1 >/dev/null 2>&1
+}
+
+docker_rm(){
+    log "docker rm $1"
+    docker rm $1 >/dev/null 2>&1
+}
+
 
 
 
