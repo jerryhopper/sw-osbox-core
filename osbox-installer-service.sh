@@ -137,7 +137,7 @@ start_osboxcore(){
 
         disable_installer
         log "Reboot!"
-        #reboot
+        ###reboot
       else
         log "ERROR!  docker run  swoole returned error. "
         exit 1
@@ -250,7 +250,7 @@ if [ -f /boot/dietpi/.installed ] ; then
               enable_avahi
               disable_installer
               log "rebooting!"
-              #reboot
+              ###reboot
           fi
 
           ## docker exists
