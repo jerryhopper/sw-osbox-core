@@ -35,7 +35,7 @@ docker_container_isrunning(){
 }
 
 docker_container_exists(){
-    docker container ls|grep $1 >/dev/null 2>&1
+    docker container ls -a|grep $1 >/dev/null 2>&1
 }
 
 docker_image_exists(){
