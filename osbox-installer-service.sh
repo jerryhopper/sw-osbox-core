@@ -180,7 +180,7 @@ if [ -f /boot/dietpi/.installed ] ; then
                 exit
           else
                 if install_docker; then
-                  echo "ok"
+                  echo "docker install ok"
                 else
                   log "installation of docker failed!  rebooting!"
                   exit 1
