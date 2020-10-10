@@ -98,14 +98,7 @@ docker_run_swoole(){
 
 install_docker(){
   log "Installing docker"
-  /boot/dietpi/dietpi-software install 162 --unattended
-  if $? = "0"; then
-    echo "ok"
-  else
-    log "installation of docker failed!  rebooting!"
-    exit 1
-  fi
-
+  /boot/dietpi/dietpi-software install 162 --unattended >/dev/null 2>&1
 }
 
 
@@ -186,7 +179,13 @@ if [ -f /boot/dietpi/.installed ] ; then
           if is_running apt; then
                 exit
           else
-                install_docker
+                if install_docker; then
+                  echo "ok"
+                else
+                  log "installation of docker failed!  rebooting!"
+                  exit 1
+                fi
+
                 exit
           fi
       else
