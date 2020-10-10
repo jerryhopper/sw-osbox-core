@@ -203,7 +203,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
           if ! docker_container_exists "osbox-core"; then
               log "osbox-core container is not available."
-
+              docker_run_swoole
           fi
 
 
