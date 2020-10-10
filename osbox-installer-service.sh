@@ -30,6 +30,9 @@ log(){
 }
 
 
+docker_container_isrunning(){
+    docker ps|grep $1 >/dev/null 2>&1
+}
 
 docker_container_exists(){
     docker container ls|grep $1 >/dev/null 2>&1
@@ -206,10 +209,14 @@ if [ -f /boot/dietpi/.installed ] ; then
               docker_run_swoole
           fi
 
+          if docker_container_isrunning "osbox-core"; then
+              log "osbox-core is running"
+              disable_installer
+          fi
 
           ## docker exists
           #log "Docker exists"
-          disable_installer
+
           #start_osboxcore
           exit
       fi
