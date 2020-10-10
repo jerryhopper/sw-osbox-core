@@ -188,12 +188,8 @@ if [ -f /boot/dietpi/.installed ] ; then
           fi
       else
           log "Docker exists, exiting osbox-installer"
-          if docker_image_exists "composer"; then
-              log "Composer image is available."
-          else
-              log "Composer image is not available."
+          if ! docker_image_exists "composer"; then
               docker_pull "composer"
-
           fi
 
 
@@ -201,17 +197,13 @@ if [ -f /boot/dietpi/.installed ] ; then
               docker_run_composer
           fi
 
-          if docker_image_exists "jerryhopper/swoole"; then
-              log "Swoole image is available."
-          else
-              log "Swoole image is not available."
+          if ! docker_image_exists "jerryhopper/swoole"; then
               docker_pull "jerryhopper/swoole:4.5.4-php7.3"
           fi
 
-          if docker_container_exists "osbox-core"; then
-              log "osbox-core container is available."
-          else
+          if ! docker_container_exists "osbox-core"; then
               log "osbox-core container is not available."
+
           fi
 
 
