@@ -82,7 +82,7 @@ disable_installer(){
 
 docker_run_composer(){
   log "docker_run_composer..."
-  docker run -rm --name osbox-composer --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
+  docker run --rm --name osbox-composer --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
 }
 docker_run_swoole(){
   log "Starting  docker container"
