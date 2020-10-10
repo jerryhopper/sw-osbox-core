@@ -73,22 +73,10 @@ disable_installer(){
 docker_run_composer(){
   log "docker_run_composer..."
   docker run --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
-  if $? = "0"; then
-    echo "ok"
-  else
-    log "Failed: docker run composer"
-    exit 1
-  fi
 }
 docker_run_swoole(){
   log "Starting  docker container"
   docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3 >/dev/null 2>&1
-  if $? = "0"; then
-    echo "ok"
-  else
-    log "Failed: docker run swoole"
-    exit 1
-  fi
 }
 
 
@@ -197,7 +185,9 @@ if [ -f /boot/dietpi/.installed ] ; then
 
 
           if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
-              docker_run_composer
+              if [ ! docker_run_composer ]; then
+                echo "Composer failed?"
+              fi
           fi
 
           if ! docker_image_exists "jerryhopper/swoole"; then
