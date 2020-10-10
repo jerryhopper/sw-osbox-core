@@ -72,7 +72,7 @@ disable_installer(){
 
 docker_run_composer(){
   log "docker_run_composer..."
-  docker run --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
+  docker run -rm --name osbox-composer --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
 }
 docker_run_swoole(){
   log "Starting  docker container"
@@ -178,12 +178,12 @@ if [ -f /boot/dietpi/.installed ] ; then
                 exit
           fi
       else
-          log "Docker exists, exiting osbox-installer"
+          # Docker is available.
           if ! docker_image_exists "composer"; then
               docker_pull "composer"
           fi
 
-
+          # Check vendor directory.
           if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
               echo "No vendor directory!"
               if ! docker_run_composer ; then
@@ -197,10 +197,16 @@ if [ -f /boot/dietpi/.installed ] ; then
               docker_pull "jerryhopper/swoole:4.5.4-php7.3"
           fi
 
+
           if ! docker_container_exists "osbox-core"; then
               log "osbox-core container is not available."
               docker_run_swoole
+          else
+              docker_stop "osbox-core"
+              docker_rm "osbox-core"
           fi
+
+
 
           if docker_container_isrunning "osbox-core"; then
               log "osbox-core is running"
