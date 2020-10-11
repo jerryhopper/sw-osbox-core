@@ -85,6 +85,19 @@ enable_pipe(){
 
 
 
+create_database(){
+  # check if sqlite3 db exists.
+  #
+  #  /host/etc/osbox/master.db
+  #  /host/etc/osbox/osbox.db
+  if [ ! -f /etc/osbox/osbox.db ];then
+    touch /etc/osbox/osbox.db
+    sqlite3 -batch /etc/osbox/osbox.db "CREATE table installog (id INTEGER PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
+    sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO table ( installog ) VALUES( 'osbox.db created' );"
+
+  fi
+
+}
 
 
 
@@ -111,48 +124,6 @@ install_docker(){
   log "Installing docker"
   /boot/dietpi/dietpi-software install 162 --unattended >/dev/null 2>&1
 }
-
-
-start_osboxcore(){
-  # check if container is available
-  # -env AUTORELOAD_PROGRAMS="swoole" -env AUTORELOAD_ANY_FILES=0
-  log "start_osboxcore()"
-  test_composer
-  if [ "$(docker ps -a|grep osbox-core)" ]; then
-      log "docker container osbox-core is running!"
-      disable_installer
-  else
-      log "Running composer"
-      test_composer
-      #docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
-
-      run_swoole
-
-      if [  $? = "0" ]; then
-        log "Disabling installer service"
-
-        /boot/dietpi/func/change_hostname osbox
-        cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services
-        systemctl restart avahi-daemon.service
-
-        disable_installer
-        log "Reboot!"
-        ###reboot
-      else
-        log "ERROR!  docker run  swoole returned error. "
-        exit 1
-      fi
-
-
-
-      #systemctl enable osbox-installer
-
-
-
-  fi
-
-}
-
 
 
 
@@ -256,7 +227,6 @@ if [ -f /boot/dietpi/.installed ] ; then
           ## docker exists
           #log "Docker exists"
 
-          #start_osboxcore
           exit
       fi
   else
