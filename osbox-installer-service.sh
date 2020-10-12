@@ -9,7 +9,7 @@ else
   OSBOX_BIN_USR=$2
 fi
 
-echo "$1 $2"
+#echo "$1 $2"
 # Source the file if exist
 if [ -f /etc/$OSBOX_BIN_USR/.setupconf ]; then
   source /etc/$OSBOX_BIN_USR/.setupconf
@@ -27,8 +27,8 @@ else
 
 fi
 
-echo "END $OSBOX_INSTALLMODE $OSBOX_BIN_USR"
-exit 1
+#echo "END $OSBOX_INSTALLMODE $OSBOX_BIN_USR"
+#exit 1
 
 SCRIPT_FILENAME=""
 # installation log
