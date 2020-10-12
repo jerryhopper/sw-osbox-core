@@ -28,7 +28,7 @@ else
 
 fi
 
-echo "END"
+echo "END $OSBOX_INSTALLMODE $OSBOX_BIN_USR"
 exit 1
 
 SCRIPT_FILENAME=""
