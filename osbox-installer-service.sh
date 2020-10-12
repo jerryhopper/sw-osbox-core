@@ -1,6 +1,36 @@
 #!/bin/bash
 
 
+# Variables.
+
+
+# Get the username.
+if [ $2 = ""]; then
+  OSBOX_BIN_USR="osbox"
+else
+  OSBOX_BIN_USR=$2
+fi
+
+# Source the file if exist
+if [ -f /etc/$OSBOX_BIN_USR/.setupconf ]; then
+  source /etc/$OSBOX_BIN_USR/.setupconf
+else
+  # create the file for sourcing
+  if [ $1 = ""]; then
+      OSBOX_INSTALLMODE="prod"
+  else
+      OSBOX_INSTALLMODE=$1
+  fi
+  #
+  echo "#!/bin/bash">/etc/osbox/.setupconf
+  echo "OSBOX_BIN_USR=$OSBOX_BIN_USR">>/etc/osbox/.setupconf
+  echo "OSBOX_INSTALLMODE=$OSBOX_INSTALLMODE">>/etc/osbox/.setupconf
+
+fi
+
+echo "END"
+exit 1
+
 SCRIPT_FILENAME=""
 # installation log
 is_running() {
@@ -69,9 +99,9 @@ disable_installer(){
 }
 
 enable_avahi(){
-  /boot/dietpi/func/change_hostname osbox
+
   cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services
-  systemctl restart avahi-daemon.service
+  #systemctl restart avahi-daemon.service
 }
 
 enable_pipe(){
@@ -219,9 +249,11 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "osbox-core is running"
 
               enable_avahi
+              /boot/dietpi/func/change_hostname osbox
+
               disable_installer
               log "rebooting!"
-              ###reboot
+              #reboot
           fi
 
           ## docker exists
