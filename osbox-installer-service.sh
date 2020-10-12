@@ -2,8 +2,6 @@
 
 
 # Variables.
-
-
 # Get the username.
 if [ "$2" == "" ]; then
   OSBOX_BIN_USR="osbox"
@@ -254,7 +252,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
               disable_installer
               log "rebooting!"
-              #reboot
+              reboot
           fi
 
           ## docker exists
