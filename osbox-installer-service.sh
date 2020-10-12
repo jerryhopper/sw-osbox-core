@@ -5,7 +5,7 @@
 
 
 # Get the username.
-if [ $2 = "" ]; then
+if [ "$2" == "" ]; then
   OSBOX_BIN_USR="osbox"
 else
   OSBOX_BIN_USR=$2
@@ -16,7 +16,7 @@ if [ -f /etc/$OSBOX_BIN_USR/.setupconf ]; then
   source /etc/$OSBOX_BIN_USR/.setupconf
 else
   # create the file for sourcing
-  if [ $1 = "dev" ]; then
+  if [ "$1" == "dev" ]; then
       OSBOX_INSTALLMODE="dev"
   else
       OSBOX_INSTALLMODE="prod"
