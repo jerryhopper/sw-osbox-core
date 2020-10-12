@@ -11,6 +11,7 @@ else
   OSBOX_BIN_USR=$2
 fi
 
+echo "$1 $2"
 # Source the file if exist
 if [ -f /etc/$OSBOX_BIN_USR/.setupconf ]; then
   source /etc/$OSBOX_BIN_USR/.setupconf
