@@ -98,7 +98,7 @@ disable_installer(){
 }
 
 enable_avahi(){
-
+  log "enabling avahi"
   cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services
   #systemctl restart avahi-daemon.service
 }
@@ -248,11 +248,12 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "osbox-core is running"
 
               enable_avahi
+              log "/boot/dietpi/func/change_hostname osbox"
               /boot/dietpi/func/change_hostname osbox
 
               disable_installer
               log "rebooting!"
-              reboot
+              /sbin/reboot
           fi
 
           ## docker exists
