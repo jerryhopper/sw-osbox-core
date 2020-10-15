@@ -12,6 +12,9 @@ require_once ("commands/discover.php");
 require_once ("commands/network.php");
 
 require_once ("commands/websetup.php");
+
+require_once ("commands/status.php");
+require_once ("commands/osbox.php");
 /*
 
 discover|osbox
@@ -154,6 +157,7 @@ class ProcessMessage {
 
     function command_exists($command){
         $cmdparts = explode(' ', $command);
+        //print_r($cmdparts);
         # [0] osbox
         # [1] discover  (class)
         # [2] all (class:method)
@@ -163,26 +167,34 @@ class ProcessMessage {
 
         $subcommands = array_splice($cmdparts,2);
         //print_r($subcommands);
-
-        if( !class_exists($class) ){
-            //echo "class '".$class."' doenst exist\n";
-            $this->statusCode = 500;
-            $this->statusMsg = "Invalid command\n";
-            echo "Invalid command";
-            throw new Exception("Invalid command");
-        }else{
-            echo "class $class exists!\n";
+        if($class=="\\"){
+            $class="\\osbox";
         }
 
-        echo "method:".$method."\n";
+        if( !class_exists($class) ){
+            echo "class '".$class."' doenst exist\n";
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid command\n";
+            //echo "Invalid command";
+            throw new Exception("Invalid command");
+        }
 
+        //echo "method:".$method."|\n";
+
+        if($method==""){
+            echo "Default method!";
+            $subcommands=array("default");
+            $method="default";
+        }
 
         if( ! in_array($method,get_class_methods($class))  ){
-            //echo "method ".$subcommand." doesnt exist.\n";
+            echo "method ".$subcommand." doesnt exist.\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid method\n";
             throw new Exception("Invalid method");
         }
+
+        print_r($subcommands);
 
         $this->class = new $class($subcommands,$this->pusher);
 

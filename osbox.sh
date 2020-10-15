@@ -69,7 +69,6 @@ fi
 
 
 
-
 # osbox network functions
 if [ "$1" == "network" ]; then
   if [ "$2" == "info" ]; then
