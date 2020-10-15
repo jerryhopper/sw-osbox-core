@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 set -e
 
 # is_command function
@@ -40,13 +38,22 @@ php(){
 
 
 
+
+
+
+
 if [ "$1" == "install" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/base_installer.sh
   returnedstatus $? "success" "fail"
 fi
 
 
+
+
+
 if [ "$1" == "update" ]; then
+
+
   # if development flag is set
   if [ -f /etc/osbox/dev ]; then
     if is_command "docker"; then
@@ -73,19 +80,18 @@ if [ "$1" == "update" ]; then
       if [ "$(docker ps -a|grep osbox-core)" ]; then
         echo "docker restart osbox-core"
         docker restart osbox-core
-
-
       fi
-
-
   fi
 
 
 fi
 
+
+
+
 # osbox discover functions
 if [ "$1" == "discover" ]; then
-  bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/discover.sh $2 $3 $4
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
   exit
 fi
 
@@ -100,15 +106,16 @@ fi
 # osbox network functions
 if [ "$1" == "network" ]; then
   if [ "$2" == "info" ]; then
-      bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh
 
       exit;
   fi
   if [ "$2" == "scan" ]; then
-      network="$(bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/networkinfo.sh|awk -F"," '{print $3}')"
+      network="$(bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh|awk -F"," '{print $3}')"
       nmap -v -sn $network -oG -|grep Host|awk '{if(NR>1)print}'
       exit;
   fi
+
 
 
   # if - interfaces
@@ -116,7 +123,7 @@ if [ "$1" == "network" ]; then
       # osbox if reset
       if [ "$3" == "reset" ]; then
           echo "network reset"
-          bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_dynamic_ip.sh
+          bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/set_dynamic.sh
           returnedstatus $? "success" "fail"
       fi
       # osbox if set <ip>
@@ -133,7 +140,7 @@ if [ "$1" == "network" ]; then
               echo "  osbox network if set 192.168.1.10/24 192.168.1.1"
               exit 1
           fi
-          bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/set_network_static_ip.sh $4 $5
+          bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/set_static.sh $4 $5
           returnedstatus $? "success" "fail"
 
       fi
@@ -142,6 +149,7 @@ if [ "$1" == "network" ]; then
   # command information
   if [ "$2" == "" ]; then
     echo "Usage: "
+
     echo "  osbox network scan  - scans the lan, returns ip/statusses"
     echo "  osbox network info  - returns current network settings"
 
@@ -161,13 +169,18 @@ fi
 
 
 
-
+if [ "$1" == "status" ]; then
+  echo "status"
+  exit
+fi
 
 
 
   # command information
 if [ "$1" == "" ]; then
   echo "Usage: "
+  echo "  osbox status - returns current osbox status"
+
   echo "  osbox install - installs the application"
   echo "  osbox update  - updates the application"
   echo "  osbox discover - gets network discovery information"
@@ -175,6 +188,28 @@ if [ "$1" == "" ]; then
   exit
 fi
 exit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #########################
@@ -331,20 +366,6 @@ if [ "$1" == "reboot" ]; then
     exit;
 fi
 
-
-
-if [ "$1" == "watch" ]; then
-  echo "Watching codebase for changes."
-  PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d nohup /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/autoreload-daemon.php & >/dev/null
-  exit;
-fi
-
-#
-if [ "$1" == "test" ]; then
-  echo "Watching codebase for changes."
-  PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d nohup /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/test.php
-  exit;
-fi
 
 
 
