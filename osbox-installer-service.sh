@@ -187,6 +187,9 @@ if [ -f /boot/dietpi/.installed ] ; then
 
   INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
   if [  $INSTALLSTAGE = "2" ]; then
+
+      create_database
+
       # Check if docker is available.
       if ! is_command docker ; then
           # Docker is not available.
@@ -250,7 +253,7 @@ if [ -f /boot/dietpi/.installed ] ; then
           # check if container is running.
           if docker_container_isrunning "osbox-core"; then
               log "osbox-core is running"
-              create_database
+
               enable_avahi
               log "/boot/dietpi/func/change_hostname osbox"
               /boot/dietpi/func/change_hostname osbox
