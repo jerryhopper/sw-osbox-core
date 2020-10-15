@@ -40,3 +40,4 @@ if is_command "docker"; then
     fi
 fi
 
+bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
