@@ -48,9 +48,6 @@ if [ "$1" == "install" ]; then
 fi
 
 
-
-
-
 if [ "$1" == "update" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/update.sh
   exit
