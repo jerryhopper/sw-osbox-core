@@ -41,22 +41,21 @@ php(){
 
 
 
-
+# osbox install function
 if [ "$1" == "install" ]; then
-  bash /usr/local/osbox/project/sw-osbox-core/src/BashScripts/base_installer.sh
+  bash /usr/local/osbox/extra/install.sh
   returnedstatus $? "success" "fail"
+  exit
 fi
 
-
+# osbox update function
 if [ "$1" == "update" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/update.sh
   exit
 fi
 
 
-
-
-# osbox discover functions
+# osbox discover function
 if [ "$1" == "discover" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
   exit
@@ -77,8 +76,7 @@ if [ "$1" == "network" ]; then
       exit;
   fi
   if [ "$2" == "scan" ]; then
-      network="$(bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh|awk -F"," '{print $3}')"
-      nmap -v -sn $network -oG -|grep Host|awk '{if(NR>1)print}'
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/scan.sh
       exit;
   fi
 
