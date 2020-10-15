@@ -9,12 +9,6 @@ is_command() {
 
 
 
-# enable the pipe listener.
-/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
-
-
-exit
-
 
 # Install REQUIREMENTS.
 if ! is_command "docker" ; then
@@ -68,6 +62,15 @@ fi
 
 # enable the pipe listener.
 /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+
+
+
+# enable the pipe listener.
+#/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+
+
+exit
+
 
 
 #bash /usr/local/osbox/src/BashScripts/base_installer.sh
