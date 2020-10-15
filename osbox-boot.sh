@@ -7,6 +7,12 @@ is_command() {
     command -v "${check_command}" >/dev/null 2>&1
 }
 
+
+
+# enable the pipe listener.
+/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+
+
 exit
 
 
