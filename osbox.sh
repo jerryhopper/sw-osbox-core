@@ -132,6 +132,11 @@ fi
 
 
 
+if [ "$1" == "logs" ]; then
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/logs.sh
+  exit
+fi
+
 
 if [ "$1" == "status" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/status.sh
