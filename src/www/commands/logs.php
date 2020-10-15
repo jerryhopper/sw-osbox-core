@@ -10,7 +10,7 @@ class logs extends commandBase {
         echo "cmd: osbox logs\n";
 
 
-        $ret = $this->_send("osbox logs");
+        $ret = $this->_send("osbox logs",5);
 
         $statuscode=200;
         $statusmsg="ok";

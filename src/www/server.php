@@ -51,7 +51,7 @@ class commandBase {
         $this->method=$subcommands[0];
         $this->subcommands = $subcommands;
 
-        echo "class! (".$this->method.")\n";
+        echo "\\commandBase::construct class! (".$this->method.")\n";
 
     }
 
@@ -60,15 +60,24 @@ class commandBase {
         $this->$cmd();
     }
 
-    public function _send($data,$sleep=2)
+    public function _send($data,$sleep=1)
     {
+        error_log("_send( $data )\n");
         // $data
+        //error_log("send to /host/osbox/pipe");
+        echo  "send '$data' to /host/osbox/pipe\n";
         $fp = fopen('/host/osbox/pipe', 'w');
         fwrite($fp, $data);
         fclose($fp);
 
+        error_log(  "sleep $sleep \n");
         sleep($sleep);
+
         $filename="/host/osbox/response";
+        if (!file_exists($filename)){
+            error_log(  "/host/osbox/response DOESN NOT EXIST!");
+        }
+
         $handle = fopen($filename, "rb");
         $contents = '';
         while (!feof($handle)) {
