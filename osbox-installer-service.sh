@@ -57,7 +57,7 @@ telegram()
 log(){
     echo "$(date) : $1">>/var/log/osbox-installer-service.log
     echo "$(date) : $1"
-    if [ /etc/osbox/osbox.db ];then
+    if [ -f /etc/osbox/osbox.db ];then
       sqlite3 -batch /etc/osbox/osbox.db "insert INTO installog ( f ) VALUES( '$1' );"
     fi
     telegram "$1"
@@ -188,7 +188,7 @@ if [ -f /boot/dietpi/.installed ] ; then
   INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
   if [  $INSTALLSTAGE = "2" ]; then
 
-      create_database
+
 
       # Check if docker is available.
       if ! is_command docker ; then
