@@ -60,6 +60,13 @@ if [ ! -f /var/osbox/mypipe ]; then
 fi
 
 
+
+
+
+if [ "$(ps -ef|grep -i listen.sh | grep -v grep)" ];then
+    echo "Listen.sh is running..."
+    kill -9 $(ps -ef|grep -i listen.sh | grep -v grep| awk '{print $2}' )
+fi
 # enable the pipe listener.
 /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
 
