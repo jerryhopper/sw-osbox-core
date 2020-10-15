@@ -57,6 +57,9 @@ telegram()
 log(){
     echo "$(date) : $1">>/var/log/osbox-installer-service.log
     echo "$(date) : $1"
+    if [ /etc/osbox/osbox.db ];then
+      sqlite3 -batch /etc/osbox/osbox.db "insert INTO installog ( f ) VALUES( '$1' );"
+    fi
     telegram "$1"
 }
 
@@ -122,7 +125,8 @@ create_database(){
   if [ ! -f /etc/osbox/osbox.db ];then
     touch /etc/osbox/osbox.db
     sqlite3 -batch /etc/osbox/osbox.db "CREATE table installog (id INTEGER PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
-    sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO table ( installog ) VALUES( 'osbox.db created' );"
+    sqlite3 -batch /etc/osbox/osbox.db "insert INTO installog ( f ) VALUES( 'osbox.db created' );"
+
 
   fi
 
@@ -246,7 +250,7 @@ if [ -f /boot/dietpi/.installed ] ; then
           # check if container is running.
           if docker_container_isrunning "osbox-core"; then
               log "osbox-core is running"
-
+              create_database
               enable_avahi
               log "/boot/dietpi/func/change_hostname osbox"
               /boot/dietpi/func/change_hostname osbox
