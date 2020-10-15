@@ -15,6 +15,7 @@ require_once ("commands/websetup.php");
 
 require_once ("commands/status.php");
 require_once ("commands/osbox.php");
+require_once ("commands/logs.php");
 /*
 
 discover|osbox
