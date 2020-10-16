@@ -95,9 +95,9 @@ docker_rm(){
 
 
 disable_installer(){
-  systemctl stop osbox-installer
+  log "$(systemctl stop osbox-installer)"
   log "Disabling installer service"
-  systemctl disable osbox-installer
+  log "$(systemctl disable osbox-installer)"
 }
 
 enable_avahi(){
