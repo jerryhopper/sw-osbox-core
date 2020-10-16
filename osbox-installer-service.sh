@@ -256,7 +256,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
               enable_avahi
               log "/boot/dietpi/func/change_hostname osbox"
-              bash /boot/dietpi/func/change_hostname osbox
+              bash /boot/dietpi/func/change_hostname osbox >/dev/null 2>&1
 
               disable_installer
               log "rebooting!"
