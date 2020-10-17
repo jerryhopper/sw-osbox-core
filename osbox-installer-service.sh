@@ -259,7 +259,9 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "$(bash /boot/dietpi/func/change_hostname osbox)"
               sleep 1
               log "Disable_installer"
+
               disable_installer
+              sleep 4
               log "rebooting!"
               /sbin/reboot
           fi
