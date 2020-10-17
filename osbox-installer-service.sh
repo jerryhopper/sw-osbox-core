@@ -96,7 +96,6 @@ docker_rm(){
 
 disable_installer(){
   /sbin/sysctl stop osbox-installer
-
   /sbin/sysctl disable osbox-installer
   log "Disabling installer service"
 }
@@ -263,8 +262,8 @@ if [ -f /boot/dietpi/.installed ] ; then
 
               disable_installer
               sleep 4
-              log "rebooting!"
-              /sbin/reboot
+              #log "rebooting!"
+              #/sbin/reboot
           fi
 
           ## docker exists
