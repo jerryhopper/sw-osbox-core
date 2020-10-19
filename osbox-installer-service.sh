@@ -95,15 +95,7 @@ docker_rm(){
 
 
 disable_installer(){
-  log "disable_installer 1"
-  systemctl stop osbox-installer
-  sleep 2
-  log "disable_installer 2"
-  systemctl disable osbox-installer
-  sleep 2
-  log "disable_installer 3"
-  systemctl daemon-reload
-  log "Disabling installer service"
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer >/dev/null 2>&1
 }
 
 enable_avahi(){
