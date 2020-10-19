@@ -99,6 +99,7 @@ disable_installer(){
   sleep 2
   systemctl disable osbox-installer >/dev/null 2>&1
   sleep 2
+  systemctl daemon-reload >/dev/null 2>&1
   log "Disabling installer service"
 }
 
@@ -264,8 +265,10 @@ if [ -f /boot/dietpi/.installed ] ; then
 
               disable_installer
               sleep 5
-              log "rebooting!"
-              /sbin/reboot
+              if ! "$(hostname)" = "osbox"; then
+                log "rebooting!"
+                /sbin/reboot
+              fi
           fi
 
           ## docker exists
