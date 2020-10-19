@@ -95,7 +95,7 @@ docker_rm(){
 
 
 disable_installer(){
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh >/dev/null 2>&1
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh
 }
 
 enable_avahi(){
@@ -258,7 +258,7 @@ if [ -f /boot/dietpi/.installed ] ; then
               sleep 1
               log "Disable_installer"
 
-              disable_installer
+              bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh
               sleep 5
               if ! "$(hostname)" = "osbox"; then
                 log "rebooting!"
