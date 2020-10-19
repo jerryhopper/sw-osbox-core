@@ -95,7 +95,7 @@ docker_rm(){
 
 
 disable_installer(){
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer >/dev/null 2>&1
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh >/dev/null 2>&1
 }
 
 enable_avahi(){
