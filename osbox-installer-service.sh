@@ -95,11 +95,14 @@ docker_rm(){
 
 
 disable_installer(){
-  systemctl stop osbox-installer >/dev/null 2>&1
+  log "disable_installer 1"
+  nohup systemctl stop osbox-installer &
   sleep 2
-  systemctl disable osbox-installer >/dev/null 2>&1
+  log "disable_installer 2"
+  nohup systemctl disable osbox-installer &
   sleep 2
-  systemctl daemon-reload >/dev/null 2>&1
+  log "disable_installer 3"
+  nohup systemctl daemon-reload &
   log "Disabling installer service"
 }
 
