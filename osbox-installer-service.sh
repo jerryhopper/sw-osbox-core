@@ -263,9 +263,9 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "Disable_installer"
 
               disable_installer
-              sleep 4
-              #log "rebooting!"
-              #/sbin/reboot
+              sleep 5
+              log "rebooting!"
+              /sbin/reboot
           fi
 
           ## docker exists
