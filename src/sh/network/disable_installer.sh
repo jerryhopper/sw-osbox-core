@@ -25,11 +25,9 @@ log(){
 
 
 log "disable_installer 1"
-/bin/systemctl stop osbox-installer >>/var/log/pruts.log
-log "disable_installer 2"
-/bin/systemctl disable osbox-installer >>/var/log/pruts.log
+/bin/systemctl stop osbox-installer && log "disable_installer 2" && /bin/systemctl disable osbox-installer && reboot
 log "disable_installer 3"
-/bin/systemctl daemon-reload >>/var/log/pruts.log
+/bin/systemctl daemon-reload
 log "Disabling installer service"
 sleep 2
 log "reboot"
