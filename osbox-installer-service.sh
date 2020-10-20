@@ -279,9 +279,11 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "/boot/dietpi/func/change_hostname osbox"
               log "$(bash /boot/dietpi/func/change_hostname osbox)"
               sleep 1
-              log "Disable_installer"
 
-              nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
+              log "Enable listener-service and disable installer-service"
+
+              osbox_listener_service
+              #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
 
               sleep 1
               if ! "$(hostname)" = "osbox"; then
