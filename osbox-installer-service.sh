@@ -283,13 +283,15 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "Enable listener-service and disable installer-service"
 
               osbox_listener_service
+
+              systemctl start osbox-installer.service
               #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
 
               sleep 1
-              if ! "$(hostname)" = "osbox"; then
-                log "rebooting!"
-                /sbin/reboot
-              fi
+              #if ! "$(hostname)" = "osbox"; then
+              #  log "rebooting!"
+              #  /sbin/reboot
+              #fi
 
           fi
 

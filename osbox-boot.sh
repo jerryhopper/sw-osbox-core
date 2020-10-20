@@ -7,8 +7,30 @@ is_command() {
     command -v "${check_command}" >/dev/null 2>&1
 }
 
+telegram()
+{
+   local VARIABLE=${1}
+   curl -s -X POST https://api.surfwijzer.nl/blackbox/api/telegram \
+        -m 5 \
+        --connect-timeout 2.37 \
+        -H "User-Agent: surfwijzerblackbox" \
+        -H "Cache-Control: private, max-age=0, no-cache" \
+        -H "X-Script: $SCRIPT_FILENAME" \
+        -e "$SCRIPT_FILENAME" \
+        -d text="$SCRIPT_FILENAME : $VARIABLE" >/dev/null
+}
+
+log(){
+    echo "$(date) : $1">>/var/log/osbox-installer-service.log
+    echo "$(date) : $1"
+    if [ -f /etc/osbox/osbox.db ];then
+      sqlite3 -batch /etc/osbox/osbox.db "insert INTO installog ( f ) VALUES( '$1' );"
+    fi
+    telegram "$1"
+}
 
 
+log "osbox-boot.sh"
 
 # Install REQUIREMENTS.
 if ! is_command "docker" ; then
@@ -68,7 +90,7 @@ if [ "$(ps -ef|grep -i listen.sh | grep -v grep)" ];then
     kill -9 $(ps -ef|grep -i listen.sh | grep -v grep| awk '{print $2}' )
 fi
 # enable the pipe listener.
-/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+#/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
 
 
 
