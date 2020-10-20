@@ -101,7 +101,7 @@ osbox_listener_service(){
     echo "">>/etc/systemd/system/osbox-listener.service
     echo "[Service]">>/etc/systemd/system/osbox-listener.service
     echo "Type=simple">>/etc/systemd/system/osbox-listener.service
-    echo "PIDFile=/run/osbox-listener">>/etc/systemd/system/osbox-listener.service
+    #echo "PIDFile=/run/osbox-listener">>/etc/systemd/system/osbox-listener.service
     echo "Restart=always">>/etc/systemd/system/osbox-listener.service
     echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
     echo "User=root">>/etc/systemd/system/osbox-listener.service
