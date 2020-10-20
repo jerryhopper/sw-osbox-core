@@ -259,7 +259,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
           docker_pull "jerryhopper/swoole:4.5.4-php7.3"
 
-          enable_pipe
+          #enable_pipe
 
           # check if container exists
           if ! docker_container_exists "osbox-core"; then
