@@ -34,10 +34,6 @@ fi
 if is_command "docker"; then
     docker run --rm --interactive --tty --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install
 
-    if [ "$(ps -ef|grep -i listen.sh | grep -v grep)" ];then
-        echo "Listen.sh is running..."
-        kill -9 $(ps -ef|grep -i listen.sh | grep -v grep| awk '{print $2}' )
-    fi
     # enable the pipe listener.
     echo "systemctl restart osbox-listener"
     systemctl restart osbox-listener
