@@ -27,9 +27,9 @@ log "disable_installer.sh"
 OSB_INSTALLER="$(systemctl is-enabled osbox-installer.service)"
 if [ "$OSB_INSTALLER" = "enabled" ]; then
   log "disable_installer: systemctl stop osbox-installer "
-  /bin/systemctl stop osbox-installer>/dev/null 2>&1
+  systemctl stop osbox-installer
   log "disable_installer: systemctl disable osbox-installer "
-  /bin/systemctl disable osbox-installer>/dev/null 2>&1
+  systemctl disable osbox-installer
 
 fi
 
