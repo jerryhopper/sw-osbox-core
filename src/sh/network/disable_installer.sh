@@ -24,13 +24,9 @@ log(){
 
 
 
-log "disable_installer 1"
-/bin/systemctl stop osbox-installer && log "disable_installer 2" && /bin/systemctl disable osbox-installer && reboot
-log "disable_installer 3"
-/bin/systemctl daemon-reload
-log "Disabling installer service"
-sleep 2
-log "reboot"
-sleep1
-reboot
+log "disable_installer: systemctl stop osbox-installer "
+/bin/systemctl stop osbox-installer
+log "disable_installer: systemctl disable osbox-installer "
+/bin/systemctl disable osbox-installer
+
 exit 0
