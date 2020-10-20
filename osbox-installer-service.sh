@@ -105,7 +105,7 @@ osbox_listener_service(){
     echo "Restart=always">>/etc/systemd/system/osbox-listener.service
     echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
     echo "User=root">>/etc/systemd/system/osbox-listener.service
-    echo "TimeoutSec=900">>/etc/systemd/system/osbox-listener.service
+    #echo "TimeoutSec=300">>/etc/systemd/system/osbox-listener.service
     echo "ExecStart=bash /usr/local/osbox/bin/listen.sh">>/etc/systemd/system/osbox-listener.service
     echo "TasksMax=10">>/etc/systemd/system/osbox-listener.service
     echo "[Install]">>/etc/systemd/system/osbox-listener.service
@@ -278,16 +278,15 @@ if [ -f /boot/dietpi/.installed ] ; then
               enable_avahi
               log "/boot/dietpi/func/change_hostname osbox"
               log "$(bash /boot/dietpi/func/change_hostname osbox)"
-              sleep 1
+              #sleep 1
 
               log "Enable listener-service and disable installer-service"
-
               osbox_listener_service
 
-              systemctl start osbox-installer.service
+              #systemctl enable osbox-installer.service
               #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
 
-              sleep 1
+              #sleep 1
               #if ! "$(hostname)" = "osbox"; then
               log "rebooting!"
               /sbin/reboot
