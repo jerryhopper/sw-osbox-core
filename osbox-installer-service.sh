@@ -91,6 +91,29 @@ docker_rm(){
     docker rm $1 >/dev/null 2>&1
 }
 
+## type forking
+## simple
+osbox_listener_service(){
+    echo "[Unit]">/etc/systemd/system/osbox-listener.service
+    echo "Description=osbox-listener-service">>/etc/systemd/system/osbox-listener.service
+    echo "After=network.target">>/etc/systemd/system/osbox-listener.service
+    echo "StartLimitIntervalSec=4">>/etc/systemd/system/osbox-listener.service
+    echo "">>/etc/systemd/system/osbox-listener.service
+    echo "[Service]">>/etc/systemd/system/osbox-listener.service
+    echo "Type=simple">>/etc/systemd/system/osbox-listener.service
+    echo "PIDFile=/var/run/osbox-listener">>/etc/systemd/system/osbox-listener.service
+    echo "Restart=always">>/etc/systemd/system/osbox-listener.service
+    echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
+    echo "User=root">>/etc/systemd/system/osbox-listener.service
+    echo "TimeoutSec=900">>/etc/systemd/system/osbox-listener.service
+    echo "ExecStart=/usr/local/osbox/bin/listen.sh">>/etc/systemd/system/osbox-listener.service
+    echo "TasksMax=10">>/etc/systemd/system/osbox-listener.service
+    echo "[Install]">>/etc/systemd/system/osbox-listener.service
+    echo "WantedBy=multi-user.target">>/etc/systemd/system/osbox-listener.service
+
+    systemctl enable osbox-listener
+
+}
 
 
 
