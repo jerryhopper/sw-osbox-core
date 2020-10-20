@@ -106,7 +106,7 @@ osbox_listener_service(){
     echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
     echo "User=root">>/etc/systemd/system/osbox-listener.service
     #echo "TimeoutSec=300">>/etc/systemd/system/osbox-listener.service
-    echo "ExecStart=bash /usr/local/osbox/bin/listen.sh">>/etc/systemd/system/osbox-listener.service
+    echo "ExecStart=bash /usr/local/osbox/bin/listen.sh>/dev/null 2>&1 ">>/etc/systemd/system/osbox-listener.service
     echo "TasksMax=10">>/etc/systemd/system/osbox-listener.service
     echo "[Install]">>/etc/systemd/system/osbox-listener.service
     echo "WantedBy=multi-user.target">>/etc/systemd/system/osbox-listener.service
