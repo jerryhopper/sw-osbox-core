@@ -258,12 +258,14 @@ if [ -f /boot/dietpi/.installed ] ; then
               sleep 1
               log "Disable_installer"
 
-              bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh
-              sleep 5
+              nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
+
+              sleep 1
               if ! "$(hostname)" = "osbox"; then
                 log "rebooting!"
                 /sbin/reboot
               fi
+
           fi
 
           ## docker exists
