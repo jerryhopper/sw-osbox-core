@@ -22,7 +22,7 @@ log(){
     telegram "$1"
 }
 
-log "disable_installer.sh"
+#log "disable_installer.sh"
 
 OSB_INSTALLER="$(systemctl is-enabled osbox-installer.service)"
 if [ "$OSB_INSTALLER" = "enabled" ]; then
