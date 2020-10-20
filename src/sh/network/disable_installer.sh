@@ -25,8 +25,8 @@ log(){
 
 
 log "disable_installer: systemctl stop osbox-installer "
-/bin/systemctl stop osbox-installer
+/bin/systemctl stop osbox-installer>/dev/null 2>&1
 log "disable_installer: systemctl disable osbox-installer "
-/bin/systemctl disable osbox-installer
+/bin/systemctl disable osbox-installer>/dev/null 2>&1
 
-exit 0
+
