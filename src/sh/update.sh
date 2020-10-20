@@ -39,7 +39,8 @@ if is_command "docker"; then
         kill -9 $(ps -ef|grep -i listen.sh | grep -v grep| awk '{print $2}' )
     fi
     # enable the pipe listener.
-    /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+    systemctl restart osbox-listener
+    #/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
 
 
     if [ "$(docker ps -a|grep osbox-core)" ]; then
