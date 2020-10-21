@@ -296,7 +296,7 @@ if [ -f /boot/dietpi/.installed ] ; then
               #sleep 1
               #if ! "$(hostname)" = "osbox"; then
               log "rebooting!"
-              /sbin/reboot
+              #/sbin/reboot
               #fi
 
           fi
