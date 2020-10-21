@@ -108,11 +108,11 @@ osbox_listener_service(){
     echo "Restart=on-abort">>/etc/systemd/system/osbox-listener.service
     #echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
     echo "User=root">>/etc/systemd/system/osbox-listener.service
-    echo "TimeoutStartSec=-1">>/etc/systemd/system/osbox-listener.service
-    echo "TimeoutStopSec=-1">>/etc/systemd/system/osbox-listener.service
+    echo "TimeoutStartSec=1">>/etc/systemd/system/osbox-listener.service
+    echo "TimeoutStopSec=1">>/etc/systemd/system/osbox-listener.service
 
     echo "ExecStart=bash /usr/local/osbox/bin/listen.sh>/dev/null 2>&1 ">>/etc/systemd/system/osbox-listener.service
-    KillSignal=SIGKILL
+    echo "KillSignal=SIGKILL">>/etc/systemd/system/osbox-listener.service
     #echo "TasksMax=10">>/etc/systemd/system/osbox-listener.service
     echo "[Install]">>/etc/systemd/system/osbox-listener.service
     echo "WantedBy=multi-user.target">>/etc/systemd/system/osbox-listener.service
@@ -207,7 +207,7 @@ install_docker(){
 
 
 
-
+sleep 5
 log "Starting osbox-installer-service"
 
 # check if dietpi is installed completely
