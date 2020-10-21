@@ -108,8 +108,8 @@ osbox_listener_service(){
     echo "Restart=on-abort">>/etc/systemd/system/osbox-listener.service
     #echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
     echo "User=root">>/etc/systemd/system/osbox-listener.service
-    echo "TimeoutStartSec=1">>/etc/systemd/system/osbox-listener.service
-    echo "TimeoutStopSec=1">>/etc/systemd/system/osbox-listener.service
+    echo "TimeoutStartSec=5">>/etc/systemd/system/osbox-listener.service
+    echo "TimeoutStopSec=5">>/etc/systemd/system/osbox-listener.service
 
     echo "ExecStart=bash /usr/local/osbox/bin/listen.sh">>/etc/systemd/system/osbox-listener.service
     echo "KillSignal=SIGKILL">>/etc/systemd/system/osbox-listener.service
