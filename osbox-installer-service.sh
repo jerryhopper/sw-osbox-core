@@ -103,7 +103,7 @@ osbox_listener_service(){
     #echo "StartLimitIntervalSec=4">>/etc/systemd/system/osbox-listener.service
     echo "">>/etc/systemd/system/osbox-listener.service
     echo "[Service]">>/etc/systemd/system/osbox-listener.service
-    echo "Type=simple">>/etc/systemd/system/osbox-listener.service
+    echo "Type=forking">>/etc/systemd/system/osbox-listener.service
     echo "PIDFile=/run/osbox-listener">>/etc/systemd/system/osbox-listener.service
     echo "Restart=on-abort">>/etc/systemd/system/osbox-listener.service
     #echo "RestartSec=30">>/etc/systemd/system/osbox-listener.service
@@ -111,7 +111,7 @@ osbox_listener_service(){
     echo "TimeoutStartSec=1">>/etc/systemd/system/osbox-listener.service
     echo "TimeoutStopSec=1">>/etc/systemd/system/osbox-listener.service
 
-    echo "ExecStart=bash /usr/local/osbox/bin/listen.sh>/dev/null 2>&1 ">>/etc/systemd/system/osbox-listener.service
+    echo "ExecStart=bash /usr/local/osbox/bin/listen.sh">>/etc/systemd/system/osbox-listener.service
     echo "KillSignal=SIGKILL">>/etc/systemd/system/osbox-listener.service
     #echo "TasksMax=10">>/etc/systemd/system/osbox-listener.service
     echo "[Install]">>/etc/systemd/system/osbox-listener.service
