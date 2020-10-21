@@ -32,7 +32,7 @@ fi
 #echo "END $OSBOX_INSTALLMODE $OSBOX_BIN_USR"
 #exit 1
 
-SCRIPT_FILENAME=""
+#SCRIPT_FILENAME=""
 # installation log
 is_running() {
     ps -o comm= -C "$1" 2>/dev/null | grep -x "$1" >/dev/null 2>&1
