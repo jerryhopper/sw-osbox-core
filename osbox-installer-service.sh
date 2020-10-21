@@ -119,10 +119,16 @@ osbox_listener_service(){
 
     systemctl enable osbox-listener
     systemctl start osbox-listener
-
-
 }
 
+osbox_updater_service(){
+    if [ -f /etc/systemd/system/osbox-updater.service ] ; then
+        rm -f /etc/systemd/system/osbox-updater.service
+    fi
+    ln -s /usr/local/osbox/lib/systemd/osbox-updater-service /etc/systemd/system/osbox-updater.service
+    systemctl enable osbox-updater
+    systemctl start osbox-updater
+}
 
 
 disable_installer(){
@@ -289,6 +295,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
           #log "Enable listener-service and disable installer-service"
           osbox_listener_service
+          osbox_updater_service
           sleep 15
 
       fi
