@@ -134,15 +134,6 @@ enable_avahi(){
   #systemctl restart avahi-daemon.service
 }
 
-enable_pipe(){
-  # osbox-pipe-service!
-  # enable the pipe listener.
-  #/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
-  #echo "#!/bin/bash">/var/lib/dietpi/postboot.d/osbox-boot
-  #echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/osbox-boot
-  #chmod +x /var/lib/dietpi/postboot.d/osbox-boot
-}
-
 
 
 create_database(){
