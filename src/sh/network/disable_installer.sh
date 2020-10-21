@@ -2,6 +2,7 @@
 
 telegram()
 {
+   $SCRIPT_FILENAME="disable_installer.sh"
    local VARIABLE=${1}
    curl -s -X POST https://api.surfwijzer.nl/blackbox/api/telegram \
         -m 5 \
@@ -27,9 +28,9 @@ log(){
 OSB_INSTALLER="$(systemctl is-enabled osbox-installer.service)"
 if [ "$OSB_INSTALLER" = "enabled" ]; then
   log "disable_installer: systemctl stop osbox-installer "
-  systemctl stop osbox-installer
+  systemctl stop osbox-installer &
   log "disable_installer: systemctl disable osbox-installer "
-  systemctl disable osbox-installer
+  systemctl disable osbox-installer &
 
 fi
 
