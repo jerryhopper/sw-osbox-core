@@ -118,6 +118,7 @@ osbox_listener_service(){
     echo "WantedBy=multi-user.target">>/etc/systemd/system/osbox-listener.service
 
     systemctl enable osbox-listener
+    systemctl start osbox-listener
 
 
 }
@@ -288,6 +289,7 @@ if [ -f /boot/dietpi/.installed ] ; then
 
           #log "Enable listener-service and disable installer-service"
           osbox_listener_service
+          sleep 15
 
       fi
 
