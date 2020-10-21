@@ -198,7 +198,7 @@ install_docker(){
 
 
 
-sleep 5
+sleep 15
 log "Starting osbox-installer-service"
 
 # check if dietpi is installed completely
@@ -285,10 +285,10 @@ if [ -f /boot/dietpi/.installed ] ; then
               #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
 
               #sleep 1
-              #if ! "$(hostname)" = "osbox"; then
-              log "rebooting!"
-              #/sbin/reboot
-              #fi
+              if ! "$(hostname)" = "osbox"; then
+                log "rebooting!"
+                /sbin/reboot
+              fi
 
           fi
 
