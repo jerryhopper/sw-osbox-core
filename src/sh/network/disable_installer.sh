@@ -2,7 +2,7 @@
 
 telegram()
 {
-   $SCRIPT_FILENAME="disable_installer.sh"
+   SCRIPT_FILENAME="disable_installer.sh"
    local VARIABLE=${1}
    curl -s -X POST https://api.surfwijzer.nl/blackbox/api/telegram \
         -m 5 \
