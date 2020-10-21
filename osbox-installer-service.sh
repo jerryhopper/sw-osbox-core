@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SCRIPT_FILENAME="installerservice.sh"
+
 
 # Variables.
 # Get the username.
@@ -45,6 +45,7 @@ is_command() {
 
 telegram()
 {
+   SCRIPT_FILENAME="installerservice.sh"
    local VARIABLE=${1}
    curl -s -X POST https://api.surfwijzer.nl/blackbox/api/telegram \
         -m 5 \
