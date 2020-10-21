@@ -80,17 +80,17 @@ docker_image_exists(){
 }
 
 docker_pull(){
-    log "docker pull $1"
+    #log "docker pull $1"
     docker pull $1 >/dev/null 2>&1
 }
 
 docker_stop(){
-    log "docker stop $1"
+    #log "docker stop $1"
     docker stop $1 >/dev/null 2>&1
 }
 
 docker_rm(){
-    log "docker rm $1"
+    #log "docker rm $1"
     docker rm $1 >/dev/null 2>&1
 }
 
@@ -129,7 +129,7 @@ disable_installer(){
 }
 
 enable_avahi(){
-  log "enabling avahi"
+  #log "enabling avahi"
   cp /usr/local/osbox/lib/avahi/osbox.service /etc/avahi/services
   #systemctl restart avahi-daemon.service
 }
@@ -137,10 +137,10 @@ enable_avahi(){
 enable_pipe(){
   # osbox-pipe-service!
   # enable the pipe listener.
-  /usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
-  echo "#!/bin/bash">/var/lib/dietpi/postboot.d/osbox-boot
-  echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/osbox-boot
-  chmod +x /var/lib/dietpi/postboot.d/osbox-boot
+  #/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &
+  #echo "#!/bin/bash">/var/lib/dietpi/postboot.d/osbox-boot
+  #echo "/usr/bin/nohup /bin/bash /usr/local/osbox/bin/listen.sh > /dev/null &">>/var/lib/dietpi/postboot.d/osbox-boot
+  #chmod +x /var/lib/dietpi/postboot.d/osbox-boot
 }
 
 
@@ -168,11 +168,11 @@ create_database(){
 
 
 docker_run_composer(){
-  log "docker_run_composer..."
+  #log "docker_run_composer..."
   docker run --rm --name osbox-composer --volume /usr/local/osbox/project/sw-osbox-core/src/www:/app composer install >/dev/null 2>&1
 }
 docker_run_swoole(){
-  log "Starting  docker container"
+  #log "Starting  docker container"
   docker run -d --name osbox-core --env AUTORELOAD_PROGRAMS="swoole" --env AUTORELOAD_ANY_FILES=0 --restart unless-stopped -v /usr/local/osbox/project/sw-osbox-core/src/www:/var/www  -v /var/osbox:/host/osbox -v /etc:/host/etc -p 81:9501 jerryhopper/swoole:4.5.4-php7.3
 }
 
@@ -182,7 +182,7 @@ docker_run_swoole(){
 
 
 install_docker(){
-  log "Installing docker"
+  #log "Installing docker"
   /boot/dietpi/dietpi-software install 162 --unattended >/dev/null 2>&1
 }
 
@@ -216,13 +216,13 @@ if [ -f /boot/dietpi/.installed ] ; then
   INSTALLSTAGE="$(</boot/dietpi/.install_stage)"
   if [  $INSTALLSTAGE = "2" ]; then
 
-
-
       # Check if docker is available.
       if ! is_command docker ; then
           # Docker is not available.
+          log "Docker is not available"
           # checking if "apt" is running
           if is_running apt; then
+                log "Apt is running, exit!"
                 exit
           else
                 if install_docker; then
@@ -283,11 +283,11 @@ if [ -f /boot/dietpi/.installed ] ; then
               log "osbox-core is running"
 
               enable_avahi
-              log "/boot/dietpi/func/change_hostname osbox"
+              #log "/boot/dietpi/func/change_hostname osbox"
               log "$(bash /boot/dietpi/func/change_hostname osbox)"
               #sleep 1
 
-              log "Enable listener-service and disable installer-service"
+              #log "Enable listener-service and disable installer-service"
               osbox_listener_service
 
               #systemctl enable osbox-installer.service
