@@ -198,7 +198,6 @@ install_docker(){
 
 
 
-sleep 15
 log "Starting osbox-installer-service"
 
 # check if dietpi is installed completely
@@ -213,92 +212,96 @@ if [ -f /boot/dietpi/.installed ] ; then
           log "Docker is not available"
           # checking if "apt" is running
           if is_running apt; then
-                log "Apt is running, exit!"
-                exit
+              log "Apt is running, exit!"
+              sleep 10
+              exit
+          fi
+
+          install_docker
+
+          if ! is_command docker ; then
+            log "installation of docker failed!  rebooting!"
+            reboot
+            exit 1
+          fi
+      fi
+
+      # Docker is available.
+      if ! docker_image_exists "composer"; then
+          docker_pull "composer"
+      fi
+
+      # Check vendor directory.
+      if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
+          echo "No vendor directory!"
+          if ! docker_run_composer ; then
+            echo "Composer failed?"
           else
-                if install_docker; then
-                  echo "docker install ok"
-                else
-                  log "installation of docker failed!  rebooting!"
-                  exit 1
-                fi
-
-                exit
+            echo "Composer success"
           fi
-      else
-          # Docker is available.
-          if ! docker_image_exists "composer"; then
-              docker_pull "composer"
-          fi
+      fi
 
-          # Check vendor directory.
-          if [ ! -d /usr/local/osbox/project/sw-osbox-core/src/www/vendor ]; then
-              echo "No vendor directory!"
-              if ! docker_run_composer ; then
-                echo "Composer failed?"
-              else
-                echo "Composer success"
-              fi
-          fi
-
-          # check if image exists
-          if docker_image_exists "jerryhopper/swoole"; then
-              # check if container exists
-              if docker_container_exists "osbox-core"; then
-                  # check if container is running
-                  if docker_container_isrunning "osbox-core"; then
-                      # stop the running container.
-                      docker_stop "osbox-core"
-                  fi
-                  # remove the stopped container
-                  docker_rm "osbox-core"
-              fi
-          fi
-
-          docker_pull "jerryhopper/swoole:4.5.4-php7.3"
-
-          #enable_pipe
-
+      # check if image exists
+      if docker_image_exists "jerryhopper/swoole"; then
           # check if container exists
-          if ! docker_container_exists "osbox-core"; then
-              log "osbox-core container is not available."
-              docker_run_swoole
-          else
-              docker_stop "osbox-core"
+          if docker_container_exists "osbox-core"; then
+              # check if container is running
+              if docker_container_isrunning "osbox-core"; then
+                  # stop the running container.
+                  docker_stop "osbox-core"
+              fi
+              # remove the stopped container
               docker_rm "osbox-core"
           fi
+      else
+          docker_pull "jerryhopper/swoole:4.5.4-php7.3"
+      fi
 
 
-          # check if container is running.
-          if docker_container_isrunning "osbox-core"; then
-              log "osbox-core is running"
 
-              enable_avahi
-              #log "/boot/dietpi/func/change_hostname osbox"
-              log "$(bash /boot/dietpi/func/change_hostname osbox)"
-              #sleep 1
+      #enable_pipe
 
-              #log "Enable listener-service and disable installer-service"
-              osbox_listener_service
+      # check if container exists
+      if ! docker_container_exists "osbox-core"; then
+          log "osbox-core container is not available."
+          docker_run_swoole
+      else
+          docker_stop "osbox-core"
+          docker_rm "osbox-core"
+      fi
 
-              #systemctl enable osbox-installer.service
-              #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
 
-              #sleep 1
-              if ! "$(hostname)" = "osbox"; then
-                log "rebooting!"
-                /sbin/reboot
-              fi
+      # check if container is running.
+      if docker_container_isrunning "osbox-core"; then
+          log "osbox-core is running"
 
+          enable_avahi
+          #log "/boot/dietpi/func/change_hostname osbox"
+          log "$(bash /boot/dietpi/func/change_hostname osbox)"
+          #sleep 1
+
+          #log "Enable listener-service and disable installer-service"
+          osbox_listener_service
+
+          #systemctl enable osbox-installer.service
+          #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
+
+          #sleep 1
+          if ! "$(hostname)" = "osbox"; then
+            log "rebooting!"
+            /sbin/reboot
           fi
 
-          ## docker exists
-          #log "Docker exists"
-
-          exit
       fi
+
+      ## docker exists
+      #log "Docker exists"
+
+      exit
   else
         log "install-state is not 2. is installer busy?"
         sleep 10
   fi
 fi
+
+sleep 25
