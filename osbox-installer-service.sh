@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+SCRIPT_FILENAME="-service.sh"
+
 # Variables.
 # Get the username.
 if [ "$2" == "" ]; then
