@@ -268,6 +268,7 @@ if [ -f /boot/dietpi/.installed ] ; then
       else
           docker_stop "osbox-core"
           docker_rm "osbox-core"
+          docker_run_swoole
       fi
 
 
@@ -280,17 +281,13 @@ if [ -f /boot/dietpi/.installed ] ; then
           log "$(bash /boot/dietpi/func/change_hostname osbox)"
           #sleep 1
 
-          #log "Enable listener-service and disable installer-service"
-          osbox_listener_service
-
-          #systemctl enable osbox-installer.service
-          #nohup bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/disable_installer.sh &
-
-          #sleep 1
           if ! "$(hostname)" = "osbox"; then
             log "rebooting!"
             /sbin/reboot
           fi
+
+          #log "Enable listener-service and disable installer-service"
+          osbox_listener_service
 
       fi
 
