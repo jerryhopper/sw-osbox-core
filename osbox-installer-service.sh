@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SCRIPT_FILENAME="service.sh"
+SCRIPT_FILENAME="installerservice.sh"
 
 # Variables.
 # Get the username.
