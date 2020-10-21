@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SCRIPT_FILENAME="-service.sh"
+SCRIPT_FILENAME="service.sh"
 
 # Variables.
 # Get the username.
@@ -117,6 +117,7 @@ osbox_listener_service(){
     echo "WantedBy=multi-user.target">>/etc/systemd/system/osbox-listener.service
 
     systemctl enable osbox-listener
+
 
 }
 
