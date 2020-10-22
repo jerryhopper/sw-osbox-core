@@ -297,7 +297,8 @@ if [ -f /boot/dietpi/.installed ] ; then
 
           if ! "$(hostname)" = "osbox"; then
             log "rebooting!"
-            /sbin/reboot
+            sleep 40
+            ##/sbin/reboot
           fi
 
           #log "Enable listener-service and disable installer-service"
