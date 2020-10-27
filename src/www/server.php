@@ -16,22 +16,6 @@ require_once ("commands/websetup.php");
 require_once ("commands/status.php");
 require_once ("commands/osbox.php");
 require_once ("commands/logs.php");
-/*
-
-discover|osbox
-discover|osboxmaster
-
-response :
-command: discover|osbox
-code: 200
-msg: ok
-data: {
-
-}
-
-
-
- */
 
 
 
@@ -114,19 +98,6 @@ class commandBase {
         return $results;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class ProcessMessage {
@@ -213,8 +184,6 @@ class ProcessMessage {
 }
 
 
-
-
 class Executor{
 
     function __construct()
@@ -254,10 +223,7 @@ class Executor{
 
 }
 $executor = new Executor();
-
 //$executor->test();
-
-
 
 class Pusher
 {
