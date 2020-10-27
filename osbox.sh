@@ -300,6 +300,14 @@ fi
 ############################################################
 ############################################################
 
+if [ "$1" == "installservice" ]; then
+    if [ -f /etc/systemd/system/osbox-installer.service ]; then
+        rm -rf /etc/systemd/system/osbox-installer.service
+    fi
+    ln -s /usr/local/osbox/lib/systemd/osbox-installer.service /etc/systemd/system/osbox-installer.service
+    exit;
+fi
+
 
 
 
