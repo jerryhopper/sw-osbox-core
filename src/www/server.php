@@ -299,7 +299,11 @@ class Pusher
 
 
 $server = new Server("0.0.0.0", 9501);
-$server->set(["worker_num" => 2]);
+$server->set([
+    "worker_num" => 2,
+    'daemonize' => true,
+    'pid_file' => '/var/run/swoole.pid',
+]);
 
 $server->on("start", function (Server $server) {
 
