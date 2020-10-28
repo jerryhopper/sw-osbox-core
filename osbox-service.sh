@@ -27,6 +27,8 @@ source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
 # start the service.
+log "osbox-service.sh started"
 /usr/bin/php /usr/local/osbox/project/sw-osbox-core/src/www/server.php
 
+log "osbox-service.sh ended"
 exit
