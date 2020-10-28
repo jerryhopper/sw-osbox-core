@@ -71,6 +71,11 @@ if [ "$1" == "installservice" ]; then
     exit;
 fi
 
+if [ "$1" == "reload" ]; then
+    systemctl reload osbox.service
+    exit;
+fi
+
 
 
 
