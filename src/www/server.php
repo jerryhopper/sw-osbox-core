@@ -249,7 +249,7 @@ class Pusher
 
 
 
-
+##
 
 
 
@@ -262,18 +262,23 @@ class Pusher
 
 
 
-
-
 $server = new Server("0.0.0.0", 9501);
 $server->set([
     "worker_num" => 2,
     'daemonize' => true,
-    'pid_file' => '/var/run/swoole.pid',
+    'pid_file' => '/run/swoole.pid',
+    // logging
+    'log_level' => 1,
+    'log_file' => '/var/log/osbox-swoole.log',
+    'log_rotation' => SWOOLE_LOG_ROTATION_DAILY | SWOOLE_LOG_ROTATION_SINGLE,
+    'log_date_format' => true, // or "day %d of %B in the year %Y. Time: %I:%S %p",
+    'log_date_with_microseconds' => false,
+
 ]);
 
 $server->on("start", function (Server $server) {
 
-    echo "Swoole WebSocket Server is started at http://127.0.0.1:9502\n";
+    echo "SWoole WebSocket Server is started at http://127.0.0.1:9501\n";
 });
 
 $server->on('open', function (Server $server, Swoole\Http\Request $request) {
@@ -285,6 +290,7 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
     echo "On message: {$fd}\n";
+    error_log( "On message: {$fd}\n");
     //global $executor;
     $pusher = new Pusher($server,$frame);
     //$executor->test();

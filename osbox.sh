@@ -67,6 +67,7 @@ if [ "$1" == "installservice" ]; then
         rm -rf /etc/systemd/system/osbox.service
     fi
     ln -s /usr/local/osbox/lib/systemd/osbox.service /etc/systemd/system/osbox.service
+    systemctl enable osbox.service
     exit;
 fi
 
