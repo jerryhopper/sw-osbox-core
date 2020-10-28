@@ -26,9 +26,9 @@ log(){
 source /usr/local/osbox/lib/bashfunc/is_root
 source /usr/local/osbox/lib/bashfunc/is_command
 
+kill -USR1 $(cat /run/swoole.pid)
 
-
-
+sleep 1
 
 
 
