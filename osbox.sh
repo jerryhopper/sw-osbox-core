@@ -85,8 +85,8 @@ fi
 
 # osbox install function
 if [ "$1" == "install" ]; then
-  bash /usr/local/osbox/extra/install.sh
-  returnedstatus $? "success" "fail"
+  #bash /usr/local/osbox/extra/install.sh
+  #returnedstatus $? "success" "fail"
   exit
 fi
 
@@ -196,6 +196,10 @@ if [ "$1" == "" ]; then
   echo "  osbox update  - updates the application"
   echo "  osbox discover - gets network discovery information"
   echo "  osbox network - network functions."
+  echo "Development"
+  echo "  osbox reload - reload the osbox-service."
+  echo "  osbox installservice - installs the osbox-service."
+
   exit
 fi
 exit;

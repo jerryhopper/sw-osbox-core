@@ -18,235 +18,14 @@ require_once ("commands/osbox.php");
 require_once ("commands/logs.php");
 
 
+require_once ("classes/CommandBase.php");
+require_once ("classes/Executor.php");
+require_once ("classes/ProcessMessage.php");
+require_once ("classes/Pushere.php");
 
 
-
-
-
-class commandBase {
-    public $method;
-    public $subcommands;
-    public $pusher;
-
-    function __construct( Array $subcommands,pusher $pusher)
-    {
-        $this->pusher=$pusher;
-
-        $this->method=$subcommands[0];
-        $this->subcommands = $subcommands;
-
-        echo "\\commandBase::construct class! (".$this->method.")\n";
-
-    }
-
-    public function _result(){
-        $cmd = $this->method;
-        $this->$cmd();
-    }
-
-    public function _send($data,$sleep=1)
-    {
-        error_log("_send( $data )\n");
-        // $data
-        //error_log("send to /host/osbox/pipe");
-        echo  "send '$data' to /host/osbox/pipe\n";
-        $fp = fopen('/host/osbox/pipe', 'w');
-        fwrite($fp, $data);
-        fclose($fp);
-
-        error_log(  "sleep $sleep \n");
-        sleep($sleep);
-
-        $filename="/host/osbox/response";
-        if (!file_exists($filename)){
-            error_log(  "/host/osbox/response DOESN NOT EXIST!");
-        }
-
-        $handle = fopen($filename, "rb");
-        $contents = '';
-        while (!feof($handle)) {
-            $contents .= fread($handle, 8192);
-        }
-        echo "contents = ".strlen($contents)." characters  ( ".$contents.")\n";
-
-        if( strpos($contents,"\n" ) ){
-            echo "has newline \n";
-            $contents = explode("\n",$contents);
-
-            $contents = array_filter($contents, function($v){
-                return trim($v);
-            });
-
-            //var_dump($result);
-//array_slice()
-
-            //var_dump($res);
-
-        }
-
-        fclose($handle);
-
-        if ($data !=$contents[0]){
-            # error?!
-            echo "COMMAND ERROR!? \n";
-        }
-        $results = array_splice($contents,1);
-
-        #$handle = fopen($filename, "r");
-        #$contents = fread($handle, filesize($filename));
-        #fclose($handle);
-        return $results;
-    }
-}
-
-
-class ProcessMessage {
-
-    private $statusCode = 500;
-    private $statusMsg  = "Unknown error";
-
-
-    function __construct(Frame $frame, $pusher )
-    {
-        $this->pusher = $pusher;
-        $this->frame = $frame;
-        $this->command = $frame->data;
-
-        echo "received message: {$frame->fd}\n";
-        echo "received message: {$frame->data}\n";
-
-
-
-
-        try{
-            $this->command_exists($this->command);
-
-        }catch( Exception $e){
-            //$x = $this->result($e->getMessage() );
-
-            $this->pusher->push( "error", 500, "command_exists (".$this->command.")".$e->getMessage() );
-            return;
-        }
-
-
-        $this->class->_result();
-
-    }
-
-
-
-
-    function command_exists($command){
-        $cmdparts = explode(' ', $command);
-        //print_r($cmdparts);
-        # [0] osbox
-        # [1] discover  (class)
-        # [2] all (class:method)
-
-        $class = "\\".$cmdparts[1];
-        $method = $cmdparts[2];
-
-        $subcommands = array_splice($cmdparts,2);
-        //print_r($subcommands);
-        if($class=="\\"){
-            $class="\\osbox";
-        }
-
-        if( !class_exists($class) ){
-            echo "class '".$class."' doenst exist\n";
-            $this->statusCode = 500;
-            $this->statusMsg = "Invalid command\n";
-            //echo "Invalid command";
-            throw new Exception("Invalid command");
-        }
-
-        //echo "method:".$method."|\n";
-
-        if($method==""){
-            echo "Default method!";
-            $subcommands=array("default");
-            $method="default";
-        }
-
-        if( ! in_array($method,get_class_methods($class))  ){
-            echo "method ".$subcommand." doesnt exist.\n";
-            $this->statusCode = 500;
-            $this->statusMsg = "Invalid method\n";
-            throw new Exception("Invalid method");
-        }
-
-        print_r($subcommands);
-
-        $this->class = new $class($subcommands,$this->pusher);
-
-    }
-
-}
-
-
-class Executor{
-
-    function __construct()
-    {
-        $this->process = new Swoole\Process(function($process){
-            //execute the external program
-            //$process->exec("/usr/bin/osbox", array(''));
-        }, FALSE); // enable the redirection of stdin and stdout
-
-        //execute the external program
-//        $process->exec("/bin/ls", array(''));
-//        $process->start();
-//        $res = $process->read();
-//        echo $res;
-        //var_dump($res);
-    }
-
-
-    function test(){
-
-        $fp = fopen('/hostpipe', 'w');
-        fwrite($fp, 'ip addr');
-        fclose($fp);
-
-        //execute the external program
-        //try{
-        //    $this->process->exec("/bin/echo", array('"osbox"','>','/hostpipe'));
-        //}catch(Exception $e){
-        //    echo "aarg!";
-        //}
-
-        //$this->process->start();
-        //$res = $this->process->read();
-        echo $res;
-
-    }
-
-}
 $executor = new Executor();
 //$executor->test();
-
-class Pusher
-{
-    private $socketserver;
-    private $frame;
-
-    function __construct( Server $server,Frame $frame)
-    {
-        $this->socketserver = $server;
-        $this->frame = $frame;
-    }
-
-    public function push( $data , $statuscode=200,$statusmsg="ok"){
-        echo "Pushed message!\n";
-        $this->socketserver->push($this->frame->fd, $this->outputFormat( $data ,$statuscode,$statusmsg) );
-    }
-
-    private function outputFormat($data, $statuscode,$statusmsg){
-        return json_encode( [$statuscode, time(), $data ] );
-    }
-
-}
-
 
 
 ##
@@ -257,7 +36,6 @@ class Pusher
 #
 #  /host/etc/osbox/master.db
 #  /host/etc/osbox/osbox.db
-
 
 
 
@@ -290,7 +68,7 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 
 $server->on('message', function (Server $server, Frame $frame) {
     echo "On message: {$fd}\n";
-    error_log( "On message: {$fd}\n");
+    echo  "On message: {$fd}\n";
     //global $executor;
     $pusher = new Pusher($server,$frame);
     //$executor->test();
