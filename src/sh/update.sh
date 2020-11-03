@@ -18,6 +18,7 @@ if [ -f /etc/osbox/dev ]; then
       docker stop osbox-core
     fi
   fi
+  git stash
   echo "updating sw-osbox-bin via git"
   cd /home/osbox/.osbox/sw-osbox-bin
   git pull
