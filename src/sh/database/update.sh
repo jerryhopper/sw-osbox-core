@@ -2,7 +2,7 @@
 
 
 
-sqlite3 -batch /etc/osbox/osbox.db "create table if not exists dbversion (id TEXT PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
+#sqlite3 -batch /etc/osbox/osbox.db "create table if not exists dbversion (id TEXT PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
 
 
 
@@ -11,31 +11,23 @@ _updatefiles="./updates/*.sql"
 
 for f in $_updatefiles
 do
-    #echo "$f"
     filename=$(basename -- "$f")
     extension="${filename##*.}"
     filename="${filename%.*}"
-    #echo $filename
-    test=$(sqlite3 -batch /etc/osbox/osbox.db "SELECT id FROM dbversion WHERE id='$filename';")
-
-
-
-    if [ "$filename" == "$test" ]; then
-        echo "$filename already applied"
-    else
+    if [ "$filename" != "$(sqlite3 -batch /etc/osbox/osbox.db "SELECT id FROM dbversion WHERE id='$filename';")" ]; then
         echo "Applying update $filename"
         sqlite3 -batch /etc/osbox/osbox.db "$(<"/usr/local/osbox/project/sw-osbox-core/src/sh/database/updates/$filename.sql")"
         if [ "$?" == "1" ]; then
-          echo "Update error"
+          echo "Database update error."
           exit 1
         else
-          echo "ok"
-          sqlite3 -batch /etc/osbox/osbox.db "INSER INTO dbversion (id) VALUES ( '$filename' );"
+          echo "Database update ok."
+          sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO dbversion (id) VALUES ( '$filename' );"
         fi
     fi
-
 done
 
+echo "Done!"
 exit 0
 
 # get latest version
