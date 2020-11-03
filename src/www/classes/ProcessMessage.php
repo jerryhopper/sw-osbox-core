@@ -1,13 +1,19 @@
 <?php
 
 
-class ProcessMessage {
+use Swoole\WebSocket\Server;
+use Swoole\Http\Request;
+use Swoole\WebSocket\Frame;
+
+
+class ProcessMessage
+{
 
     private $statusCode = 500;
-    private $statusMsg  = "Unknown error";
+    private $statusMsg = "Unknown error";
 
 
-    function __construct(Frame $frame, $pusher )
+    function __construct(Frame $frame, $pusher)
     {
         $this->pusher = $pusher;
         $this->frame = $frame;
@@ -16,25 +22,44 @@ class ProcessMessage {
         echo "received message: {$frame->fd}\n";
         echo "received message: {$frame->data}\n";
 
-
-
-
-        try{
+        try {
             $this->command_exists($this->command);
 
-        }catch( Exception $e){
+        } catch (Exception $e) {
             //$x = $this->result($e->getMessage() );
-
-            $this->pusher->push( "error", 500, "command_exists (".$this->command.")".$e->getMessage() );
+//$type , $text, $data)
+            //$pusher->push( "INFO", "title", "text" )
+            $this->pusher->push("ERROR",  $e->getMessage());
             return;
         }
 
+        //$this->x();
 
         $this->class->_result();
 
     }
 
 
+    function x (){
+        go(function() {
+            $ret = Co\System::exec("md5sum ".__FILE__);
+            echo json_encode($ret);
+        });
+
+        //Co\run(function() {
+        go(function () {
+            co::sleep(3.0);
+            //go(function () {
+            //    co::sleep(2.0);
+            //    echo "co[3] end\n";
+            //});
+            echo "co[2] end\n";
+        });
+
+        co::sleep(1.0);
+        echo "co[1] end\n";
+        //});
+    }
 
 
     function command_exists($command){
@@ -46,7 +71,7 @@ class ProcessMessage {
 
         $class = "\\".$cmdparts[1];
         $method = $cmdparts[2];
-        echo "xxx";
+        //echo "xxx";
 
         $subcommands = array_splice($cmdparts,2);
         //print_r($subcommands);
@@ -55,7 +80,7 @@ class ProcessMessage {
         }
 
         if( !class_exists($class) ){
-            echo "class '".$class."' doenst exist\n";
+            echo "class '".$class."' doesnt exist\n";
             $this->statusCode = 500;
             $this->statusMsg = "Invalid command\n";
             //echo "Invalid command";

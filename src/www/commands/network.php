@@ -1,7 +1,7 @@
 <?php
 
 
-class network extends commandBase {
+class network extends CommandBase {
 
     function set(){
         $this->pusher->push(["OSBOX"]);

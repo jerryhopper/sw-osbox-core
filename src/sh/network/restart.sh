@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nmcli nm enable false && nmcli nm enable true
+nmcli networking off && nmcli networking on

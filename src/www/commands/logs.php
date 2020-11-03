@@ -3,21 +3,33 @@
 
 
 
-class logs extends commandBase {
+class logs extends CommandBase {
 
 
     function default(){
-        echo "cmd: osbox logs\n";
+        $pusher =$this->pusher; // Required!
+        $command ="osbox logs"; // The issued command
 
 
-        $ret = $this->_send("osbox logs",5);
+        go(function() use ($command,$pusher) {
+            /*
+             * Here you can do tasks and push info to the websocket
+             * There are 3 message variants.
+             *
+             *  $pusher->push( "RESULT","command", array() )
+             *  $pusher->push( "INFO", "title", "text" )
+             *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+             *
+             */
 
-        $statuscode=200;
-        $statusmsg="ok";
+            # Execute the command, and get the results.
+            $ret = Co\System::exec($command);
 
-        $this->pusher->push($ret,$statuscode,$statusmsg);
-        //$this->pusher->push(["OSBOX"]);
-        //$this->test();
+
+            $pusher->push( "RESULT",$command, $ret );
+
+
+        });
     }
 
 

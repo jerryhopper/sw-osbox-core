@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/Swoole/ToolKit/AutoReload.php';
 
-$filename = "/var/run/osbox.pid";
+$filename = "/run/swoole.pid";
 $handle = fopen($filename, "r");
 $contents = fread($handle, filesize($filename));
 fclose($handle);

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+#nmcli dev status
 ##################################################################
 array_test=()
 for iface in $(ifconfig | cut -d ' ' -f1| tr ':' '\n' | awk NF)

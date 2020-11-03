@@ -1,20 +1,43 @@
 <?php
 
-class osbox extends commandBase {
+
+##  https://www.swoole.co.uk/article/swoole-coroutine
+
+
+class osbox extends CommandBase {
+
 
     function default(){
+        $pusher =$this->pusher; // Required!
+        $command ="osbox"; // The issued command
+
         echo "osbox:default()";
-        //$this->pusher->push(["INFO",array("title"=>"osbox:default()","text"=>"osbox:default()")],$statuscode,$statusmsg);
 
-        $ret = $this->_send("osbox",0);
-        echo "after send!";
-       //$ret = array("lalalala");
-        $statuscode=200;
-        $statusmsg="ok";
 
-        $this->pusher->push($ret,$statuscode,$statusmsg);
+        go(function() use ($command,$pusher) {
+            /*
+             * Here you can do tasks and push info to the websocket
+             * There are 3 message variants.
+             *
+             *  $pusher->push( "RESULT","command", array() )
+             *  $pusher->push( "INFO", "title", "text" )
+             *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+             *
+             */
+
+
+            # Execute the command, and get the results.
+            $ret = Co\System::exec($command);
+
+
+
+
+
+            # Push the final result to websocket
+            $pusher->push( "RESULT",$command, $ret );
+
+        });
+
     }
-
-
 
 }

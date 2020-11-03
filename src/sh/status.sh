@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo "status.sh"
+#echo "status.sh"
 if [ -f /etc/osbox/dev ]; then
     echo "Development version"
 else
     echo "Production version"
 fi
-
 #rm /etc/osbox/osbox.db
 
 if [ -f /etc/osbox/osbox.db ];then

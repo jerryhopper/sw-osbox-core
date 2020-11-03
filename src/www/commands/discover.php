@@ -2,8 +2,12 @@
 
 
 
+use Swoole\WebSocket\Server;
+use Swoole\Http\Request;
+use Swoole\WebSocket\Frame;
 
-class discover extends commandBase {
+
+class discover extends CommandBase {
 
     function master(){
 

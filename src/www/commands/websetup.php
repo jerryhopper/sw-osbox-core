@@ -1,6 +1,6 @@
 <?php
 
-class websetup extends commandBase {
+class websetup extends CommandBase {
 
 
 

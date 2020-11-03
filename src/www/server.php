@@ -8,6 +8,17 @@ use Swoole\WebSocket\Server;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 
+
+require_once ("classes/CommandBase.php");
+
+require_once ("classes/Executor.php");
+require_once ("classes/ProcessMessage.php");
+require_once ("classes/Pusher.php");
+
+
+
+
+
 require_once ("commands/discover.php");
 require_once ("commands/network.php");
 
@@ -18,19 +29,29 @@ require_once ("commands/osbox.php");
 require_once ("commands/logs.php");
 
 
-require_once ("classes/CommandBase.php");
-require_once ("classes/Executor.php");
-require_once ("classes/ProcessMessage.php");
-require_once ("classes/Pushere.php");
-
-
-$executor = new Executor();
+#$executor = new Executor();
 //$executor->test();
-
 
 ##
 
+function x( $command="/usr/bin/php",$options=array("./testexec.php") ){
+    // parent process
+    $process = new Swoole\Process(function ($process)
+    {
+        //execute the external program
+        $process->exec("/usr/bin/php", array('-v'));
+    }, TRUE); // enable the redirection of stdin and stdout
 
+    $process->start();
+
+    //Inter-Process Communication Of main process and child process by stdin and stdout
+
+    #$process->write("hello child process from main process");
+
+    $res = $process->read();
+
+    var_dump($res);
+}
 
 # check if sqlite3 db exists.
 #
@@ -41,6 +62,7 @@ $executor = new Executor();
 
 
 $server = new Server("0.0.0.0", 9501);
+
 $server->set([
     "worker_num" => 2,
     'daemonize' => true,
@@ -67,18 +89,11 @@ $server->on('open', function (Server $server, Swoole\Http\Request $request) {
 });
 
 $server->on('message', function (Server $server, Frame $frame) {
-    echo "On message: {$fd}\n";
-    echo  "On message: {$fd}\n";
-    //global $executor;
-    $pusher = new Pusher($server,$frame);
-    //$executor->test();
+    echo "On message: ".$frame->fd."\n";
 
-    #$pusher->push("YEEHAW");
-    #$pusher->push("YEEHAW");
+    $pusher = new Pusher($server,$frame);
     $cp = new ProcessMessage($frame,$pusher);
 
-    //$cp = new commandProcess($frame->data);
-    //$server->push($frame->fd, $cp->result() );
 });
 
 $server->on('close', function (Server $server, int $fd) {

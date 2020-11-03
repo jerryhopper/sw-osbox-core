@@ -1,5 +1,11 @@
 <?php
 
+use Swoole\WebSocket\Server;
+use Swoole\Http\Request;
+use Swoole\WebSocket\Frame;
+
+
+
 
 class CommandBase
 {
@@ -18,6 +24,7 @@ class CommandBase
 
     }
 
+
     public function _result(){
         $cmd = $this->method;
         $this->$cmd();
@@ -29,11 +36,11 @@ class CommandBase
         // $data
         //error_log("send to /host/osbox/pipe");
         echo  "send '$data' to /host/osbox/pipe\n";
-        $fp = fopen('/host/osbox/pipe', 'w');
-        fwrite($fp, $data);
-        fclose($fp);
+        #$fp = fopen('/host/osbox/pipe', 'w');
+        #fwrite($fp, $data);
+        #fclose($fp);
 
-        error_log(  "sleep $sleep \n");
+        echo  "sleep $sleep \n";
         sleep($sleep);
 
         $filename="/host/osbox/response";
@@ -41,11 +48,11 @@ class CommandBase
             error_log(  "/host/osbox/response DOESN NOT EXIST!");
         }
 
-        $handle = fopen($filename, "rb");
-        $contents = '';
-        while (!feof($handle)) {
-            $contents .= fread($handle, 8192);
-        }
+        #$handle = fopen($filename, "rb");
+        $contents = 'testreponse test ';
+        #while (!feof($handle)) {
+        #    $contents .= fread($handle, 8192);
+        #}
         echo "contents = ".strlen($contents)." characters  ( ".$contents.")\n";
 
         if( strpos($contents,"\n" ) ){
@@ -63,7 +70,7 @@ class CommandBase
 
         }
 
-        fclose($handle);
+        //fclose($handle);
 
         if ($data !=$contents[0]){
             # error?!

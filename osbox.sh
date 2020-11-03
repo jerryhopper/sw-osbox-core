@@ -93,6 +93,7 @@ fi
 # osbox update function
 if [ "$1" == "update" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/update.sh
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
   exit
 fi
 
@@ -105,8 +106,28 @@ fi
 
 
 
+# osbox network functions
+if [ "$1" == "database" ]; then
+  if [ "$2" == "update" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
+      exit;
+  fi
+  if [ "$2" == "reset" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/reset.sh
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
+      exit;
+  fi
+  # command information
+  if [ "$2" == "" ]; then
+    echo "Usage: "
+    echo "  osbox database update - updates database"
+    echo "  osbox database reset - resets the database"
 
+    exit
+  fi
+  exit;
 
+fi
 
 
 
@@ -121,7 +142,10 @@ if [ "$1" == "network" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/scan.sh
       exit;
   fi
-
+  if [ "$2" == "restart" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/restart.sh
+      exit;
+  fi
 
 
   # if - interfaces
@@ -155,7 +179,7 @@ if [ "$1" == "network" ]; then
   # command information
   if [ "$2" == "" ]; then
     echo "Usage: "
-
+    echo "  osbox network restart - restarts the network-stack"
     echo "  osbox network scan  - scans the lan, returns ip/statusses"
     echo "  osbox network info  - returns current network settings"
 

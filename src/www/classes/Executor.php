@@ -1,6 +1,10 @@
 <?php
 
 
+use Swoole\WebSocket\Server;
+use Swoole\Http\Request;
+use Swoole\WebSocket\Frame;
+
 class Executor{
 
     function __construct()
