@@ -11,7 +11,11 @@ fi
 
 
 
-_updatefiles="./updates/*.sql"
+#_updatefiles="./updates/*.sql"
+shopt -s nullglob
+_updatefiles=(*.sql)
+
+#echo $_updatefiles
 
 for f in $_updatefiles
 do
@@ -28,6 +32,8 @@ do
           echo "Database update ok."
           sqlite3 -batch /etc/osbox/osbox.db "INSERT INTO dbversion (id) VALUES ( '$filename' );"
         fi
+    else
+      echo "Update $filename already applied."
     fi
 done
 
