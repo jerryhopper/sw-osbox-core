@@ -3,6 +3,10 @@
 
 
 #sqlite3 -batch /etc/osbox/osbox.db "create table if not exists dbversion (id TEXT PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
+if [ ! -f /etc/osbox/osbox.db ];then
+  touch /etc/osbox/osbox.db
+fi
+
 
 
 
