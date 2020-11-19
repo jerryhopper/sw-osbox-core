@@ -61,7 +61,7 @@ function x( $command="/usr/bin/php",$options=array("./testexec.php") ){
 
 
 
-$server = new Server("0.0.0.0", 9501);
+$server = new Server("0.0.0.0", 81);
 
 $server->set([
     "worker_num" => 2,
