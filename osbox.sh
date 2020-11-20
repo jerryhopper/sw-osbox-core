@@ -46,7 +46,6 @@ log(){
 }
 
 
-
 php(){
   if [ ! -f "$1" ];then
     echo "file does not exist!?"
@@ -82,20 +81,6 @@ fi
 
 
 
-
-# osbox install function
-if [ "$1" == "install" ]; then
-  #bash /usr/local/osbox/extra/install.sh
-  #returnedstatus $? "success" "fail"
-  exit
-fi
-
-# osbox update function
-if [ "$1" == "update" ]; then
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/update.sh
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
-  exit
-fi
 
 
 # osbox discover function

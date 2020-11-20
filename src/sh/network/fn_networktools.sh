@@ -1,5 +1,28 @@
 
 
+
+
+getNetworkIpNet(){
+    NETWORKINFO="$(osbox network info)"
+    # Get netsize
+    NETSIZE=$(echo "$NETWORKINFO"|awk -F ',' '{print $3}'|awk -F '/' '{print $2}')
+    # Get free ip
+    FREEIP=$(bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/get_free_ip.sh)
+    echo "$FREEIP/$NETSIZE"
+}
+
+createOsboxInterface(){
+  removeOsboxInterface
+  nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1
+}
+
+removeOsboxInterface(){
+    if [ "$(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')" != "" ];then
+       nmcli con del $(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')
+    fi
+}
+
+
 find_static_IPv4_information(){
   STATIC_IPV4_ADDRESS=$(ip addr show eth0|grep "scope global eth0"|awk  '{print $2}')
 }
