@@ -12,13 +12,13 @@ getNetworkIpNet(){
 }
 
 createOsboxInterface(){
-  removeOsboxInterface
-  nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1
+  removeOsboxInterface >/dev/null
+  nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1 >/dev/null
 }
 
 removeOsboxInterface(){
     if [ "$(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')" != "" ];then
-       nmcli con del $(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')
+       nmcli con del $(nmcli connection show|grep osbox|awk -F ' ' '{print $1}') >/dev/null
     fi
 }
 

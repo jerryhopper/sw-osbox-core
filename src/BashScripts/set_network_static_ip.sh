@@ -6,6 +6,8 @@ source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/is_command.sh
 
 set -e
 
+exit
+
 #echo $(netmask 24)
 
 #IPV4_ADDRESS="10.0.1.4/24"

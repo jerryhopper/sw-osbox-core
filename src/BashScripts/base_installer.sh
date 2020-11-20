@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+exit
 OSBOX_BIN_USR="osbox"
 
 # installation log

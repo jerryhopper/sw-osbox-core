@@ -2,6 +2,17 @@
 
 source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/networktools.sh
 
+
+exit
+
+nmcli device modify eth0 ipv4.method auto
+nmcli device modify eth0 ipv6.method auto
+
+nmcli con up eth0
+exit 0
+# nmcli
+
+
 set -e
 
 echo  "# Location: /etc/network/interfaces ">/etc/network/interfaces

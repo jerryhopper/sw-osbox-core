@@ -3,6 +3,9 @@
 
 set -e
 
+
+exit
+
 if [ -f "/sys/class/leds/nanopi:red:pwr" ]; then
     # set the led to blinking
     echo "heartbeat" > /sys/class/leds/nanopi:red:pwr/trigger

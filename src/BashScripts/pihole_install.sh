@@ -20,6 +20,8 @@ source /usr/lib/osbox/stage/service_dhcpcd.sh
 #########################################################################3
 
 
+exit
+
 SETUPSTATE="/etc/osbox/setup.state"
 
 

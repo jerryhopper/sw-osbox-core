@@ -1,10 +1,30 @@
 #!/bin/bash
 
-source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/networktools.sh
-source /usr/local/osbox/project/sw-osbox-core/src/BashScripts/fn/is_command.sh
+source /usr/local/osbox/project/bin/fn/is_command.fn
+
+
+source /usr/local/osbox/project/sw-osbox-core/src/sh/network/fn_networktools.sh
 
 
 set -e
+
+source /usr/local/osbox/project/sw-osbox-core/src/sh/network/fn_networktools.sh
+
+IPNET="$(getNetworkIpNet)"
+IP="$(echo "${IPNET}"|awk -F '/' '{print $1}')"
+
+echo $IP
+createOsboxInterface "$IPNET"
+
+
+
+exit
+#nmcli con mod eth0 ipv4.addresses 192.168.2.20/24
+#nmcli con mod eth0 ipv4.gateway 192.168.2.1
+#nmcli con mod eth0 ipv4.dns “8.8.8.8”
+
+#nmcli con mod eth0 ipv4.method manual
+#nmcli con up eth0
 
 #echo $(netmask 24)
 
