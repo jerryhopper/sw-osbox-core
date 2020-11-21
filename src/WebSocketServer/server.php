@@ -72,10 +72,10 @@ $server->set([
     'daemonize' => true,
     'pid_file' => '/run/swoole.pid',
     // logging
-    'log_level' => 1,
+    'log_level' => 0,
     'log_file' => '/var/log/osbox-swoole.log',
     'log_rotation' => SWOOLE_LOG_ROTATION_DAILY | SWOOLE_LOG_ROTATION_SINGLE,
-    'log_date_format' => true, // or "day %d of %B in the year %Y. Time: %I:%S %p",
+    'log_date_format' => false, // or "day %d of %B in the year %Y. Time: %I:%S %p",
     'log_date_with_microseconds' => false,
 
 ]);
