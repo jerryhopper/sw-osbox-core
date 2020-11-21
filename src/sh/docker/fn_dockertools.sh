@@ -6,6 +6,20 @@ source /usr/local/osbox/bin/fn/DownloadUnpack.fn
 source /usr/local/osbox/bin/fn/GetRemoteVersion.fn
 source /usr/local/osbox/bin/fn/IsOnline.fn
 
+# commands
+#docker exec pihole_container_name pihole updateGravity
+#docker exec pihole_container_name pihole -w spclient.wg.spotify.com
+#docker exec pihole_container_name pihole -wild example.com
+
+#docker exec sw-osbox-pihole pihole -a -p
+
+
+
+# update
+#docker pull pihole/pihole
+#docker rm -f pihole
+
+
 
 runDockerApp(){
     REPO_ORG="$1"

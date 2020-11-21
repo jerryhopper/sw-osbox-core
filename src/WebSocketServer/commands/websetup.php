@@ -23,6 +23,7 @@ class websetup extends CommandBase {
         //["INFO",{"title":"Scanning the network","text":"Scanning the network."}]
         //array("title"=>"Scanning the network","text"=>"Scanning the network.");
 
+
         $this->pusher->push(["INFO",array("title"=>"Scanning the network","text"=>"Scanning the network.")],$statuscode,$statusmsg);
 
         #sleep(1);
@@ -30,7 +31,7 @@ class websetup extends CommandBase {
         #sleep(1);
         #$this->pusher->push("Scanning the network",$statuscode,$statusmsg);
 
-
+/*
         $command = "osbox discover master";
         $results = $this->_send($command);
         //$results = array();
@@ -51,10 +52,10 @@ class websetup extends CommandBase {
             $this->pusher->push(["INFO",array("title"=>"Scanning the network","text"=>"No configured hardware found")],$statuscode,$statusmsg);
 
         }
-
+*/
         //return;
 
-
+/*
         $command = "osbox discover all";
         $ret = $this->_send($command);
 
@@ -68,8 +69,8 @@ class websetup extends CommandBase {
         elseif( count($ret)>1 ){
             $this->pusher->push(["INFO",array("title"=>"Scanning finished","text"=>"Multiple devices found.")],$statuscode,$statusmsg);
         }
-
-        $this->pusher->push(["CALL",array("function"=>"vraag1","vars"=>[])],$statuscode,$statusmsg);
+*/
+        #$this->pusher->push(["CALL",array("function"=>"vraag1","vars"=>[])],$statuscode,$statusmsg);
 
 
         // get all osboxes
@@ -80,8 +81,8 @@ class websetup extends CommandBase {
         #echo $results;
 
 
-        $statuscode=200;
-        $statusmsg="ok";
+        #$statuscode=200;
+        #$statusmsg="ok";
 
         #$this->pusher->push($ret,$statuscode,$statusmsg);
         //$this->pusher->push(["OSBOX"]);
