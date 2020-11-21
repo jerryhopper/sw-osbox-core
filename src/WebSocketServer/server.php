@@ -10,27 +10,27 @@ use Swoole\WebSocket\Frame;
 
 
 
-require_once ("classes/Pusher.php");
-require_once ("classes/ProcessMessage.php");
+require_once("classes/Pusher.php");
+require_once("classes/ProcessMessage.php");
 
-require_once ("classes/CommandBase.php");
+require_once("classes/CommandBase.php");
 
-require_once ("classes/Executor.php");
-
-
+require_once("classes/Executor.php");
 
 
 
 
 
-require_once ("commands/discover.php");
-require_once ("commands/network.php");
 
-require_once ("commands/websetup.php");
 
-require_once ("commands/status.php");
-require_once ("commands/osbox.php");
-require_once ("commands/logs.php");
+require_once("commands/discover.php");
+require_once("commands/network.php");
+
+require_once("commands/websetup.php");
+
+require_once("commands/status.php");
+require_once("commands/osbox.php");
+require_once("commands/logs.php");
 
 
 #$executor = new Executor();
@@ -97,7 +97,6 @@ $server->on('message', function (Server $server, Frame $frame) {
 
     $pusher = new Pusher($server,$frame);
     $cp = new ProcessMessage($frame,$pusher);
-
 });
 
 $server->on('close', function (Server $server, int $fd) {
@@ -105,3 +104,4 @@ $server->on('close', function (Server $server, int $fd) {
 });
 
 $server->start();
+
