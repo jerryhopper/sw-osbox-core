@@ -58,15 +58,19 @@ php(){
 # PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/test2.php
 #  /usr/local/osbox/project/sw-osbox-core/src/test2.php
 #==============================================================
-
-_USAGETXT="Usage:
+_USAGETXT="OSBox cli
+============================"
+_USAGETXT="$_USAGETXT
+Usage:
 "
-_USAGETXT="$_USAGETXT  osbox installservice
+_USAGETXT="$_USAGETXT  osbox update  -   (optional parameters : stable/latest)
 "
 _USAGETXT="$_USAGETXT  osbox reset
 "
-_USAGETXT="$_USAGETXT  osbox update
+_USAGETXT="$_USAGETXT  osbox installservice
 "
+
+
 
 
 #if [ "$1" == "installservice" ]; then
