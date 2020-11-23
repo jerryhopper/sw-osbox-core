@@ -7,7 +7,7 @@ var=($(osbox network scan|grep Down))
 unset IFS
 
 
-echo "${var[-1]}"|awk -F ' ' '{print $2}'
+echo "${var[-2]}"|awk -F ' ' '{print $2}'
 
 
 

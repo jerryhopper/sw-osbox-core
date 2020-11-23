@@ -59,16 +59,25 @@ php(){
 #  /usr/local/osbox/project/sw-osbox-core/src/test2.php
 #==============================================================
 
+_USAGETXT="Usage:
+"
+_USAGETXT="$_USAGETXT  osbox installservice
+"
+_USAGETXT="$_USAGETXT  osbox reset
+"
+_USAGETXT="$_USAGETXT  osbox update
+"
 
 
-if [ "$1" == "installservice" ]; then
-    if [ -f /etc/systemd/system/osbox.service ]; then
-        rm -rf /etc/systemd/system/osbox.service
-    fi
-    ln -s /usr/local/osbox/lib/systemd/osbox.service /etc/systemd/system/osbox.service
-    systemctl enable osbox.service
-    exit;
-fi
+
+#if [ "$1" == "installservice" ]; then
+#    if [ -f /etc/systemd/system/osbox.service ]; then
+#        rm -rf /etc/systemd/system/osbox.service
+#    fi
+#    ln -s /usr/local/osbox/lib/systemd/osbox.service /etc/systemd/system/osbox.service
+#    systemctl enable osbox.service
+#    exit;
+#fi
 
 if [ "$1" == "reload" ]; then
     systemctl reload osbox.service
@@ -84,6 +93,8 @@ fi
 
 
 # osbox discover function
+_USAGETXT="$_USAGETXT  osbox discover
+"
 if [ "$1" == "discover" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
   exit
@@ -92,6 +103,8 @@ fi
 
 
 # osbox network functions
+_USAGETXT="$_USAGETXT  osbox database
+"
 if [ "$1" == "database" ]; then
   if [ "$2" == "update" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/database/update.sh
@@ -117,6 +130,8 @@ fi
 
 
 # osbox network functions
+_USAGETXT="$_USAGETXT  osbox network
+"
 if [ "$1" == "network" ]; then
   if [ "$2" == "info" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh
@@ -182,33 +197,25 @@ fi
 
 
 
-
+_USAGETXT="$_USAGETXT  osbox logs
+"
 if [ "$1" == "logs" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/logs.sh
   exit
 fi
 
-
+_USAGETXT="$_USAGETXT  osbox status
+"
 if [ "$1" == "status" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/status.sh
   exit
 fi
 
 
-
+## _USAGETXT="$_USAGETXT  osbox update\n"
   # command information
 if [ "$1" == "" ]; then
-  echo "Usage: "
-  echo "  osbox status - returns current osbox status"
-
-  echo "  osbox install - installs the application"
-  echo "  osbox update  - updates the application"
-  echo "  osbox discover - gets network discovery information"
-  echo "  osbox network - network functions."
-  echo "Development"
-  echo "  osbox reload - reload the osbox-service."
-  echo "  osbox installservice - installs the osbox-service."
-
+  echo "$_USAGETXT"
   exit
 fi
 exit;
