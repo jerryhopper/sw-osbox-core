@@ -69,7 +69,6 @@ _USAGETXT="$_USAGETXT  osbox update
 "
 
 
-
 #if [ "$1" == "installservice" ]; then
 #    if [ -f /etc/systemd/system/osbox.service ]; then
 #        rm -rf /etc/systemd/system/osbox.service
@@ -78,6 +77,36 @@ _USAGETXT="$_USAGETXT  osbox update
 #    systemctl enable osbox.service
 #    exit;
 #fi
+
+
+# osbox discover function
+_USAGETXT="$_USAGETXT  osbox discover
+"
+if [ "$1" == "discover" ]; then
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
+  exit
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if [ "$1" == "reload" ]; then
     systemctl reload osbox.service
@@ -92,13 +121,6 @@ fi
 
 
 
-# osbox discover function
-_USAGETXT="$_USAGETXT  osbox discover
-"
-if [ "$1" == "discover" ]; then
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
-  exit
-fi
 
 
 
@@ -219,7 +241,7 @@ if [ "$1" == "" ]; then
   exit
 fi
 exit;
-
+########################################################################################################################
 
 
 
