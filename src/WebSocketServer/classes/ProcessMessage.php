@@ -23,19 +23,19 @@ class ProcessMessage
         echo "received message: {$frame->data}\n";
 
         try {
-            $this->command_exists($this->command);
+            $this->process_message($this->command);
 
         } catch (Exception $e) {
             //$x = $this->result($e->getMessage() );
 //$type , $text, $data)
             //$pusher->push( "INFO", "title", "text" )
-            $this->pusher->push("ERROR",  $e->getMessage());
+            $this->pusher->push("ERROR", "Error!", $e->getMessage());
             return;
         }
 
         //$this->x();
 
-        $this->class->_result();
+        #$this->class->_result();
 
     }
 
@@ -62,33 +62,111 @@ class ProcessMessage
     }
 
 
-    function command_exists($command){
-        $cmdparts = explode(' ', $command);
-        //print_r($cmdparts);
-        # [0] osbox
-        # [1] discover  (class)
-        # [2] all (class:method)
+    function process_message($message){
 
-        $class = "\\".$cmdparts[1];
-        $method = $cmdparts[2];
-        //echo "xxx";
-
-        $subcommands = array_splice($cmdparts,2);
-        //print_r($subcommands);
-        if($class=="\\"){
-            $class="\\osbox";
+        if(trim($message)==""){
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid message (".$message.")\n";
+            echo "Invalid command (".$message.")";
+            throw new Exception("Invalid message (".$message.")");
         }
 
+        #echo "\n";
+        $commandParts = explode(' ', trim($message),3);
+
+
+        # class
+        $class = "\\".trim($commandParts[0]);
+
+        # check if class exists
+        if( !class_exists($class) ){
+            #echo "class '".$class."' doesnt exist\n";
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid class\n";
+            //echo "Invalid command";
+            throw new Exception("command '".$commandParts[0]."' doesnt exist");
+        }
+
+
+
+
+        $COMMAND =array( "class"=>$class );
+
+        # method
+        if(isset( $commandParts[1] )){
+            $method = trim($commandParts[1]);
+        }else{
+            $method = "default";
+            $params = "";
+        }
+
+        # arguments
+        if(isset( $commandParts[2] )){
+            $args = trim($commandParts[2] );
+        }else{
+            $args = "";
+        }
+
+
+
+
+
+        echo "Class = $class\n";
+        echo "Method = $method\n";
+        echo "Arguments = $args \n";
+
+        if( ! in_array($method,get_class_methods($class))  ){
+            #echo "method ".$method." doesnt exist.\n";
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid method\n";
+            throw new Exception("method ".$method." doesnt exist");
+        }
+
+        #echo "Class = $class\n";
+        #echo "Method = $method\n";
+        #echo "Arguments = $args \n";
+
+
+        $this->class = new $class($this->pusher);
+
+        $this->class->$method($args);
+
+    }
+
+    function command_exists($command){
+
+        # check if command is empty
+        if(trim($command)==""){
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid command (".$command.")\n";
+            echo "Invalid command (".$command.")";
+            throw new Exception("Invalid command (".$command.")");
+        }
+
+
+        $commandParts = explode(' ', $command,3);
+
+        print_r($commandParts);
+        $cmd = $commandParts[0];
+        $class = "\\".$cmd;
+
+        # check if class exists
         if( !class_exists($class) ){
             echo "class '".$class."' doesnt exist\n";
             $this->statusCode = 500;
-            $this->statusMsg = "Invalid command\n";
+            $this->statusMsg = "Invalid class\n";
             //echo "Invalid command";
-            throw new Exception("Invalid command");
+            throw new Exception("Invalid class");
         }
 
-        //echo "method:".$method."|\n";
+        #
+        if(isset($commandParts[1])) {
+            $method = $commandParts[1];
+        }else{
+            $method = "default";
+        }
 
+        #
         if($method==""){
             echo "Default method!";
             $subcommands=array("default");
@@ -102,7 +180,66 @@ class ProcessMessage
             throw new Exception("Invalid method");
         }
 
+
+        throw new Exception("End");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if(isset($commandParts[2])) {
+            $rest    = $commandParts[2];
+        }
+
+
+
+        $cmdparts = explode(' ', $command);
+        //print_r($cmdparts);
+        # [0] osbox
+        # [1] discover  (class)
+        # [2] all (class:method)
+
+        $class = "\\".$cmd;
+
+
+        if(isset($cmdparts[2])) {
+            $method = $cmdparts[2];
+        }else{
+            $method = "";
+        }
+
+        //echo "xxx";
+
+        $subcommands = array_splice($cmdparts,2);
+        //print_r($subcommands);
+        if($class=="\\"){
+            //$class="\\osbox";
+        }
+
+        if( !class_exists($class) ){
+            echo "class '".$class."' doesnt exist\n";
+            $this->statusCode = 500;
+            $this->statusMsg = "Invalid command\n";
+            //echo "Invalid command";
+            throw new Exception("Invalid command");
+        }
+
+        //echo "method:".$method."|\n";
+
+
         print_r($subcommands);
+
 
         $this->class = new $class($subcommands,$this->pusher);
 

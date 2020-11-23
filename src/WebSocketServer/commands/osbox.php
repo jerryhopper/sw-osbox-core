@@ -6,12 +6,11 @@
 
 class osbox extends CommandBase {
 
-
-    function default(){
+    function default($args=""){
         $pusher =$this->pusher; // Required!
-        $command ="osbox"; // The issued command
+        $command ="osbox"; // The issued command  or __FUNCTION__
 
-        echo "osbox:default()";
+        echo "osbox:default()\n";
 
 
         go(function() use ($command,$pusher) {
@@ -30,7 +29,35 @@ class osbox extends CommandBase {
             $ret = Co\System::exec($command);
 
 
+            # Push the final result to websocket
+            $pusher->push( "RESULT",$command, $ret );
 
+        });
+
+    }
+
+
+    function status($args=""){
+        $pusher =$this->pusher; // Required!
+        $command ="ls -latr /usr/local/osbox"; // The issued command  or __FUNCTION__
+
+        echo "osbox:default()\n";
+
+
+        go(function() use ($command,$pusher) {
+            /*
+             * Here you can do tasks and push info to the websocket
+             * There are 3 message variants.
+             *
+             *  $pusher->push( "RESULT","command", array() )
+             *  $pusher->push( "INFO", "title", "text" )
+             *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+             *
+             */
+
+
+            # Execute the command, and get the results.
+            $ret = Co\System::exec($command);
 
 
             # Push the final result to websocket
@@ -40,4 +67,28 @@ class osbox extends CommandBase {
 
     }
 
+    function installmodule($args=""){
+        $pusher =$this->pusher; // Required!
+        $command ="ls -latr /usr/local/osbox"; // The issued command  or __FUNCTION__
+
+        go(function() use ($command,$pusher) {
+            /*
+             * Here you can do tasks and push info to the websocket
+             * There are 3 message variants.
+             *
+             *  $pusher->push( "RESULT","command", array() )
+             *  $pusher->push( "INFO", "title", "text" )
+             *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+             *
+             */
+
+
+            # Execute the command, and get the results.
+            $ret = Co\System::exec($command);
+
+            # Push the final result to websocket
+            $pusher->push( "RESULT",$command, $ret );
+
+        });
+    }
 }

@@ -20,7 +20,7 @@ class Pusher
     # $pusher->push( "INFO", "title", "text" )
     # $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
     public function push( $type , $text, $data){
-        echo "type=".$type;
+        echo "type=".$type."\n";
 
     #public function push( $data , $statuscode=200,$statusmsg="ok"){
         if( $type=="INFO"){

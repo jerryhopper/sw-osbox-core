@@ -2,7 +2,7 @@
 
 
 #
-USAGE = echo "Usage: getDockerApp.sh "GITHUBORG" "GITHUBREPO""
+USAGE = "Usage: getDockerApp.sh "GITHUBORG" "GITHUBREPO""
 #
 
 if [ "$1" == "" ];then

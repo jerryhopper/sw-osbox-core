@@ -40,7 +40,7 @@ getDockerApp(){
 
     if [ -d $INSTALL_PATH ];then
         echo "App already exists"
-        exit 1
+        #exit 1
     fi
     DownloadUnpack "$REPO_ORG" "$REPO_REPO" "$(GetRemoteVersion "$REPO_ORG" "$REPO_REPO")" "$INSTALL_PATH"
 }
