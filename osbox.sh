@@ -218,7 +218,6 @@ if [ "$1" == "network" ]; then
     if [ "$(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')" == "" ];then
       echo "creating Osbox network adapter...."
       IPNET="$(getNetworkIpNet)"
-      echo "IPNET=$IPNET"
       IP="$(echo "${IPNET}"|awk -F '/' '{print $1}')"
 
       echo "creating..."
@@ -256,6 +255,40 @@ if [ "$1" == "network" ]; then
 fi
 
 
+# osbox network functions
+_USAGETXT="$_USAGETXT  osbox app
+"
+if [ "$1" == "app" ]; then
+
+  if [ "$2" == "available" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/app.sh "available"
+      exit;
+
+  fi
+
+
+  if [ "$2" == "list" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/app.sh "list"
+      exit;
+  fi
+  if [ "$2" == "install" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/app.sh "install" $3
+      exit;
+  fi
+  if [ "$2" == "remove" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/app.sh "remove" $3
+      exit;
+  fi
+  # command information
+  if [ "$2" == "" ]; then
+    echo "Usage: "
+    echo "  osbox app available  - returns installable applications"
+    echo "  osbox app list  - returns current applications"
+    echo "  osbox install appname  - Install application  X "
+    echo "  osbox remove appname  - Stops and removes the application"
+    exit
+  fi
+fi
 
 
 

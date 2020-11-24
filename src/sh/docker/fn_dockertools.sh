@@ -43,6 +43,7 @@ getDockerApp(){
         #exit 1
     fi
     echo "RemoteVersion: $(GetRemoteVersion "$REPO_ORG" "$REPO_REPO")"
+
     DownloadUnpack "$REPO_ORG" "$REPO_REPO" "$(GetRemoteVersion "$REPO_ORG" "$REPO_REPO")" "$INSTALL_PATH"
 }
 
