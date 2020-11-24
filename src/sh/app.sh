@@ -13,21 +13,25 @@ if [ "$ACTION" == "available" ]; then
 fi
 
 APPLICATION="$2"
+echo "Application = $APPLICATION"
 
 REPO_ORG="$(echo $APPLICATION|awk -F "/" '{ print $1 }')"
+echo "REPO_ORG = $REPO_ORG"
+
 REPO_NAME="$(echo $APPLICATION|awk -F "/" '{ print $2 }')"
+echo "REPO_NAME = $REPO_NAME"
+#echo "$REPO_ORG $REPO_NAME"
 
-echo "$REPO_ORG $REPO_NAME"
 
-source /usr/local/osbox/project/sw-osbox-core/src/sh/getDockerApp.sh
 if [ "$ACTION" == "install" ]; then
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/getDockerApp.sh "$REPO_ORG" "$REPO_NAME"
-  sleep
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/runDockerApp.sh "$REPO_ORG" "$REPO_NAME"
+
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/docker/getDockerApp.sh $REPO_ORG $REPO_NAME
+  sleep 1
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/docker/runDockerApp.sh $REPO_ORG $REPO_NAME
   exit
 fi
 
 if [ "$ACTION" == "remove" ]; then
-
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/docker/removeDockerApp.sh $REPO_ORG $REPO_NAME
   exit
 fi

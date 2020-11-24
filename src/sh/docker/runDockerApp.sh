@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-#
+
 USAGE="Usage: runDockerApp.sh "GITHUBORG" "GITHUBREPO""
-#
+
 
 if [ "$1" == "" ];then
   echo "Error! Missing Organization \n$USAGE";
