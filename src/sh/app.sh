@@ -8,7 +8,7 @@ if [ "$ACTION" == "list" ]; then
 fi
 if [ "$ACTION" == "available" ]; then
   echo "jerryhopper/sw-osbox-pihole"
-  echo "jerryhopper/sw-osbox-sqlitebrowser"
+  echo "jerryhopper/sw-osbox-phpliteadmin"
   exit;
 fi
 
