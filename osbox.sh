@@ -213,26 +213,22 @@ if [ "$1" == "network" ]; then
   fi
 
   source /usr/local/osbox/project/sw-osbox-core/src/sh/network/fn_networktools.sh
+
   if [ "$2" == "create" ]; then
-
-    #T="$(nmcli connection show|grep osbox)"
-    #if [ "$(nmcli connection show|grep osbox)" != "" ];then
-     # echo "Osbox network adapter exists"
-
-    #else
-      echo "creating Osbox network adapter"
+    if [ "$(nmcli connection show|grep osbox|awk -F ' ' '{print $1}')" == "" ];then
+      echo "creating Osbox network adapter...."
       IPNET="$(getNetworkIpNet)"
+      echo "IPNET=$IPNET"
       IP="$(echo "${IPNET}"|awk -F '/' '{print $1}')"
-      createOsboxInterface "$IPNET"
-      sleep 1
-    #fi
 
+      echo "creating..."
+      createOsboxInterface "$IPNET"
+
+    fi
   fi
 
-
-
   if [ "$2" == "reset" ]; then
-    nmcli connection show|grep osbox
+    nmcli connection show|grep osbox>/dev/null
     if [ "$?" == "0" ];then
       echo "Removing Osbox network adapter"
       removeOsboxInterface

@@ -2,6 +2,8 @@
 
 
 
+
+
 getNetworkIpNet(){
     NETWORKINFO="$(osbox network info)"
     # Get netsize
@@ -14,7 +16,13 @@ getNetworkIpNet(){
 
 createOsboxInterface(){
   removeOsboxInterface >/dev/null
-  nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1 >/dev/null
+  IPv4gw="$(nmcli -g IP4.GATEWAY connection show "Wired connection 1")"
+
+  nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1 ipv4.gateway $IPv4gw>/dev/null
+  sleep 1
+
+  nmcli connection modify dummy-osbox0 ipv4.gateway "$IPv4gw"
+
 }
 
 removeOsboxInterface(){

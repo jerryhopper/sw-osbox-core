@@ -12,6 +12,10 @@ else
 fi
 
 
+
+
+
 echo "$IPv4bare,$ADDRESSING,$IPV4_ADDRESS,$IPv4gw"
 
+exit
 
