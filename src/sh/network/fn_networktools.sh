@@ -11,6 +11,7 @@ getNetworkIpNet(){
     echo "$FREEIP/$NETSIZE"
 }
 
+
 createOsboxInterface(){
   removeOsboxInterface >/dev/null
   nmcli connection add type dummy ifname osbox0 ipv4.method manual ipv4.addresses $1 >/dev/null

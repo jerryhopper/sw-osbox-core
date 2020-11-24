@@ -3,13 +3,8 @@
 set -e
 
 # is_command function
-is_command() {
-    # Checks for existence of string passed in as only function argument.
-    # Exit value of 0 when exists, 1 if not exists. Value is the result
-    # of the `command` shell built-in call.
-    local check_command="$1"
-    command -v "${check_command}" >/dev/null 2>&1
-}
+source /usr/local/osbox/bin/fn/is_command.fn
+
 
 returnedstatus(){
   if [ $1 -eq 0 ]; then
@@ -67,36 +62,7 @@ _USAGETXT="$_USAGETXT  osbox update  -   (optional parameters : stable/latest)
 "
 _USAGETXT="$_USAGETXT  osbox reset
 "
-_USAGETXT="$_USAGETXT  osbox installservice
-"
 
-
-
-####################################################################################################
-# osbox install function
-if [ "$1" == "installservice" ]; then
-  if [ "$2" == "enable" ]; then
-    if [ -f /etc/systemd/system/osbox.service ]; then
-        rm -rf /etc/systemd/system/osbox.service
-    fi
-    # Enable the installer service
-    ln -s /usr/local/osbox/lib/systemd/osbox.service /etc/systemd/system/osbox.service
-    systemctl enable osbox.service
-    exit;
-  fi
-  if [ "$2" == "disable" ]; then
-    if [ -f /etc/systemd/system/osbox.service ]; then
-        rm -rf /etc/systemd/system/osbox.service
-    fi
-    # Enable the installer service
-    systemctl daemon-reload
-    exit;
-  fi
-  echo "Usage: "
-  echo "  osbox installservice enable  - Enables the installerservice"
-  echo "  osbox installservice disable - Disables the installerservice"
-  exit
-fi
 
 
 ####################################################################################################
@@ -119,8 +85,47 @@ if [ "$1" == "reset" ]; then
   exit
 fi
 
+
+
+
+
+
+
+
+
+_USAGETXT="$_USAGETXT  osbox installservice   -  (paramaters : enable/disable)
+"
+####################################################################################################
+# osbox install function
+if [ "$1" == "service" ]; then
+  if [ "$2" == "enable" ]; then
+    if [ -f /etc/systemd/system/osbox.service ]; then
+        rm -rf /etc/systemd/system/osbox.service
+    fi
+    # Enable the installer service
+    ln -s /usr/local/osbox/lib/systemd/osbox.service /etc/systemd/system/osbox.service
+    systemctl enable osbox.service
+    exit;
+  fi
+  if [ "$2" == "disable" ]; then
+    if [ -f /etc/systemd/system/osbox.service ]; then
+        rm -rf /etc/systemd/system/osbox.service
+    fi
+    # Enable the installer service
+    systemctl daemon-reload
+    exit;
+  fi
+  echo "Usage: "
+  echo "  osbox service enable  - Enables the service"
+  echo "  osbox service disable - Disables the service"
+  exit
+fi
+
+
+
+
 # osbox discover function
-_USAGETXT="$_USAGETXT  osbox discover
+_USAGETXT="$_USAGETXT  osbox discover   -  (parameters : master/all)
 "
 if [ "$1" == "discover" ]; then
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/discover.sh $2 $3 $4
@@ -165,7 +170,7 @@ fi
 
 
 # osbox network functions
-_USAGETXT="$_USAGETXT  osbox database
+_USAGETXT="$_USAGETXT  osbox database    -  (paramaters : database/reset)
 "
 if [ "$1" == "database" ]; then
   if [ "$2" == "update" ]; then
@@ -192,9 +197,11 @@ fi
 
 
 # osbox network functions
-_USAGETXT="$_USAGETXT  osbox network
+_USAGETXT="$_USAGETXT  osbox network   -  (paramaters : info/scan/ )
 "
 if [ "$1" == "network" ]; then
+
+
   if [ "$2" == "info" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh
 
@@ -204,49 +211,49 @@ if [ "$1" == "network" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/scan.sh
       exit;
   fi
-  if [ "$2" == "restart" ]; then
-      bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/restart.sh
-      exit;
+
+  source /usr/local/osbox/project/sw-osbox-core/src/sh/network/fn_networktools.sh
+  if [ "$2" == "create" ]; then
+
+    #T="$(nmcli connection show|grep osbox)"
+    #if [ "$(nmcli connection show|grep osbox)" != "" ];then
+     # echo "Osbox network adapter exists"
+
+    #else
+      echo "creating Osbox network adapter"
+      IPNET="$(getNetworkIpNet)"
+      IP="$(echo "${IPNET}"|awk -F '/' '{print $1}')"
+      createOsboxInterface "$IPNET"
+      sleep 1
+    #fi
+
   fi
 
 
+
+  if [ "$2" == "reset" ]; then
+    nmcli connection show|grep osbox
+    if [ "$?" == "0" ];then
+      echo "Removing Osbox network adapter"
+      removeOsboxInterface
+    fi
+
+  fi
+
+  if [ "$2" == "list" ]; then
+    nmcli connection show
+  fi
   # if - interfaces
-  if [ "$2" == "if" ]; then
-      # osbox if reset
-      if [ "$3" == "reset" ]; then
-          echo "network reset"
-          bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/set_dynamic.sh
-          returnedstatus $? "success" "fail"
-      fi
-      # osbox if set <ip>
-      # bash /usr/lib/osbox/stage/networksetstatic.sh $2 $3 $4 $5
-      # bash /usr/lib/osbox/stage/networksetstatic.sh IP SUBN GW $5
-      if [ "$3" == "set" ]; then
-          if [ "$4" == "" ]; then
-              echo "Missing paramaters... example: "
-              echo "  osbox network if set 192.168.1.10/24 192.168.1.1"
-              exit 1
-          fi
-          if [ "$5" == "" ]; then
-              echo "Missing paramaters... example: "
-              echo "  osbox network if set 192.168.1.10/24 192.168.1.1"
-              exit 1
-          fi
-          bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/set_static.sh $4 $5
-          returnedstatus $? "success" "fail"
 
-      fi
-  fi
 
   # command information
   if [ "$2" == "" ]; then
     echo "Usage: "
-    echo "  osbox network restart - restarts the network-stack"
-    echo "  osbox network scan  - scans the lan, returns ip/statusses"
     echo "  osbox network info  - returns current network settings"
-
-    echo "  osbox network if reset  - Resets the network to dhcp"
-    echo "  osbox network if set <IP/SIZE> <GATEWAY> - Sets the network to static ip."
+    echo "  osbox network list  - returns current network settings"
+    echo "  osbox network reset  - Removes the network interface"
+    echo "  osbox network create - Creates osbox network interface with static IP."
+    echo "  osbox network scan  - scans the lan, returns ip/statusses"
     exit
   fi
   exit;
