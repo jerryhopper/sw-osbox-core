@@ -260,11 +260,6 @@ _USAGETXT="$_USAGETXT  osbox app
 "
 if [ "$1" == "app" ]; then
 
-  if [ "$2" == "available" ]; then
-      bash /usr/local/osbox/project/sw-osbox-core/src/sh/app.sh "available"
-      exit;
-
-  fi
 
 
   if [ "$2" == "list" ]; then
@@ -282,7 +277,6 @@ if [ "$1" == "app" ]; then
   # command information
   if [ "$2" == "" ]; then
     echo "Usage: "
-    echo "  osbox app available  - returns installable applications"
     echo "  osbox app list  - returns current applications"
     echo "  osbox install appname  - Install application  X "
     echo "  osbox remove appname  - Stops and removes the application"

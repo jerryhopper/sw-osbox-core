@@ -2,15 +2,21 @@
 
 ACTION="$1"
 
+allApps=("sw-osbox-pihole" "sw-osbox-phpliteadmin")
+
 if [ "$ACTION" == "list" ]; then
+  for f in ${allApps[@]};
+  do
+      if [ -d "/opt/osbox/$f" ];then
+        echo "jerryhopper/$f [installed] ( osbox app remove jerryhoppr/$f)"
+      else
+        echo "jerryhopper/$f  ( osbox app install jerryhoppr/$f)"
+      fi
+  done
 
   exit
 fi
-if [ "$ACTION" == "available" ]; then
-  echo "jerryhopper/sw-osbox-pihole"
-  echo "jerryhopper/sw-osbox-phpliteadmin"
-  exit;
-fi
+
 
 APPLICATION="$2"
 echo "Application = $APPLICATION"
