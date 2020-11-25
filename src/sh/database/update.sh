@@ -4,16 +4,21 @@
 
 #sqlite3 -batch /etc/osbox/osbox.db "create table if not exists dbversion (id TEXT PRIMARY KEY,Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,f TEXT);"
 if [ ! -f /etc/osbox/osbox.db ];then
-  touch /etc/osbox/osbox.db
+    touch /etc/osbox/osbox.db
+    chmod 0666 /etc/osbox/osbox.db
+fi
+if [ ! -w /etc/osbox/osbox.db ];then
+    chmod 0666 /etc/osbox/osbox.db
 fi
 
 
 
 
 
-#_updatefiles="./updates/*.sql"
+
 shopt -s nullglob
-_updatefiles=(*.sql)
+_updatefiles="/usr/local/osbox/project/sw-osbox-core/src/sh/database/updates/*.sql"
+#_updatefiles=(*.sql)
 
 #echo $_updatefiles
 
