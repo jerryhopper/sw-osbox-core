@@ -256,6 +256,29 @@ fi
 
 
 # osbox network functions
+_USAGETXT="$_USAGETXT  osbox registration
+"
+if [ "$1" == "registration" ]; then
+
+  if [ "$2" == "start" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/discover.sh
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/authorize.sh
+    exit;
+  fi
+
+  if [ "$2" == "check" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/authpoll.sh
+    exit;
+  fi
+
+  echo "Usage:"
+  echo " - start  ( Start the authorization sequence )"
+  echo " - check  ( Start polling the token endpoint )"
+
+  exit;
+fi
+
+# osbox network functions
 _USAGETXT="$_USAGETXT  osbox app
 "
 if [ "$1" == "app" ]; then
