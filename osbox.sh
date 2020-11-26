@@ -261,8 +261,14 @@ _USAGETXT="$_USAGETXT  osbox registration
 if [ "$1" == "registration" ]; then
 
   if [ "$2" == "start" ]; then
-    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/discover.sh
-    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/authorize.sh
+    if [ ! -f /etc/osbox/.authorization ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/discover.sh
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/authorize.sh
+    else
+      echo "Already authorized"
+      exit 1
+    fi
+
     exit;
   fi
 
@@ -307,9 +313,11 @@ if [ "$1" == "app" ]; then
   fi
 fi
 
-
-
-
+_USAGETXT="$_USAGETXT  osbox restart
+"
+if [ "$1" == "restart" ]; then
+  kill -9 $(</run/swoole.pid)
+fi
 
 
 _USAGETXT="$_USAGETXT  osbox logs
