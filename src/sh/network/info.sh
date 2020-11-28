@@ -15,7 +15,7 @@ fi
 
 
 
-echo "$IPv4bare,$ADDRESSING,$IPV4_ADDRESS,$IPv4gw"
+printf "$IPv4bare,$ADDRESSING,$IPV4_ADDRESS,$IPv4gw"
 
 exit
 

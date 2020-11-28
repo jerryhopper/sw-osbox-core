@@ -19,8 +19,12 @@ class Pusher
     # $pusher->push( "RESULT","command", array() )
     # $pusher->push( "INFO", "title", "text" )
     # $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+
     public function push( $type , $text, $data){
         echo "type=".$type."\n";
+        echo "text=".$text."\n";
+        echo "data=\n";
+        print_r($data);
 
     #public function push( $data , $statuscode=200,$statusmsg="ok"){
         if( $type=="INFO"){
@@ -30,9 +34,14 @@ class Pusher
             $statusmsg=$text;
 
 
-        }else if( $type=="RESULT"){
+
+        }else if( $type=="PONG"){
             # $pusher->push( "RESULT","command", array() )
             # array() contains : {"code":0,"signal":0,"output":"someoutput" }
+            $data['code'];
+            $data['signal'];
+            $data['output'];
+
             if($data['code']==0){
                 $statuscode=200;
                 $statusmsg=$text;
@@ -40,6 +49,24 @@ class Pusher
                 $statuscode=500+$data['code'];
                 $statusmsg="An error occured.";
             }
+            $data = json_decode($data['output']);
+            # $this->socketserver->push($this->frame->fd, $this->outputFormat( $data ,$statuscode,$statusmsg) );
+
+        }else if( $type=="RESULT"){
+            # $pusher->push( "RESULT","command", array() )
+            # array() contains : {"code":0,"signal":0,"output":"someoutput" }
+            $data['code'];
+            $data['signal'];
+            $data['output'];
+
+            if($data['code']==0){
+                $statuscode=200;
+                $statusmsg=$text;
+            }else{
+                $statuscode=500+$data['code'];
+                $statusmsg="An error occured.";
+            }
+            $data = json_decode($data['output']);
             # $this->socketserver->push($this->frame->fd, $this->outputFormat( $data ,$statuscode,$statusmsg) );
 
         }else if ($type=="ERROR"){
@@ -54,11 +81,13 @@ class Pusher
 
         //
         echo "Push message!\n";
-        $this->socketserver->push($this->frame->fd, $this->outputFormat( $data ,$statuscode,$statusmsg) );
+
+        $this->socketserver->push($this->frame->fd, $this->outputFormat( $type,$statuscode,$statusmsg,$data) );
+        #$this->socketserver->push($this->frame->fd, $this->outputFormat( $type,$data ,$type,$statusmsg) );
     }
 
-    private function outputFormat($data, $statuscode,$statusmsg){
-        return json_encode( [$statuscode, time(), $data ] );
+    private function outputFormat($type,$statuscode,$statusmessage,$data){
+        return json_encode( [$type, time(), $statuscode,$statusmessage, $data ] );
     }
 
 }
