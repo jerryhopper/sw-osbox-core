@@ -8,9 +8,9 @@ if [ "$ACTION" == "list" ]; then
   for f in ${allApps[@]};
   do
       if [ -d "/opt/osbox/$f" ];then
-        echo "jerryhopper/$f [installed] ( osbox app remove jerryhoppr/$f)"
+        echo "jerryhopper/$f [installed] ( osbox app remove jerryhopper/$f)"
       else
-        echo "jerryhopper/$f  ( osbox app install jerryhoppr/$f)"
+        echo "jerryhopper/$f  ( osbox app install jerryhopper/$f)"
       fi
   done
 
