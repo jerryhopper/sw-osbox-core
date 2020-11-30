@@ -201,7 +201,11 @@ _USAGETXT="$_USAGETXT  osbox network   -  (paramaters : info/scan/ )
 "
 if [ "$1" == "network" ]; then
 
+  if [ "$2" == "osbox" ]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/osboxinfo.sh
 
+      exit;
+  fi
   if [ "$2" == "info" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/network/info.sh
 

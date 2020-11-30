@@ -17,7 +17,7 @@ require_once("classes/CommandBase.php");
 
 require_once("classes/Executor.php");
 
-
+require_once("classes/websocket_client.php");
 
 
 
