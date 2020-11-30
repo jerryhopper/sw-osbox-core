@@ -136,8 +136,8 @@ class osbox extends CommandBase {
 
                     echo "> ".$boxdetails[7];
 
-                    #$client = new WebSocketClient($boxdetails[7], $boxdetails[8]);
-                    $client = new WebSocketClient($host, 81);
+                    #$client = new WebSocketClient(, $boxdetails[8]);
+                    $client = new WebSocketClient($boxdetails[7], $boxdetails[8]);
 
                     $data = $client->connect();
                     $client->send("osbox status");
