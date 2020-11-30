@@ -47,7 +47,7 @@ class osbox extends CommandBase {
 
 
         go(function() use ($command,$pusher) {
-            /*
+            /**
              * Here you can do tasks and push info to the websocket
              * There are 3 message variants.
              *
@@ -55,7 +55,7 @@ class osbox extends CommandBase {
              *  $pusher->push( "INFO", "title", "text" )
              *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
              *
-             */
+             **/
 
 
             # Execute the command, and get the results.
@@ -78,7 +78,7 @@ class osbox extends CommandBase {
 
 
         go(function() use ($command,$pusher) {
-            /*
+            /**
              * Here you can do tasks and push info to the websocket
              * There are 3 message variants.
              *
@@ -86,7 +86,7 @@ class osbox extends CommandBase {
              *  $pusher->push( "INFO", "title", "text" )
              *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
              *
-             */
+             **/
 
 
             # Execute the command, and get the results.
@@ -98,6 +98,8 @@ class osbox extends CommandBase {
 
         });
     }
+
+
 
     function discover($args=""){
         $pusher =$this->pusher; // Required!
@@ -224,6 +226,34 @@ class osbox extends CommandBase {
 
     }
 
+    function reboot($args=""){
+        $pusher =$this->pusher; // Required!
+        $command ="shutdown -r now"; // The issued command  or __FUNCTION__
+
+
+
+        go(function() use ($command,$pusher) {
+            /*
+             * Here you can do tasks and push info to the websocket
+             * There are 3 message variants.
+             *
+             *  $pusher->push( "RESULT","command", array() )
+             *  $pusher->push( "INFO", "title", "text" )
+             *  $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
+             *
+             */
+
+
+            # Execute the command, and get the results.
+            $ret = Co\System::exec($command);
+
+
+            # Push the final result to websocket
+            $pusher->push( "RESULT",$command, $ret );
+
+        });
+
+    }
 
     function installmodule($args=""){
         $pusher =$this->pusher; // Required!
