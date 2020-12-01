@@ -35,6 +35,19 @@ AUTH_URL="$(echo $OPENID_CONFIG|jq -r .device_authorization_endpoint)"
 
 TOKEN_REQUEST="/etc/osbox/tokenrequest.json"
 
+
+AUTH_FILE="/etc/osbox/.authorization"
+
+# check if file exists.
+if [ -f $AUTH_FILE ]; then
+  echo "Device already authorized"
+  exit 1
+fi
+
+
+
+
+
 http_response=$(curl -s -o $TOKEN_REQUEST -X POST -F "client_id=${CLIENT_ID}" -F "scope=offline_access" -w "%{http_code}" ${AUTH_URL})
 if [ $http_response == "000"  ]; then
     # handle error

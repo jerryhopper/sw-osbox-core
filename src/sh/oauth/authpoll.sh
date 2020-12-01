@@ -28,10 +28,18 @@ CLIENT_ID="$(</etc/osbox/.client_id)"
 DISCOVERY_INFO="$(</etc/osbox/.openid-configuration.json)"
 
 
+
+
 TOKEN_URL="$(echo $DISCOVERY_INFO|jq -r .token_endpoint)"
 TOKEN_REQUEST="/etc/osbox/tokenrequest.json"
 
+AUTH_FILE="/etc/osbox/.authorization"
 
+# check if file exists.
+if [ -f $AUTH_FILE ]; then
+  echo "Device already authorized"
+  exit 1
+fi
 
 
 
@@ -62,7 +70,7 @@ while [  $SECONDS -lt  $end ] ;  do
     ACCESS_TOKEN="$(echo $AJSON|jq -r .access_token)"
 
     if [ "$ACCESS_TOKEN" != "null" ]; then
-      echo "$AJSON">/etc/osbox/.authorization
+      echo "$AJSON">$AUTH_FILE
       rm -f $TOKEN_REQUEST
       echo "$AJSON"
       exit 0
