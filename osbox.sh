@@ -137,6 +137,55 @@ fi
 
 
 
+# osbox discover function
+_USAGETXT="$_USAGETXT  osbox auth
+"
+if [ "$1" == "auth" ]; then
+
+  if [ "$2" == "request" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh authorize
+    exit;
+  fi
+  if [ "$2" == "poll" ]; then
+    if [ "$3" == "once "]; then
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh poll once
+    else
+      bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh poll
+    fi
+
+    exit;
+  fi
+  if [ "$2" == "reset" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh reset
+    exit;
+  fi
+  if [ "$2" == "renew" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh renew
+    exit;
+  fi
+  if [ "$2" == "setClientid" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setClientid $3
+    exit;
+  fi
+  if [ "$2" == "setDiscovery" ]; then
+    bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery $3
+    exit;
+  fi
+
+  echo "Usage: "
+  echo "  osbox auth request  - Request authorization"
+  echo "  osbox auth poll - Poll for authorization "
+  echo "  osbox auth renew - Renews token"
+  echo "  osbox auth reset - Resets to no owner"
+  echo "  osbox auth setClientid <CLIENT_ID> - Set clientid"
+  echo "  osbox auth setDiscovery <DISCOVERY_URL> - Set discovery url"
+
+
+  exit
+fi
+
+
+
 
 
 
