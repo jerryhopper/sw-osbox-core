@@ -147,7 +147,7 @@ if [ "$1" == "auth" ]; then
     exit;
   fi
   if [ "$2" == "poll" ]; then
-    if [ "$3" == "once "]; then
+    if [ "$3" == "once" ]; then
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh poll once
     else
       bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh poll
@@ -172,6 +172,7 @@ if [ "$1" == "auth" ]; then
     exit;
   fi
 
+
   echo "Usage: "
   echo "  osbox auth request  - Request authorization"
   echo "  osbox auth poll - Poll for authorization "
@@ -180,6 +181,8 @@ if [ "$1" == "auth" ]; then
   echo "  osbox auth setClientid <CLIENT_ID> - Set clientid"
   echo "  osbox auth setDiscovery <DISCOVERY_URL> - Set discovery url"
 
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setClientid 89d998a5-aaef-45d0-9765-adf1f3e00c65
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery "https://idp.surfwijzer.nl/.well-known/openid-configuration"
 
   exit
 fi
