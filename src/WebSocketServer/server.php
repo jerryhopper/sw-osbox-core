@@ -21,8 +21,6 @@ require_once("classes/websocket_client.php");
 
 
 
-
-
 require_once("commands/discover.php");
 require_once("commands/network.php");
 
@@ -63,6 +61,8 @@ function x( $command="/usr/bin/php",$options=array("./testexec.php") ){
 #  /host/etc/osbox/osbox.db
 
 
+
+# SSL LOCATION # /etc/osbox/.ssl/ssl.dockbox.nl.crt # /etc/osbox/.ssl/ssl.dockbox.nl.key
 
 
 $server = new Server("0.0.0.0", 81);
