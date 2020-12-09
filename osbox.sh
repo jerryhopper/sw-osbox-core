@@ -89,7 +89,10 @@ fi
 
 
 
-
+if [ "$1" == "getssl" ];then
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/getssl.sh
+  exit;
+fi
 
 
 
