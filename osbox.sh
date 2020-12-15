@@ -91,7 +91,9 @@ if [ "$1" == "unregistered" ];then
   ETH1="$(osbox network info)"
   ETH2="$(osbox network osbox)"
 
-  echo $ETH1
+  curl -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" https://setup.surfwijzer.nl/api/unregistereddevice
+
+  #echo $ETH1
 
   exit
 fi
