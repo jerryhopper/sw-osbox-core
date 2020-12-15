@@ -85,11 +85,19 @@ if [ "$1" == "reset" ]; then
   exit
 fi
 
+if [ "$1" == "unregistered" ];then
+  echo "unregistered"
+  # ping unregistered-device endpoint with local ips
+  ETH1="$(osbox network info)"
+  ETH2="$(osbox network osbox)"
 
+  echo $ETH1
 
-
+  exit
+fi
 
 if [ "$1" == "getssl" ];then
+
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/getssl.sh
   exit;
 fi
@@ -248,6 +256,8 @@ if [ "$1" == "database" ]; then
   exit;
 
 fi
+
+
 
 
 # osbox network functions
