@@ -6,6 +6,10 @@ set -e
 source /usr/local/osbox/bin/fn/is_command.fn
 
 
+BACKEND_HOST="$(</etc/osbox/.backendhost)"
+
+
+
 returnedstatus(){
   if [ $1 -eq 0 ]; then
       echo "$2"
@@ -41,13 +45,6 @@ log(){
 }
 
 
-php(){
-  if [ ! -f "$1" ];then
-    echo "file does not exist!?"
-    exit
-  fi
-  PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f $1
-}
 
 
 # PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/test2.php
@@ -91,7 +88,7 @@ if [ "$1" == "unregistered" ];then
   ETH1="$(osbox network info)"
   ETH2="$(osbox network osbox)"
 
-  curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" https://setup.surfwijzer.nl/api/unregistereddevice
+  curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" "$BACKEND_HOST/api/unregistereddevice"
 
   #echo $ETH1
 
@@ -194,8 +191,9 @@ if [ "$1" == "auth" ]; then
   echo "  osbox auth setClientid <CLIENT_ID> - Set clientid"
   echo "  osbox auth setDiscovery <DISCOVERY_URL> - Set discovery url"
 
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setClientid 89d998a5-aaef-45d0-9765-adf1f3e00c65
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery "https://idp.surfwijzer.nl/.well-known/openid-configuration"
+
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setClientid "$(</etc/osbox/.client_id)"
+  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery "$(</etc/osbox/.idp_server)/.well-known/openid-configuration"
 
   exit
 fi
