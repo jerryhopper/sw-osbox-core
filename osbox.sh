@@ -82,8 +82,10 @@ if [ "$1" == "reset" ]; then
   exit
 fi
 
+
+
 if [ "$1" == "unregistered" ];then
-  echo "unregistered"
+  echo "$BACKEND_HOST/api/unregistereddevice"
   # ping unregistered-device endpoint with local ips
   ETH1="$(osbox network info)"
   ETH2="$(osbox network osbox)"
