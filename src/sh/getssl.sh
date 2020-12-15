@@ -1,19 +1,24 @@
 #!/bin/bash
 
 
-getSSL(){
-  crt="https://api.surfwijzer.nl/localssl/ssl.dockbox.nl/ssl.dockbox.nl.crt"
-  key="https://api.surfwijzer.nl/localssl/ssl.dockbox.nl/ssl.dockbox.nl.key"
-  dstdir="/etc/osbox/.ssl"
 
-  # /etc/osbox/.ssl/ssl.dockbox.nl.crt
+crt="$(</etc/osbox/.backendhost)/api/localssl?item=ssl.dockbox.nl.cer"
+key="$(</etc/osbox/.backendhost)/api/localssl?item=ssl.dockbox.nl.key"
 
-  if [ -d $dstdir ];then
-      mkdir -p $dstdir
+dstdir="/etc/osbox/.ssl"
+
+# /etc/osbox/.ssl/ssl.dockbox.nl.crt
+
+if [ ! -d $dstdir ];then
+    mkdir -p $dstdir
+fi
+
+wget -nv -q -O "/etc/osbox/.ssl/ssl.dockbox.nl.cer" $crt
+if [ "$?" == "0" ];then
+  wget -nv -q -O "/etc/osbox/.ssl/ssl.dockbox.nl.key" $key
+  if [ "$?" != "0" ];then
+      exit 1;
   fi
-  wget $crt $dstdir
-  wget $key $dstdir
+fi
 
-}
-
-getSSL
+exit 0
