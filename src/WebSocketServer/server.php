@@ -71,7 +71,7 @@ $serverSettings = array(
     // logging
     'log_level' => 0,
     'log_file' => '/var/log/osbox-swoole.log',
-    'log_rotation' => SWOOLE_LOG_ROTATION_DAILY | SWOOLE_LOG_ROTATION_SINGLE,
+    'log_rotation' =>  SWOOLE_LOG_ROTATION_SINGLE /*SWOOLE_LOG_ROTATION_DAILY |*/ ,
     'log_date_format' => false, // or "day %d of %B in the year %Y. Time: %I:%S %p",
     'log_date_with_microseconds' => false,
 
@@ -92,8 +92,8 @@ if( file_exists("/etc/osbox/.ssl/ssl.dockbox.nl.cer") ){
 }else{
     $server = new Server("0.0.0.0", 81);
 
-}
 
+}
 
 
 //$server = new Server("0.0.0.0", 81);
