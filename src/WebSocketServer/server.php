@@ -64,8 +64,39 @@ function x( $command="/usr/bin/php",$options=array("./testexec.php") ){
 
 # SSL LOCATION # /etc/osbox/.ssl/ssl.dockbox.nl.crt # /etc/osbox/.ssl/ssl.dockbox.nl.key
 
+$serverSettings = array(
+    "worker_num" => 2,
+    'daemonize' => true,
+    'pid_file' => '/run/swoole.pid',
+    // logging
+    'log_level' => 0,
+    'log_file' => '/var/log/osbox-swoole.log',
+    'log_rotation' => SWOOLE_LOG_ROTATION_DAILY | SWOOLE_LOG_ROTATION_SINGLE,
+    'log_date_format' => false, // or "day %d of %B in the year %Y. Time: %I:%S %p",
+    'log_date_with_microseconds' => false,
 
-$server = new Server("0.0.0.0", 81);
+);
+
+
+if( file_exists("/etc/osbox/.ssl/ssl.dockbox.nl.cer") ){
+    $serverSettings['ssl_cert_file']= "/etc/osbox/.ssl/ssl.dockbox.nl.cer";
+    $serverSettings['ssl_key_file'] = "/etc/osbox/.ssl/ssl.dockbox.nl.key";
+    #$serverSettings['ssl_ciphers']  = 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP';
+    #$serverSettings['ssl_method']   = SWOOLE_SSLv3_CLIENT_METHOD;
+    #$serverSettings['ssl_protocols']= 0;
+    $serverSettings['ssl_verify_peer']=false;
+    error_log("SSL=ON");
+
+    $server = new Server("0.0.0.0", 81 ,SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+
+}else{
+    $server = new Server("0.0.0.0", 81);
+
+}
+
+
+
+//$server = new Server("0.0.0.0", 81);
 
 /*
     // ssl
@@ -77,18 +108,7 @@ $server = new Server("0.0.0.0", 81);
     'ssl_verify_peer' => false,
 */
 
-$server->set([
-    "worker_num" => 2,
-    'daemonize' => true,
-    'pid_file' => '/run/swoole.pid',
-    // logging
-    'log_level' => 0,
-    'log_file' => '/var/log/osbox-swoole.log',
-    'log_rotation' => SWOOLE_LOG_ROTATION_DAILY | SWOOLE_LOG_ROTATION_SINGLE,
-    'log_date_format' => false, // or "day %d of %B in the year %Y. Time: %I:%S %p",
-    'log_date_with_microseconds' => false,
-
-]);
+$server->set($serverSettings);
 
 $server->on("start", function (Server $server) {
 
