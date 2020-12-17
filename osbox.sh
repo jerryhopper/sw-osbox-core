@@ -87,8 +87,8 @@ fi
 if [ "$1" == "unregistered" ];then
   echo "$BACKEND_HOST/api/unregistereddevice"
   # ping unregistered-device endpoint with local ips
-  ETH1="$(osbox network info)"
-  ETH2="$(osbox network osbox)"
+  ETH0="$(osbox network info)"
+  ETH1="$(osbox network osbox)"
 
   curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" "$BACKEND_HOST/api/unregistereddevice"
 
