@@ -2,9 +2,9 @@
 
 
 
-crt="$(</etc/osbox/.backendhost)/api/localssl?item=cer"
-key="$(</etc/osbox/.backendhost)/api/localssl?item=key"
-fullchain="$(</etc/osbox/.backendhost)/api/localssl?item=fullchain"
+crt="$(</etc/osbox/.backendhost)/api/localssl?item=ssl.dockbox.nl.cer"
+key="$(</etc/osbox/.backendhost)/api/localssl?item=ssl.dockbox.nl.key"
+fullchain="$(</etc/osbox/.backendhost)/api/localssl?item=fullchain.cer"
 
 dstdir="/etc/osbox/.ssl"
 
@@ -19,7 +19,7 @@ wget -nv -q -O "/etc/osbox/.ssl/ssl.dockbox.nl.cer" $crt
 if [ "$?" == "0" ];then
   wget -nv -q -O "/etc/osbox/.ssl/ssl.dockbox.nl.key" $key
   if [ "$?" == "0" ];then
-      wget -nv -q -O "/etc/osbox/.ssl/ssl.dockbox.nl.fullchain" $fullchain
+      wget -nv -q -O "/etc/osbox/.ssl/fullchain.cer" $fullchain
       exit 0;
   fi
   exit 1
