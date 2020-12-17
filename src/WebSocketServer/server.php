@@ -96,22 +96,9 @@ if( file_exists("/etc/osbox/.ssl/ssl.dockbox.nl.cer") ){
 }
 
 
-//$server = new Server("0.0.0.0", 81);
-
-/*
-    // ssl
-    'ssl_cert_file' => "/etc/osbox/.ssl/ssl.dockbox.nl.cer",
-    'ssl_key_file' => "/etc/osbox/.ssl/ssl.dockbox.nl.key",
-    'ssl_ciphers' => 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP',
-    'ssl_method' => SWOOLE_SSLv3_CLIENT_METHOD, // removed from v4.5.4
-    'ssl_protocols' => 0, // added from v4.5.4
-    'ssl_verify_peer' => false,
-*/
-
 $server->set($serverSettings);
 
 $server->on("start", function (Server $server) {
-
     echo "SWoole WebSocket Server is started at http://127.0.0.1:81\n";
 });
 
