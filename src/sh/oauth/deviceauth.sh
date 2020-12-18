@@ -38,7 +38,7 @@ OAUTH_CONFIGDIR="/etc/osbox"
 
 CLIENT_ID_FILE="${OAUTH_CONFIGDIR}/.client_id"
 
-echo $CLIENT_ID_FILE
+#echo $CLIENT_ID_FILE
 
 if [ -f CLIENT_ID_FILE ];then
   CLIENT_ID="$(<$CLIENT_ID_FILE)"
