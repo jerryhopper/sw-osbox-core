@@ -128,6 +128,7 @@ class osbox extends CommandBase {
             //$ret['output'] = explode("\n", $ret['output']);
             var_dump($ret['output']);
 
+            $updret = Co\System::exec("osbox setregistered");
 
             $pusher->push("RESULT", $command, $ret);
 

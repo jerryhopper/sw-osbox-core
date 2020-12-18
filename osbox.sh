@@ -82,10 +82,22 @@ if [ "$1" == "reset" ]; then
   exit
 fi
 
+_USAGETXT="$_USAGETXT  osbox setregistered
+"
+if [ "$1" == "setregistered" ];then
+  # remove from unregistered-devices db
+  ETH1="$(osbox network osbox)"
+  echo "$ETH1"|awk -F "," '{ print $1 }'
 
 
+  exit 0
+fi
+
+
+_USAGETXT="$_USAGETXT  osbox unregistered
+"
 if [ "$1" == "unregistered" ];then
-  echo "$BACKEND_HOST/api/unregistereddevice"
+  #echo "$BACKEND_HOST/api/unregistereddevice"
   # ping unregistered-device endpoint with local ips
   ETH0="$(osbox network info)"
   ETH1="$(osbox network osbox)"
