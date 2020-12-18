@@ -32,15 +32,18 @@ if [[ -z "${OAUTH_CONFIGDIR_ENV}" ]]; then
 else
   OAUTH_CONFIGDIR="${OAUTH_CONFIGDIR_ENV}"
 fi
-
+OAUTH_CONFIGDIR="/etc/osbox"
 
 
 
 CLIENT_ID_FILE="${OAUTH_CONFIGDIR}/.client_id"
 
+echo $CLIENT_ID_FILE
+
 if [ -f CLIENT_ID_FILE ];then
   CLIENT_ID="$(<$CLIENT_ID_FILE)"
 fi
+
 
 
 OAUTH_OPENID_CONFIGURL_FILE="${OAUTH_CONFIGDIR}/.openid-configuration.url"
