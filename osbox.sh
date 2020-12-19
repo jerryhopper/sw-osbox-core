@@ -7,6 +7,13 @@ source /usr/local/osbox/bin/fn/is_command.fn
 
 
 BACKEND_HOST="$(</etc/osbox/.backendhost)"
+
+
+if [ ! -f /etc/osbox/.deviceID ];then
+    echo -n "$(cat /proc/sys/kernel/random/uuid)">/etc/osbox/.deviceID
+fi
+
+
 DEVICEID="$(</etc/osbox/.deviceID)"
 
 
@@ -46,9 +53,6 @@ log(){
 
 
 
-if [ ! -f /etc/osbox/.deviceID ];then
-    echo -n "$(cat /proc/sys/kernel/random/uuid)">/etc/osbox/.deviceID
-fi
 
 
 # PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/test2.php
