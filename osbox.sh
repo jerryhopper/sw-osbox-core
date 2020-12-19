@@ -46,6 +46,10 @@ log(){
 
 
 
+if [ ! -f /etc/osbox/.deviceID ];then
+    echo -n "$(cat /proc/sys/kernel/random/uuid)">/etc/osbox/.deviceID
+fi
+
 
 # PHP_INI_SCAN_DIR=/usr/local/osbox/bin/conf.d /usr/local/osbox/bin/osboxd -c /usr/local/osbox/bin/osboxd.ini -f /usr/local/osbox/project/sw-osbox-core/src/test2.php
 #  /usr/local/osbox/project/sw-osbox-core/src/test2.php
