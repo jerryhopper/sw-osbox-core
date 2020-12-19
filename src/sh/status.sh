@@ -34,7 +34,11 @@ if [ ! -f /etc/osbox/.deviceID ];then
 fi
 deviceID="$(</etc/osbox/.deviceID)"
 
-
+if [ -f /etc/armbianmonitor/datasources/soctemp ];then
+    TMP="$(</etc/armbianmonitor/datasources/soctemp)"
+else
+    TMP="nan"
+fi
 
 
 U="$(uptime)"
@@ -49,7 +53,7 @@ UPT="$(uptime | awk -F'( |,|:)+' '{d=h=m=0; if ($7=="min") m=$6; else {if ($7~/^
 FREE="$(df -k / -h|grep dev|awk -F " " '{print "{\"total\":\"" $2 "\",\"used\":\"" $3 "\",\"free\":\"" $4"\",\"used\":\"" $5 "\"}"}')"
 
 
-JSON="{ \"deviceid\": \"$deviceID\", \"ram\": $RAM, \"disk\": $FREE, \"uptime\":\"$UPT\", \"loadaverage\":\"$LOADAVG\", \"release\":\"$RELEASE\",\"sw-osbox-bin\":\"$BIN_VERSION\",\"sw-osbox-core\":\"$CORE_VERSION\",\"device-state\":\"$DEVICE_STATE\",\"sys-info\":\"$SYSTEMNAME\",\"hardware\":\"$BOARD\"$OWNER}"
+JSON="{\"temperature\":\"$TMP\", \"deviceid\":\"$deviceID\", \"ram\":$RAM, \"disk\":$FREE, \"uptime\":\"$UPT\", \"loadaverage\":\"$LOADAVG\", \"release\":\"$RELEASE\",\"sw-osbox-bin\":\"$BIN_VERSION\",\"sw-osbox-core\":\"$CORE_VERSION\",\"device-state\":\"$DEVICE_STATE\",\"sys-info\":\"$SYSTEMNAME\",\"hardware\":\"$BOARD\"$OWNER}"
 
 
 
