@@ -110,7 +110,7 @@ if [ "$1" == "unregistered" ];then
   ETH0="$(osbox network info)"
   ETH1="$(osbox network osbox)"
 
-  curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "id=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+  curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
 
   #echo $ETH1
 
