@@ -29,7 +29,18 @@ CORE_VERSION="$(</etc/osbox/.sw-osbox-core.version)"
 
 SYSTEMNAME="$(uname -a)"
 
-JSON="{\"release\":\"$RELEASE\",\"sw-osbox-bin\":\"$BIN_VERSION\",\"sw-osbox-core\":\"$CORE_VERSION\",\"device-state\":\"$DEVICE_STATE\",\"sys-info\":\"$SYSTEMNAME\",\"hardware\":\"$BOARD\"$OWNER}"
+
+U="$(uptime)"
+LOADAVG="$(echo "$U"|awk -F "," '{ print $4 "" $5 "" $6 }'|awk -F ": " '{print $2}')"
+
+
+
+
+UPT="$(uptime | awk -F'( |,|:)+' '{d=h=m=0; if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days,",h+0,"hours,",m+0,"minutes."}')"
+
+
+
+JSON="{ \"uptime\":\"$UPT\"  , \"loadaverage\":\"$LOADAVG\",  \"release\":\"$RELEASE\",\"sw-osbox-bin\":\"$BIN_VERSION\",\"sw-osbox-core\":\"$CORE_VERSION\",\"device-state\":\"$DEVICE_STATE\",\"sys-info\":\"$SYSTEMNAME\",\"hardware\":\"$BOARD\"$OWNER}"
 
 echo $JSON
 exit
