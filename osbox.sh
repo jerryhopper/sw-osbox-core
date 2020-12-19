@@ -101,22 +101,55 @@ if [ "$1" == "setregistered" ];then
   exit 0
 fi
 
-
-_USAGETXT="$_USAGETXT  osbox unregistered
+_USAGETXT="$_USAGETXT  osbox cron
 "
-if [ "$1" == "unregistered" ];then
-  #echo "$BACKEND_HOST/api/unregistereddevice"
-  # ping unregistered-device endpoint with local ips
-  ETH0="$(osbox network info)"
-  ETH1="$(osbox network osbox)"
+if [ "$1" == "cron" ];then
 
-  curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+  if [ "$1" == "daily" ];then
+
+    exit 0;
+  fi
+  if [ "$1" == "hourly" ];then
+
+    exit 0;
+  fi
+  if [ "$1" == "create" ];then
+
+    exit 0;
+  fi
+  echo "Usage: "
+  echo "  osbox cron daily  - runs 'daily' cronscript."
+  echo "  osbox cron hourly - runs 'hourly' cronscript."
+  echo "  osbox cron create  - creates crontab."
+  echo "  osbox cron  - this message."
+  exit
+fi
+
+
+_USAGETXT="$_USAGETXT  osbox ping  (Pings backend )
+"
+if [ "$1" == "ping" ];then
+
+  if [ -f  /etc/osbox/.authorization ];then
+    #/etc/osbox/.authorization
+    ETH0="$(osbox network info)"
+    ETH1="$(osbox network osbox)"
+    curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+
+  else
+    ETH0="$(osbox network info)"
+    ETH1="$(osbox network osbox)"
+    curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+
+  fi
 
   #echo $ETH1
 
   exit
 fi
 
+_USAGETXT="$_USAGETXT  osbox getssl  (grabs ssl certs from backend )
+"
 if [ "$1" == "getssl" ];then
 
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/getssl.sh
