@@ -115,7 +115,7 @@ if [ "$1" == "cron" ];then
   fi
   if [ "$2" == "hourly" ];then
     # hourly cron job
-    sleep $((1 + $RANDOM % 300))
+    sleep $((1 + $RANDOM % 120))
     # random within 5 minutes
     echo "Hourly"
 
@@ -124,8 +124,11 @@ if [ "$1" == "cron" ];then
 
   if [ "$2" == "create" ];then
     echo  "cron create!"
-    echo "0 * * * * root /usr/local/osbox/osbox cron hourly>>/var/log/syslog">/etc/cron.d/osbox-hourly
-    echo "0 0 * * * root /usr/local/osbox/osbox cron daily>>/var/log/syslog">/etc/cron.d/osbox-daily
+    echo "PATH=/usr/lib/sysstat:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/osbox">/etc/cron.d/osbox-hourly
+    echo "0 * * * * root /usr/local/osbox/osbox cron hourly>>/var/log/syslog">>/etc/cron.d/osbox-hourly
+
+    echo "PATH=/usr/lib/sysstat:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/osbox">/etc/cron.d/osbox-daily
+    echo "0 0 * * * root /usr/local/osbox/osbox cron daily>>/var/log/syslog">>/etc/cron.d/osbox-daily
     systemctl restart cron
     exit 0;
   fi
