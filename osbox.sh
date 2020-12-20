@@ -105,18 +105,33 @@ _USAGETXT="$_USAGETXT  osbox cron
 "
 if [ "$1" == "cron" ];then
 
-  if [ "$1" == "daily" ];then
+  if [ "$2" == "daily" ];then
+    # daily cron job.
+    sleep $((1 + $RANDOM % 3600))
+    # random within 1 hour
 
     exit 0;
   fi
-  if [ "$1" == "hourly" ];then
+  if [ "$2" == "hourly" ];then
+    # hourly cron job
+    sleep $((1 + $RANDOM % 300))
+    # random within 5 minutes
+
+    osbox update
+    exit 0;
+  fi
+
+  if [ "$2" == "create" ];then
+    echo  "cron create!"
+    echo "osbox cron hourly">/etc/cron.hourly
+    chmod +x /etc/cron.hourly
+    echo "osbox cron daily">/etc/cron.daily
+    chmod +x /etc/cron.daily
 
     exit 0;
   fi
-  if [ "$1" == "create" ];then
 
-    exit 0;
-  fi
+
   echo "Usage: "
   echo "  osbox cron daily  - runs 'daily' cronscript."
   echo "  osbox cron hourly - runs 'hourly' cronscript."
