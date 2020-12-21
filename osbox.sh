@@ -118,7 +118,7 @@ if [ "$1" == "cron" ];then
     sleep $((1 + $RANDOM % 120))
     # random within 5 minutes
     echo "Hourly"
-
+    /usr/local/osbox/osbox ping
     exit 0;
   fi
 
@@ -147,16 +147,23 @@ _USAGETXT="$_USAGETXT  osbox ping  (Pings backend )
 "
 if [ "$1" == "ping" ];then
 
+  if [ "$2" == "help" ];then
+      echo "Backend host: $BACKEND_HOST"
+      exit 0
+  fi
+
   if [ -f  /etc/osbox/.authorization ];then
     #/etc/osbox/.authorization
     ETH0="$(osbox network info)"
     ETH1="$(osbox network osbox)"
-    curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+    TOKEN="$(cat /etc/osbox/.authorization|jq -r .access_token)"
+
+    curl -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
 
   else
     ETH0="$(osbox network info)"
     ETH1="$(osbox network osbox)"
-    curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+    curl -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
 
   fi
 
