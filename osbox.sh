@@ -9,6 +9,7 @@ source /usr/local/osbox/bin/fn/is_command.fn
 BACKEND_HOST="$(</etc/osbox/.backendhost)"
 
 
+
 if [ ! -f /etc/osbox/.deviceID ];then
     echo -n "$(cat /proc/sys/kernel/random/uuid)">/etc/osbox/.deviceID
 fi
@@ -149,6 +150,8 @@ if [ "$1" == "ping" ];then
 
   if [ "$2" == "help" ];then
       echo "Backend host: $BACKEND_HOST"
+      echo "Backend ip: $BACKEND_HOSTIP"
+
       exit 0
   fi
 
@@ -158,13 +161,20 @@ if [ "$1" == "ping" ];then
     ETH1="$(osbox network osbox)"
     TOKEN="$(cat /etc/osbox/.authorization|jq -r .access_token)"
 
-    curl -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+    if [ "https://setup-surfwijzer.wip" == "$BACKEND_HOST" ];then
+      curl --insecure -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+    else
+      curl -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+    fi
 
   else
     ETH0="$(osbox network info)"
     ETH1="$(osbox network osbox)"
-    curl -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
-
+    if [ "https://setup-surfwijzer.wip" == "$BACKEND_HOST" ]; then
+     curl --insecure -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+    else
+      curl -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+    fi
   fi
 
   #echo $ETH1
