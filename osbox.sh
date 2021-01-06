@@ -162,18 +162,18 @@ if [ "$1" == "ping" ];then
     TOKEN="$(cat /etc/osbox/.authorization|jq -r .access_token)"
 
     if [ -f /etc/osbox/.dev ];then
-      curl --insecure -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+      curl --insecure -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
     else
-      curl -v -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
+      curl -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
     fi
 
   else
     ETH0="$(osbox network info)"
     ETH1="$(osbox network osbox)"
     if [ -f /etc/osbox/.dev ]; then
-     curl --insecure -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+     curl --insecure -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
     else
-      curl -v -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
+      curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
     fi
   fi
 
