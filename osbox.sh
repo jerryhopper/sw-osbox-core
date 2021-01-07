@@ -284,7 +284,7 @@ if [ "$1" == "auth" ]; then
 
 
   bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setClientid "$(</etc/osbox/.client_id)"
-  bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery "$(</etc/osbox/.idp_server)/.well-known/openid-configuration"
+  #bash /usr/local/osbox/project/sw-osbox-core/src/sh/oauth/deviceauth.sh setDiscovery "$(</etc/osbox/.idp_server)/.well-known/openid-configuration"
 
   exit
 fi
