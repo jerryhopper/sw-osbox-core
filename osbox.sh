@@ -96,7 +96,7 @@ _USAGETXT="$_USAGETXT  osbox setregistered
 if [ "$1" == "setregistered" ];then
   # remove from unregistered-devices db
   ETH1="$(osbox network osbox)"
-  echo "$ETH1"|awk -F "," '{ print $1 }'
+  echo -n "$ETH1"|awk -F "," '{ print $1 }'
 
 
   exit 0
@@ -201,7 +201,7 @@ if [ "$1" == "ping" ];then
 
 
     if [ -f /etc/osbox/.backendhostname ];then
-
+      #echo "LOCALHOSTED (with .authorization )"
       curl --insecure -H "Host: $(</etc/osbox/.backendhostname)" -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
     else
       curl -H "Authorization: Bearer $TOKEN" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/registereddevice"
@@ -211,6 +211,7 @@ if [ "$1" == "ping" ];then
     ETH0="$(osbox network info)"
     ETH1="$(osbox network osbox)"
     if [ -f /etc/osbox/.backendhostname  ]; then
+      #echo "LOCALHOSTED (no .authorization )"
      curl --insecure -H "Host: $(</etc/osbox/.backendhostname)" -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
     else
       curl -H "User-Agent: OSBox" -X POST -F "eth0=$ETH0" -F "eth1=$ETH1" -F "deviceid=$DEVICEID"  "$BACKEND_HOST/api/unregistereddevice"
@@ -432,7 +433,10 @@ if [ "$1" == "avahi" ]; then
 
       exit;
   fi
-
+  echo "Usage: "
+  echo "  osbox avahi set  - creates osboxnetwork *(if not exist) sets avahi with osbox network ip"
+  echo "  osbox avahi unset  - unset the avahi conf"
+  exit
   exit;
 fi
 
