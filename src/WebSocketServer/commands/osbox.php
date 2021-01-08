@@ -131,11 +131,11 @@ class osbox extends CommandBase {
 
             $updret = Co\System::exec("osbox setregistered");
 
-            $devicestatus = json_decode($updret['output']);
+            #$devicestatus = json_decode($updret['output']);
 
-            echo "---------------------------------------------";
-            var_dump($devicestatus);
-            var_dump($updret['output']);
+            #echo "---------------------------------------------";
+            #var_dump($updret);
+            #var_dump($ret['output']);
             //error_log(json_encode($ret['output']) );
             ## check if registered.
 
