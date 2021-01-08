@@ -124,11 +124,31 @@ class osbox extends CommandBase {
             $ret['signal'];
             $ret['output'];
             echo "output:";
-            #var_dump($ret['output']);
-            //$ret['output'] = explode("\n", $ret['output']);
             var_dump($ret['output']);
+            //$ret['output'] = explode("\n", $ret['output']);
+            //var_dump($ret['output']);
+
 
             $updret = Co\System::exec("osbox setregistered");
+
+            $devicestatus = json_decode($updret['output']);
+
+            echo "---------------------------------------------";
+            var_dump($devicestatus);
+            //error_log(json_encode($ret['output']) );
+            ## check if registered.
+
+            ## if registered, notify server
+
+            ## if server fails, do not register this device.
+
+
+            ## if server success, go on
+
+
+
+
+
 
             $pusher->push("RESULT", $command, $ret);
 
@@ -161,10 +181,10 @@ class osbox extends CommandBase {
             $ret['code'];
             $ret['signal'];
             $ret['output'];
-            echo "output:";
+            //echo "output:";
            #var_dump($ret['output']);
             //$ret['output'] = explode("\n", $ret['output']);
-            var_dump($ret['output']);
+            //var_dump($ret['output']);
 
 
             $pusher->push("RESULT", $command, $ret);
