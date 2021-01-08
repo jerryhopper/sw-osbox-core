@@ -120,11 +120,11 @@ class osbox extends CommandBase {
             # Execute the command, and get the results.
             $ret = Co\System::exec($command);
 
-            $ret['code'];
-            $ret['signal'];
-            $ret['output'];
-            echo "output:";
-            var_dump($ret['output']);
+            #$ret['code'];
+            #$ret['signal'];
+            #$ret['output'];
+            #echo "output:";
+            #var_dump($ret['output']);
             //$ret['output'] = explode("\n", $ret['output']);
             //var_dump($ret['output']);
 
