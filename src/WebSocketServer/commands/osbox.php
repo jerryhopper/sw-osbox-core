@@ -135,6 +135,7 @@ class osbox extends CommandBase {
 
             echo "---------------------------------------------";
             var_dump($devicestatus);
+            var_dump($updret['output']);
             //error_log(json_encode($ret['output']) );
             ## check if registered.
 
