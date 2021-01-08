@@ -21,10 +21,10 @@ class Pusher
     # $pusher->push( "ERROR", "errormessage", "$e->getmessage()" )
 
     public function push( $type , $text, $data){
-        echo "type=".$type."\n";
-        echo "text=".$text."\n";
-        echo "data=\n";
-        print_r($data);
+        #echo "type=".$type."\n";
+        #echo "text=".$text."\n";
+        #echo "data=\n";
+        #print_r($data);
 
     #public function push( $data , $statuscode=200,$statusmsg="ok"){
         if( $type=="INFO"){
