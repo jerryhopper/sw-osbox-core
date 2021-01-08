@@ -98,7 +98,7 @@ if [ "$1" == "setregistered" ];then
   ETH1="$(osbox network osbox)"
   echo -n "$ETH1"|awk -F "," '{ print $1 }'
 
-
+  bash /sbin/osbox ping
   exit 0
 fi
 
