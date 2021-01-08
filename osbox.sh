@@ -102,6 +102,43 @@ if [ "$1" == "setregistered" ];then
   exit 0
 fi
 
+
+
+
+_USAGETXT="$_USAGETXT  osbox setdev ([domain-uri] [hostname])
+"
+if [ "$1" == "setdev" ];then
+
+  if [ "$2" == "reset" ]; then
+    rm -f /etc/osbox/.backendhostname
+    echo -n "https://setup.surfwijzer.nl">/etc/osbox/.backendhost
+    echo "Development enviroment disabled."
+    exit
+  fi
+  if [ "$2" != "" ]; then
+    echo -n "$2">/etc/osbox/.backendhost
+    echo -n "$3">/etc/osbox/.backendhostname
+  else
+    echo -n "https://10.0.1.105:8000">/etc/osbox/.backendhost
+    echo -n "setup-surfwijzer.wip">/etc/osbox/.backendhostname
+
+  fi
+  #
+
+  echo "Development enviroment activated."
+  exit 0
+fi
+
+
+
+
+
+
+
+
+
+
+
 _USAGETXT="$_USAGETXT  osbox cron
 "
 if [ "$1" == "cron" ];then
